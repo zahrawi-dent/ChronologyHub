@@ -151,8 +151,8 @@ const defaultColumns = [
       const type = cell.getValue();
       return (
         <span class={`inline-flex px-3 py-1 rounded-full text-xs font-semibold ${type === 'primary'
-            ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30'
-            : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+          ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30'
+          : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
           }`}>
           {type.charAt(0).toUpperCase() + type.slice(1)}
         </span>
@@ -200,7 +200,7 @@ const defaultColumns = [
 
 function ReferenceTable() {
   const [search, setSearch] = createSignal('');
-  const [isFuzzySearch, setIsFuzzySearch] = createSignal(true);
+  const [isFuzzySearch, setIsFuzzySearch] = createSignal(false);
   const [toothTypeFilter, setToothTypeFilter] = createSignal('all'); // 'all', 'primary', 'permanent'
 
   // Filter data based on tooth type selection
@@ -220,7 +220,9 @@ function ReferenceTable() {
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    globalFilterFn: isFuzzySearch() ? 'fuzzy' : 'exact',
+    get globalFilterFn() {
+      return isFuzzySearch() ? 'fuzzy' : 'exact';
+    },
     state: {
       get globalFilter() {
         return search()
@@ -255,7 +257,7 @@ function ReferenceTable() {
                 <input
                   type="text"
                   placeholder={isFuzzySearch()
-                    ? "Try fuzzy search: 'uppr mlr', 'canin', 'prmry'..."
+                    ? "Try fuzzy search: 'max cen', 'prmry mol sec', ..."
                     : "Search teeth with exact matching..."}
                   value={search()}
                   oninput={(e) => setSearch(e.currentTarget.value)}
@@ -276,8 +278,8 @@ function ReferenceTable() {
                     <button
                       onclick={() => setToothTypeFilter(type)}
                       class={`flex-1 px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 ${toothTypeFilter() === type
-                          ? 'bg-blue-500 text-white shadow-lg'
-                          : 'text-gray-300 hover:text-white hover:bg-gray-600/50'
+                        ? 'bg-blue-500 text-white shadow-lg'
+                        : 'text-gray-300 hover:text-white hover:bg-gray-600/50'
                         }`}
                     >
                       {type === 'all' ? 'All Teeth' : type.charAt(0).toUpperCase() + type.slice(1)}
@@ -294,8 +296,8 @@ function ReferenceTable() {
                 <button
                   onclick={() => setIsFuzzySearch(!isFuzzySearch())}
                   class={`inline-flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${isFuzzySearch()
-                      ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30 hover:bg-purple-500/30'
-                      : 'bg-gray-600/50 text-gray-300 border border-gray-600/50 hover:bg-gray-600/70'
+                    ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30 hover:bg-purple-500/30'
+                    : 'bg-gray-600/50 text-gray-300 border border-gray-600/50 hover:bg-gray-600/70'
                     }`}
                 >
                   {isFuzzySearch() ? (
@@ -399,8 +401,8 @@ function ReferenceTable() {
         {/* Search Tips */}
         {!search() && (
           <div class={`mt-6 p-4 rounded-xl border ${isFuzzySearch()
-              ? 'bg-purple-500/10 border-purple-500/20 backdrop-blur-sm'
-              : 'bg-gray-700/20 border-gray-600/30 backdrop-blur-sm'
+            ? 'bg-purple-500/10 border-purple-500/20 backdrop-blur-sm'
+            : 'bg-gray-700/20 border-gray-600/30 backdrop-blur-sm'
             }`}>
             <h3 class={`text-sm font-semibold mb-3 ${isFuzzySearch() ? 'text-purple-300' : 'text-gray-300'
               }`}>
