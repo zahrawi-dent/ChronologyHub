@@ -1,11 +1,10 @@
-import { createColumnHelper, createSolidTable, flexRender, getCoreRowModel, getFilteredRowModel, getSortedRowModel, type ColumnDef, type Row, type FilterFn, type SortingFn, sortingFns } from '@tanstack/solid-table'
-import ChronologyTable from './components/ChronologyTable'
-import { createEffect, createResource, createSignal, For } from 'solid-js';
+import { createColumnHelper, createSolidTable, flexRender, getCoreRowModel, getFilteredRowModel, getSortedRowModel, type FilterFn } from '@tanstack/solid-table'
+import { createSignal, For } from 'solid-js';
 import { permanentTeeth, primaryTeeth, type ToothData } from './data/toothData';
 
 // Import the match-sorter utils for fuzzy filtering
 // You'll need to install: npm install @tanstack/match-sorter-utils
-import { rankItem, compareItems, type RankingInfo } from '@tanstack/match-sorter-utils';
+import { rankItem, type RankingInfo } from '@tanstack/match-sorter-utils';
 import HeroSection from './components/Hero';
 import { ToothChart } from './components/ToothChart';
 import { ToothDetails } from './components/ToothDetails';
@@ -32,38 +31,38 @@ function App() {
 
 const columnHelper = createColumnHelper<ToothData>();
 
-// Define a custom fuzzy filter function that will apply ranking info to rows
-const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
-  // Rank the item
-  const itemRank = rankItem(row.getValue(columnId), value)
-
-  // Store the itemRank info
-  addMeta({
-    itemRank,
-  })
-
-  // Return if the item should be filtered in/out
-  return itemRank.passed
-}
-
-// Define a custom fuzzy sort function that will sort by rank if the row has ranking information
-const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
-  let dir = 0
-
-  // Only sort by rank if the column has ranking information
-  if (rowA.columnFiltersMeta[columnId]) {
-    dir = compareItems(
-      rowA.columnFiltersMeta[columnId]?.itemRank!,
-      rowB.columnFiltersMeta[columnId]?.itemRank!
-    )
-  }
-
-  // Provide an alphanumeric fallback for when the item ranks are equal
-  return dir === 0 ? sortingFns.alphanumeric(rowA, rowB, columnId) : dir
-}
+// // Define a custom fuzzy filter function that will apply ranking info to rows
+// const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
+//   // Rank the item
+//   const itemRank = rankItem(row.getValue(columnId), value)
+//
+//   // Store the itemRank info
+//   addMeta({
+//     itemRank,
+//   })
+//
+//   // Return if the item should be filtered in/out
+//   return itemRank.passed
+// }
+//
+// // Define a custom fuzzy sort function that will sort by rank if the row has ranking information
+// const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
+//   let dir = 0
+//
+//   // Only sort by rank if the column has ranking information
+//   if (rowA.columnFiltersMeta[columnId]) {
+//     dir = compareItems(
+//       rowA.columnFiltersMeta[columnId]?.itemRank!,
+//       rowB.columnFiltersMeta[columnId]?.itemRank!
+//     )
+//   }
+//
+//   // Provide an alphanumeric fallback for when the item ranks are equal
+//   return dir === 0 ? sortingFns.alphanumeric(rowA, rowB, columnId) : dir
+// }
 
 // Custom global fuzzy filter that searches across multiple fields
-const globalFuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
+const globalFuzzyFilter: FilterFn<any> = (row, _, value, addMeta) => {
   if (!value) return true;
 
   const data = row.original;
@@ -97,7 +96,7 @@ const globalFuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
 }
 
 // Non-fuzzy exact string matching filter
-const customGlobalFilter: FilterFn<any> = (row, columnId, filterValue, addMeta) => {
+const customGlobalFilter: FilterFn<any> = (row, _, filterValue, __) => {
   if (!filterValue) return true;
 
   const searchTerm = filterValue.toLowerCase().trim();
