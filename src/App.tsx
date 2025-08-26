@@ -1,11 +1,14 @@
 import { createColumnHelper, createSolidTable, flexRender, getCoreRowModel, getFilteredRowModel, getSortedRowModel, type ColumnDef, type Row, type FilterFn, type SortingFn, sortingFns } from '@tanstack/solid-table'
 import ChronologyTable from './components/ChronologyTable'
-import { createSignal, For } from 'solid-js';
+import { createEffect, createResource, createSignal, For } from 'solid-js';
 import { permanentTeeth, primaryTeeth, type ToothData } from './data/toothData';
 
 // Import the match-sorter utils for fuzzy filtering
 // You'll need to install: npm install @tanstack/match-sorter-utils
 import { rankItem, compareItems, type RankingInfo } from '@tanstack/match-sorter-utils';
+import HeroSection from './components/Hero';
+import { ToothChart } from './components/ToothChart';
+import { ToothDetails } from './components/ToothDetails';
 
 // Extend the table types to include both fuzzy and exact filters
 declare module '@tanstack/solid-table' {
@@ -203,6 +206,8 @@ function ReferenceTable() {
   const [isFuzzySearch, setIsFuzzySearch] = createSignal(false);
   const [toothTypeFilter, setToothTypeFilter] = createSignal('all'); // 'all', 'primary', 'permanent'
 
+  const [selectedTooth, setSelectedTooth] = createSignal<ToothData | null>(null);
+
   // Filter data based on tooth type selection
   const filteredData = () => {
     const allData = [...primaryTeeth, ...permanentTeeth];
@@ -233,6 +238,22 @@ function ReferenceTable() {
 
   return (
     <div class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 p-6">
+
+      <div class="grid lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-2">
+          <ToothChart
+            teeth={permanentTeeth}
+            onToothSelect={setSelectedTooth}
+            selectedTooth={selectedTooth}
+          />
+        </div>
+        <div>
+          <ToothDetails tooth={selectedTooth} />
+        </div>
+      </div>
+
+      <HeroSection />
+
       <div class="max-w-7xl mx-auto">
         {/* Header */}
         <div class="mb-8">
