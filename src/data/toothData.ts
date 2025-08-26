@@ -1,0 +1,629 @@
+export type ToothData = {
+  id: string;
+  name: string;
+  notation: {
+    universal: string;
+    palmer: string;
+    fdi: string;
+  };
+  type: 'primary' | 'permanent';
+  category: 'incisor' | 'canine' | 'premolar' | 'molar';
+  position: 'maxillary' | 'mandibular';
+  side: 'left' | 'right';
+  eruption: {
+    ageRange: string;
+    ageMonths: number;
+  };
+  shedding?: {
+    ageRange: string;
+    ageMonths: number;
+  };
+  rootCompletion?: {
+    ageRange: string;
+    ageMonths: number;
+  };
+}
+
+export const primaryTeeth: ToothData[] = [
+  // Maxillary Primary Teeth
+  {
+    id: 'primary-maxillary-central-incisor-right',
+    name: 'Central Incisor',
+    notation: { universal: 'E', palmer: 'A', fdi: '51' },
+    type: 'primary',
+    category: 'incisor',
+    position: 'maxillary',
+    side: 'right',
+    eruption: { ageRange: '8-12 months', ageMonths: 10 },
+    shedding: { ageRange: '6-7 years', ageMonths: 78 },
+    rootCompletion: { ageRange: '18-24 months', ageMonths: 21 }
+  },
+  {
+    id: 'primary-maxillary-central-incisor-left',
+    name: 'Central Incisor',
+    notation: { universal: 'F', palmer: 'A', fdi: '61' },
+    type: 'primary',
+    category: 'incisor',
+    position: 'maxillary',
+    side: 'left',
+    eruption: { ageRange: '8-12 months', ageMonths: 10 },
+    shedding: { ageRange: '6-7 years', ageMonths: 78 },
+    rootCompletion: { ageRange: '18-24 months', ageMonths: 21 }
+  },
+  {
+    id: 'primary-maxillary-lateral-incisor-right',
+    name: 'Lateral Incisor',
+    notation: { universal: 'D', palmer: 'B', fdi: '52' },
+    type: 'primary',
+    category: 'incisor',
+    position: 'maxillary',
+    side: 'right',
+    eruption: { ageRange: '9-13 months', ageMonths: 11 },
+    shedding: { ageRange: '7-8 years', ageMonths: 90 },
+    rootCompletion: { ageRange: '22-30 months', ageMonths: 26 }
+  },
+  {
+    id: 'primary-maxillary-lateral-incisor-left',
+    name: 'Lateral Incisor',
+    notation: { universal: 'G', palmer: 'B', fdi: '62' },
+    type: 'primary',
+    category: 'incisor',
+    position: 'maxillary',
+    side: 'left',
+    eruption: { ageRange: '9-13 months', ageMonths: 11 },
+    shedding: { ageRange: '7-8 years', ageMonths: 90 },
+    rootCompletion: { ageRange: '22-30 months', ageMonths: 26 }
+  },
+  {
+    id: 'primary-maxillary-canine-right',
+    name: 'Canine',
+    notation: { universal: 'C', palmer: 'C', fdi: '53' },
+    type: 'primary',
+    category: 'canine',
+    position: 'maxillary',
+    side: 'right',
+    eruption: { ageRange: '16-22 months', ageMonths: 19 },
+    shedding: { ageRange: '10-12 years', ageMonths: 132 },
+    rootCompletion: { ageRange: '30-42 months', ageMonths: 36 }
+  },
+  {
+    id: 'primary-maxillary-canine-left',
+    name: 'Canine',
+    notation: { universal: 'H', palmer: 'C', fdi: '63' },
+    type: 'primary',
+    category: 'canine',
+    position: 'maxillary',
+    side: 'left',
+    eruption: { ageRange: '16-22 months', ageMonths: 19 },
+    shedding: { ageRange: '10-12 years', ageMonths: 132 },
+    rootCompletion: { ageRange: '30-42 months', ageMonths: 36 }
+  },
+  {
+    id: 'primary-maxillary-first-molar-right',
+    name: 'First Molar',
+    notation: { universal: 'B', palmer: 'D', fdi: '54' },
+    type: 'primary',
+    category: 'molar',
+    position: 'maxillary',
+    side: 'right',
+    eruption: { ageRange: '13-19 months', ageMonths: 16 },
+    shedding: { ageRange: '9-11 years', ageMonths: 120 },
+    rootCompletion: { ageRange: '24-30 months', ageMonths: 27 }
+  },
+  {
+    id: 'primary-maxillary-first-molar-left',
+    name: 'First Molar',
+    notation: { universal: 'I', palmer: 'D', fdi: '64' },
+    type: 'primary',
+    category: 'molar',
+    position: 'maxillary',
+    side: 'left',
+    eruption: { ageRange: '13-19 months', ageMonths: 16 },
+    shedding: { ageRange: '9-11 years', ageMonths: 120 },
+    rootCompletion: { ageRange: '24-30 months', ageMonths: 27 }
+  },
+  {
+    id: 'primary-maxillary-second-molar-right',
+    name: 'Second Molar',
+    notation: { universal: 'A', palmer: 'E', fdi: '55' },
+    type: 'primary',
+    category: 'molar',
+    position: 'maxillary',
+    side: 'right',
+    eruption: { ageRange: '25-33 months', ageMonths: 29 },
+    shedding: { ageRange: '10-12 years', ageMonths: 132 },
+    rootCompletion: { ageRange: '36-48 months', ageMonths: 42 }
+  },
+  {
+    id: 'primary-maxillary-second-molar-left',
+    name: 'Second Molar',
+    notation: { universal: 'J', palmer: 'E', fdi: '65' },
+    type: 'primary',
+    category: 'molar',
+    position: 'maxillary',
+    side: 'left',
+    eruption: { ageRange: '25-33 months', ageMonths: 29 },
+    shedding: { ageRange: '10-12 years', ageMonths: 132 },
+    rootCompletion: { ageRange: '36-48 months', ageMonths: 42 }
+  },
+  // Mandibular Primary Teeth
+  {
+    id: 'primary-mandibular-central-incisor-right',
+    name: 'Central Incisor',
+    notation: { universal: 'O', palmer: 'A', fdi: '81' },
+    type: 'primary',
+    category: 'incisor',
+    position: 'mandibular',
+    side: 'right',
+    eruption: { ageRange: '6-10 months', ageMonths: 8 },
+    shedding: { ageRange: '6-7 years', ageMonths: 78 },
+    rootCompletion: { ageRange: '18-24 months', ageMonths: 21 }
+  },
+  {
+    id: 'primary-mandibular-central-incisor-left',
+    name: 'Central Incisor',
+    notation: { universal: 'P', palmer: 'A', fdi: '71' },
+    type: 'primary',
+    category: 'incisor',
+    position: 'mandibular',
+    side: 'left',
+    eruption: { ageRange: '6-10 months', ageMonths: 8 },
+    shedding: { ageRange: '6-7 years', ageMonths: 78 },
+    rootCompletion: { ageRange: '18-24 months', ageMonths: 21 }
+  },
+  {
+    id: 'primary-mandibular-lateral-incisor-right',
+    name: 'Lateral Incisor',
+    notation: { universal: 'N', palmer: 'B', fdi: '82' },
+    type: 'primary',
+    category: 'incisor',
+    position: 'mandibular',
+    side: 'right',
+    eruption: { ageRange: '10-16 months', ageMonths: 13 },
+    shedding: { ageRange: '7-8 years', ageMonths: 90 },
+    rootCompletion: { ageRange: '18-24 months', ageMonths: 21 }
+  },
+  {
+    id: 'primary-mandibular-lateral-incisor-left',
+    name: 'Lateral Incisor',
+    notation: { universal: 'Q', palmer: 'B', fdi: '72' },
+    type: 'primary',
+    category: 'incisor',
+    position: 'mandibular',
+    side: 'left',
+    eruption: { ageRange: '10-16 months', ageMonths: 13 },
+    shedding: { ageRange: '7-8 years', ageMonths: 90 },
+    rootCompletion: { ageRange: '18-24 months', ageMonths: 21 }
+  },
+  {
+    id: 'primary-mandibular-canine-right',
+    name: 'Canine',
+    notation: { universal: 'M', palmer: 'C', fdi: '83' },
+    type: 'primary',
+    category: 'canine',
+    position: 'mandibular',
+    side: 'right',
+    eruption: { ageRange: '17-23 months', ageMonths: 20 },
+    shedding: { ageRange: '9-12 years', ageMonths: 126 },
+    rootCompletion: { ageRange: '30-42 months', ageMonths: 36 }
+  },
+  {
+    id: 'primary-mandibular-canine-left',
+    name: 'Canine',
+    notation: { universal: 'R', palmer: 'C', fdi: '73' },
+    type: 'primary',
+    category: 'canine',
+    position: 'mandibular',
+    side: 'left',
+    eruption: { ageRange: '17-23 months', ageMonths: 20 },
+    shedding: { ageRange: '9-12 years', ageMonths: 126 },
+    rootCompletion: { ageRange: '30-42 months', ageMonths: 36 }
+  },
+  {
+    id: 'primary-mandibular-first-molar-right',
+    name: 'First Molar',
+    notation: { universal: 'L', palmer: 'D', fdi: '84' },
+    type: 'primary',
+    category: 'molar',
+    position: 'mandibular',
+    side: 'right',
+    eruption: { ageRange: '14-18 months', ageMonths: 16 },
+    shedding: { ageRange: '9-11 years', ageMonths: 120 },
+    rootCompletion: { ageRange: '24-30 months', ageMonths: 27 }
+  },
+  {
+    id: 'primary-mandibular-first-molar-left',
+    name: 'First Molar',
+    notation: { universal: 'S', palmer: 'D', fdi: '74' },
+    type: 'primary',
+    category: 'molar',
+    position: 'mandibular',
+    side: 'left',
+    eruption: { ageRange: '14-18 months', ageMonths: 16 },
+    shedding: { ageRange: '9-11 years', ageMonths: 120 },
+    rootCompletion: { ageRange: '24-30 months', ageMonths: 27 }
+  },
+  {
+    id: 'primary-mandibular-second-molar-right',
+    name: 'Second Molar',
+    notation: { universal: 'K', palmer: 'E', fdi: '85' },
+    type: 'primary',
+    category: 'molar',
+    position: 'mandibular',
+    side: 'right',
+    eruption: { ageRange: '23-31 months', ageMonths: 27 },
+    shedding: { ageRange: '10-12 years', ageMonths: 132 },
+    rootCompletion: { ageRange: '36-48 months', ageMonths: 42 }
+  },
+  {
+    id: 'primary-mandibular-second-molar-left',
+    name: 'Second Molar',
+    notation: { universal: 'T', palmer: 'E', fdi: '75' },
+    type: 'primary',
+    category: 'molar',
+    position: 'mandibular',
+    side: 'left',
+    eruption: { ageRange: '23-31 months', ageMonths: 27 },
+    shedding: { ageRange: '10-12 years', ageMonths: 132 },
+    rootCompletion: { ageRange: '36-48 months', ageMonths: 42 }
+  }
+];
+
+export const permanentTeeth: ToothData[] = [
+  // Maxillary Permanent Teeth
+  {
+    id: 'permanent-maxillary-central-incisor-right',
+    name: 'Central Incisor',
+    notation: { universal: '8', palmer: '1', fdi: '11' },
+    type: 'permanent',
+    category: 'incisor',
+    position: 'maxillary',
+    side: 'right',
+    eruption: { ageRange: '7-8 years', ageMonths: 90 },
+    rootCompletion: { ageRange: '10-11 years', ageMonths: 126 }
+  },
+  {
+    id: 'permanent-maxillary-central-incisor-left',
+    name: 'Central Incisor',
+    notation: { universal: '9', palmer: '1', fdi: '21' },
+    type: 'permanent',
+    category: 'incisor',
+    position: 'maxillary',
+    side: 'left',
+    eruption: { ageRange: '7-8 years', ageMonths: 90 },
+    rootCompletion: { ageRange: '10-11 years', ageMonths: 126 }
+  },
+  {
+    id: 'permanent-maxillary-lateral-incisor-right',
+    name: 'Lateral Incisor',
+    notation: { universal: '7', palmer: '2', fdi: '12' },
+    type: 'permanent',
+    category: 'incisor',
+    position: 'maxillary',
+    side: 'right',
+    eruption: { ageRange: '8-9 years', ageMonths: 102 },
+    rootCompletion: { ageRange: '11-12 years', ageMonths: 138 }
+  },
+  {
+    id: 'permanent-maxillary-lateral-incisor-left',
+    name: 'Lateral Incisor',
+    notation: { universal: '10', palmer: '2', fdi: '22' },
+    type: 'permanent',
+    category: 'incisor',
+    position: 'maxillary',
+    side: 'left',
+    eruption: { ageRange: '8-9 years', ageMonths: 102 },
+    rootCompletion: { ageRange: '11-12 years', ageMonths: 138 }
+  },
+  {
+    id: 'permanent-maxillary-canine-right',
+    name: 'Canine',
+    notation: { universal: '6', palmer: '3', fdi: '13' },
+    type: 'permanent',
+    category: 'canine',
+    position: 'maxillary',
+    side: 'right',
+    eruption: { ageRange: '11-12 years', ageMonths: 138 },
+    rootCompletion: { ageRange: '13-15 years', ageMonths: 168 }
+  },
+  {
+    id: 'permanent-maxillary-canine-left',
+    name: 'Canine',
+    notation: { universal: '11', palmer: '3', fdi: '23' },
+    type: 'permanent',
+    category: 'canine',
+    position: 'maxillary',
+    side: 'left',
+    eruption: { ageRange: '11-12 years', ageMonths: 138 },
+    rootCompletion: { ageRange: '13-15 years', ageMonths: 168 }
+  },
+  {
+    id: 'permanent-maxillary-first-premolar-right',
+    name: 'First Premolar',
+    notation: { universal: '5', palmer: '4', fdi: '14' },
+    type: 'permanent',
+    category: 'premolar',
+    position: 'maxillary',
+    side: 'right',
+    eruption: { ageRange: '10-11 years', ageMonths: 126 },
+    rootCompletion: { ageRange: '12-13 years', ageMonths: 150 }
+  },
+  {
+    id: 'permanent-maxillary-first-premolar-left',
+    name: 'First Premolar',
+    notation: { universal: '12', palmer: '4', fdi: '24' },
+    type: 'permanent',
+    category: 'premolar',
+    position: 'maxillary',
+    side: 'left',
+    eruption: { ageRange: '10-11 years', ageMonths: 126 },
+    rootCompletion: { ageRange: '12-13 years', ageMonths: 150 }
+  },
+  {
+    id: 'permanent-maxillary-second-premolar-right',
+    name: 'Second Premolar',
+    notation: { universal: '4', palmer: '5', fdi: '15' },
+    type: 'permanent',
+    category: 'premolar',
+    position: 'maxillary',
+    side: 'right',
+    eruption: { ageRange: '10-12 years', ageMonths: 132 },
+    rootCompletion: { ageRange: '12-14 years', ageMonths: 156 }
+  },
+  {
+    id: 'permanent-maxillary-second-premolar-left',
+    name: 'Second Premolar',
+    notation: { universal: '13', palmer: '5', fdi: '25' },
+    type: 'permanent',
+    category: 'premolar',
+    position: 'maxillary',
+    side: 'left',
+    eruption: { ageRange: '10-12 years', ageMonths: 132 },
+    rootCompletion: { ageRange: '12-14 years', ageMonths: 156 }
+  },
+  {
+    id: 'permanent-maxillary-first-molar-right',
+    name: 'First Molar',
+    notation: { universal: '3', palmer: '6', fdi: '16' },
+    type: 'permanent',
+    category: 'molar',
+    position: 'maxillary',
+    side: 'right',
+    eruption: { ageRange: '6-7 years', ageMonths: 78 },
+    rootCompletion: { ageRange: '9-10 years', ageMonths: 114 }
+  },
+  {
+    id: 'permanent-maxillary-first-molar-left',
+    name: 'First Molar',
+    notation: { universal: '14', palmer: '6', fdi: '26' },
+    type: 'permanent',
+    category: 'molar',
+    position: 'maxillary',
+    side: 'left',
+    eruption: { ageRange: '6-7 years', ageMonths: 78 },
+    rootCompletion: { ageRange: '9-10 years', ageMonths: 114 }
+  },
+  {
+    id: 'permanent-maxillary-second-molar-right',
+    name: 'Second Molar',
+    notation: { universal: '2', palmer: '7', fdi: '17' },
+    type: 'permanent',
+    category: 'molar',
+    position: 'maxillary',
+    side: 'right',
+    eruption: { ageRange: '12-13 years', ageMonths: 150 },
+    rootCompletion: { ageRange: '14-16 years', ageMonths: 180 }
+  },
+  {
+    id: 'permanent-maxillary-second-molar-left',
+    name: 'Second Molar',
+    notation: { universal: '15', palmer: '7', fdi: '27' },
+    type: 'permanent',
+    category: 'molar',
+    position: 'maxillary',
+    side: 'left',
+    eruption: { ageRange: '12-13 years', ageMonths: 150 },
+    rootCompletion: { ageRange: '14-16 years', ageMonths: 180 }
+  },
+  {
+    id: 'permanent-maxillary-third-molar-right',
+    name: 'Third Molar (Wisdom)',
+    notation: { universal: '1', palmer: '8', fdi: '18' },
+    type: 'permanent',
+    category: 'molar',
+    position: 'maxillary',
+    side: 'right',
+    eruption: { ageRange: '17-21 years', ageMonths: 228 },
+    rootCompletion: { ageRange: '18-25 years', ageMonths: 276 }
+  },
+  {
+    id: 'permanent-maxillary-third-molar-left',
+    name: 'Third Molar (Wisdom)',
+    notation: { universal: '16', palmer: '8', fdi: '28' },
+    type: 'permanent',
+    category: 'molar',
+    position: 'maxillary',
+    side: 'left',
+    eruption: { ageRange: '17-21 years', ageMonths: 228 },
+    rootCompletion: { ageRange: '18-25 years', ageMonths: 276 }
+  },
+  // Mandibular Permanent Teeth
+  {
+    id: 'permanent-mandibular-central-incisor-right',
+    name: 'Central Incisor',
+    notation: { universal: '25', palmer: '1', fdi: '41' },
+    type: 'permanent',
+    category: 'incisor',
+    position: 'mandibular',
+    side: 'right',
+    eruption: { ageRange: '6-7 years', ageMonths: 78 },
+    rootCompletion: { ageRange: '9-10 years', ageMonths: 114 }
+  },
+  {
+    id: 'permanent-mandibular-central-incisor-left',
+    name: 'Central Incisor',
+    notation: { universal: '24', palmer: '1', fdi: '31' },
+    type: 'permanent',
+    category: 'incisor',
+    position: 'mandibular',
+    side: 'left',
+    eruption: { ageRange: '6-7 years', ageMonths: 78 },
+    rootCompletion: { ageRange: '9-10 years', ageMonths: 114 }
+  },
+  {
+    id: 'permanent-mandibular-lateral-incisor-right',
+    name: 'Lateral Incisor',
+    notation: { universal: '26', palmer: '2', fdi: '42' },
+    type: 'permanent',
+    category: 'incisor',
+    position: 'mandibular',
+    side: 'right',
+    eruption: { ageRange: '7-8 years', ageMonths: 90 },
+    rootCompletion: { ageRange: '10-11 years', ageMonths: 126 }
+  },
+  {
+    id: 'permanent-mandibular-lateral-incisor-left',
+    name: 'Lateral Incisor',
+    notation: { universal: '23', palmer: '2', fdi: '32' },
+    type: 'permanent',
+    category: 'incisor',
+    position: 'mandibular',
+    side: 'left',
+    eruption: { ageRange: '7-8 years', ageMonths: 90 },
+    rootCompletion: { ageRange: '10-11 years', ageMonths: 126 }
+  },
+  {
+    id: 'permanent-mandibular-canine-right',
+    name: 'Canine',
+    notation: { universal: '27', palmer: '3', fdi: '43' },
+    type: 'permanent',
+    category: 'canine',
+    position: 'mandibular',
+    side: 'right',
+    eruption: { ageRange: '9-10 years', ageMonths: 114 },
+    rootCompletion: { ageRange: '12-14 years', ageMonths: 156 }
+  },
+  {
+    id: 'permanent-mandibular-canine-left',
+    name: 'Canine',
+    notation: { universal: '22', palmer: '3', fdi: '33' },
+    type: 'permanent',
+    category: 'canine',
+    position: 'mandibular',
+    side: 'left',
+    eruption: { ageRange: '9-10 years', ageMonths: 114 },
+    rootCompletion: { ageRange: '12-14 years', ageMonths: 156 }
+  },
+  {
+    id: 'permanent-mandibular-first-premolar-right',
+    name: 'First Premolar',
+    notation: { universal: '28', palmer: '4', fdi: '44' },
+    type: 'permanent',
+    category: 'premolar',
+    position: 'mandibular',
+    side: 'right',
+    eruption: { ageRange: '10-12 years', ageMonths: 132 },
+    rootCompletion: { ageRange: '12-13 years', ageMonths: 150 }
+  },
+  {
+    id: 'permanent-mandibular-first-premolar-left',
+    name: 'First Premolar',
+    notation: { universal: '21', palmer: '4', fdi: '34' },
+    type: 'permanent',
+    category: 'premolar',
+    position: 'mandibular',
+    side: 'left',
+    eruption: { ageRange: '10-12 years', ageMonths: 132 },
+    rootCompletion: { ageRange: '12-13 years', ageMonths: 150 }
+  },
+  {
+    id: 'permanent-mandibular-second-premolar-right',
+    name: 'Second Premolar',
+    notation: { universal: '29', palmer: '5', fdi: '45' },
+    type: 'permanent',
+    category: 'premolar',
+    position: 'mandibular',
+    side: 'right',
+    eruption: { ageRange: '11-12 years', ageMonths: 138 },
+    rootCompletion: { ageRange: '13-14 years', ageMonths: 162 }
+  },
+  {
+    id: 'permanent-mandibular-second-premolar-left',
+    name: 'Second Premolar',
+    notation: { universal: '20', palmer: '5', fdi: '35' },
+    type: 'permanent',
+    category: 'premolar',
+    position: 'mandibular',
+    side: 'left',
+    eruption: { ageRange: '11-12 years', ageMonths: 138 },
+    rootCompletion: { ageRange: '13-14 years', ageMonths: 162 }
+  },
+  {
+    id: 'permanent-mandibular-first-molar-right',
+    name: 'First Molar',
+    notation: { universal: '30', palmer: '6', fdi: '46' },
+    type: 'permanent',
+    category: 'molar',
+    position: 'mandibular',
+    side: 'right',
+    eruption: { ageRange: '6-7 years', ageMonths: 78 },
+    rootCompletion: { ageRange: '9-10 years', ageMonths: 114 }
+  },
+  {
+    id: 'permanent-mandibular-first-molar-left',
+    name: 'First Molar',
+    notation: { universal: '19', palmer: '6', fdi: '36' },
+    type: 'permanent',
+    category: 'molar',
+    position: 'mandibular',
+    side: 'left',
+    eruption: { ageRange: '6-7 years', ageMonths: 78 },
+    rootCompletion: { ageRange: '9-10 years', ageMonths: 114 }
+  },
+  {
+    id: 'permanent-mandibular-second-molar-right',
+    name: 'Second Molar',
+    notation: { universal: '31', palmer: '7', fdi: '47' },
+    type: 'permanent',
+    category: 'molar',
+    position: 'mandibular',
+    side: 'right',
+    eruption: { ageRange: '11-13 years', ageMonths: 144 },
+    rootCompletion: { ageRange: '14-15 years', ageMonths: 174 }
+  },
+  {
+    id: 'permanent-mandibular-second-molar-left',
+    name: 'Second Molar',
+    notation: { universal: '18', palmer: '7', fdi: '37' },
+    type: 'permanent',
+    category: 'molar',
+    position: 'mandibular',
+    side: 'left',
+    eruption: { ageRange: '11-13 years', ageMonths: 144 },
+    rootCompletion: { ageRange: '14-15 years', ageMonths: 174 }
+  },
+  {
+    id: 'permanent-mandibular-third-molar-right',
+    name: 'Third Molar (Wisdom)',
+    notation: { universal: '32', palmer: '8', fdi: '48' },
+    type: 'permanent',
+    category: 'molar',
+    position: 'mandibular',
+    side: 'right',
+    eruption: { ageRange: '17-21 years', ageMonths: 228 },
+    rootCompletion: { ageRange: '18-25 years', ageMonths: 276 }
+  },
+  {
+    id: 'permanent-mandibular-third-molar-left',
+    name: 'Third Molar (Wisdom)',
+    notation: { universal: '17', palmer: '8', fdi: '48' },
+    type: 'permanent',
+    category: 'molar',
+    position: 'mandibular',
+    side: 'left',
+    eruption: { ageRange: '17-21 years', ageMonths: 228 },
+    rootCompletion: { ageRange: '18-25 years', ageMonths: 276 }
+  }
+];
+
+export const getAllTeeth = () => [...primaryTeeth, ...permanentTeeth];
