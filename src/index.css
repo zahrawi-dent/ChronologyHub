@@ -2,8 +2,23 @@
 
 @theme {
 
-  --color-secondary: oklch(0.4111 0.0199 245.46);
-  --color-secondary-foreground: oklch(0.9717 0.0296 119.36);
+  /* --color-secondary: oklch(0.4111 0.0199 245.46); */
+  /* --color-background: oklch(0.1967 0.029 239.48); */
+  /* Variations of background color for gradients */
+  --color-background-light: oklch(0.2167 0.032 239.48);
+  --color-background-dark: oklch(0.1767 0.025 239.48);
+  --color-background-darker: oklch(0.1567 0.022 239.48);
+
+  --color-primary: oklch(0.616 0.1041 183.19);
+  --color-primary-foreground: oklch(0.98 0.01 239.5);
+  /* --color-primary: oklch(0.9421 0.0995 148.42); */
+  /* --color-primary-foreground: oklch(0.2938 0.0656 238.47); */
+  /* --color-primary-foreground: oklch(0.9498 0.0131 11.55); */
+  /* --color-secondary: oklch(0.665 0.0747 236.79); */
+  --color-secondary-foreground: oklch(0.317 0.0413 278.04);
+  /* --color-secondary-foreground: oklch(0.9717 0.0296 119.36); */
+  /* --color-secondary-foreground: oklch(0.9498 0.0131 11.55); */
+
   /* --color-primary: oklch(21.1967 3.229 239.48); */
   /* --color-primary-foreground: oklch(21.1967 3.229 239.48); */
   /* --color-accent: oklch(21.1967 3.229 239.48); */

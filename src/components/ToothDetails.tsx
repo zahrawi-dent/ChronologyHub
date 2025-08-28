@@ -18,11 +18,11 @@ export const ToothDetails = (props: ToothDetailsProps) => {
   };
 
   return (
-    <Card class="h-full">
+    <Card class="h-full text-primary-foreground">
       <Show
         when={props.tooth()}
         fallback={
-          <CardContent class="flex items-center justify-center h-full text-muted-foreground">
+          <CardContent class="flex items-center justify-center h-full ">
             <div class="text-center">
               <Info class="h-12 w-12 mx-auto mb-4 opacity-50" />
               <p>Select a tooth to view details</p>
