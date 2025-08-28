@@ -21,6 +21,7 @@ render(
     <Router root={Layout}>
       <Route path="/" component={lazy(() => import("./ChartTab"))} />
       <Route path="/table" component={lazy(() => import("./ReferenceTable"))} />
+      <Route path="/study" component={lazy(() => import("./StudyMode"))} />
     </Router>
   ),
   wrapper

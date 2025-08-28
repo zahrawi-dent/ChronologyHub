@@ -1,5 +1,11 @@
 
-export const Badge = (props: { variant?: "default" | "secondary" | "destructive" | "outline", className?: string, children?: any }) => {
+type BadgeProps = {
+  variant?: "default" | "secondary" | "destructive" | "outline";
+  class?: string;
+  children?: any;
+
+}
+export const Badge = (props: BadgeProps) => {
   const baseClasses = "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2";
 
   const variants = {
@@ -10,7 +16,7 @@ export const Badge = (props: { variant?: "default" | "secondary" | "destructive"
   };
 
   const variantClass = variants[props.variant!] || variants.default;
-  const combinedClass = `${baseClasses} ${variantClass} ${props.className || ''}`;
+  const combinedClass = `${baseClasses} ${variantClass} ${props.class || ''}`;
 
   return (
     <div class={combinedClass}>

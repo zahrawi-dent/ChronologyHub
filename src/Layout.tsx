@@ -16,15 +16,19 @@ const tabs = [
     label: "Reference Table",
     path: "/table",
   },
+  {
+    label: "Study Mode",
+    path: "/study",
+  },
 ]
 
 export function Layout(props: LayoutProps) {
   return (
     <>
-      <div class="min-h-screen p-6 bg-linear-to-r from-background-darker via-background-dark to-background-light mx-auto">
+      <div class="min-h-screen p-20 bg-linear-to-r from-background-darker via-background-dark to-background-light mx-auto">
         <HeroSection />
         <Tabs tabs={tabs} />
-        <main class="max-w-[100rem]  mt-8 mx-auto min-w-7xl ">
+        <main class="max-w-[100rem]  mt-8 mx-auto min-w-7xl text-primary-foreground">
           {props.children}
         </main>
       </div>

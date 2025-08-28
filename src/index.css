@@ -10,6 +10,7 @@
   --color-background-darker: oklch(0.1567 0.022 239.48);
 
   --color-primary: oklch(0.616 0.1041 183.19);
+  --color-primary-muted: oklch(0.616 0.1041 183.19 / 0.5);
   --color-primary-foreground: oklch(0.98 0.01 239.5);
   /* --color-primary: oklch(0.9421 0.0995 148.42); */
   /* --color-primary-foreground: oklch(0.2938 0.0656 238.47); */

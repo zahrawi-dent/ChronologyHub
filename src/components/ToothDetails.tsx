@@ -18,7 +18,7 @@ export const ToothDetails = (props: ToothDetailsProps) => {
   };
 
   return (
-    <Card class="h-full text-primary-foreground">
+    <Card class="h-full">
       <Show
         when={props.tooth()}
         fallback={
