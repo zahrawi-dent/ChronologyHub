@@ -6,6 +6,7 @@ import { Layout } from "./Layout";
 import ReferenceTable from "./ReferenceTable";
 import ChartTab from "./ChartTab";
 import StudyMode from "./StudyMode";
+import Timeline from "./Timeline";
 
 const wrapper = document.getElementById("root");
 
@@ -18,6 +19,7 @@ render(
   () => (
     <Router root={Layout}>
       <Route path="/" component={ChartTab} />
+      <Route path="/timeline" component={Timeline} />
       <Route path="/table" component={ReferenceTable} />
       <Route path="/study" component={StudyMode} />
     </Router>

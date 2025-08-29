@@ -30,3 +30,42 @@
   /* --color-input: oklch(21.1967 3.229 239.48); */
   /* --color-ring: oklch(21.1967 3.229 239.48); */
 }
+
+/* Custom animations for timeline teeth */
+@keyframes toothErupt {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) translateY(20px);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(0.8) translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes toothShed {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
+
+.tooth-erupt {
+  animation: toothErupt 0.8s ease-out forwards;
+}
+
+.tooth-shed {
+  animation: toothShed 0.6s ease-in forwards;
+}

@@ -2,7 +2,7 @@ import { type ToothData } from '../data/toothData';
 import { Card, CardContent } from './Card';
 import { Badge } from './Badge';
 import { Button } from './Button';
-import { createSignal, createMemo, For, createEffect } from 'solid-js';
+import { createSignal, createMemo, For } from 'solid-js';
 import { getToothsByPosition } from '../utils/toothChart';
 
 interface ToothChartProps {

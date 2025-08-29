@@ -13,6 +13,10 @@ const tabs = [
     path: "/",
   },
   {
+    label: "Timeline",
+    path: "/timeline",
+  },
+  {
     label: "Reference Table",
     path: "/table",
   },
