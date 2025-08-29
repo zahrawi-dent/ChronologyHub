@@ -1,6 +1,3 @@
-import { createSignal } from 'solid-js';
-import HeroImg from '../assets/dental-chart-hero.jpg';
-import { Button } from './Button';
 import { Badge } from './Badge';
 
 // Activity Icon Component
@@ -35,7 +32,7 @@ const HeroSection = () => {
           <div>
             <div class="flex items-center gap-2 mb-4 text-white">
               <Activity class="h-8 w-8" />
-              <Badge variant="secondary" className="bg-white/20 text-white border-white/30">
+              <Badge variant="secondary" class="bg-white/20 text-white border-white/30">
                 Dental Education
               </Badge>
             </div>
@@ -45,13 +42,6 @@ const HeroSection = () => {
             <p class="text-xl text-white/90 mb-6">
               Master primary and permanent dentition chronology with interactive charts, study modes, and comprehensive reference tables.
             </p>
-          </div>
-          <div class="relative">
-            <img
-              src={HeroImg}
-              alt="Dental Chart"
-              class="rounded-lg shadow-2xl w-full h-auto"
-            />
           </div>
         </div>
       </div>

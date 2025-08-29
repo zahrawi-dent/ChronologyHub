@@ -27,8 +27,10 @@ export function Layout(props: LayoutProps) {
     <>
       <div class="min-h-screen p-20 bg-linear-to-r from-background-darker via-background-dark to-background-light mx-auto">
         <HeroSection />
-        <Tabs tabs={tabs} />
         <main class="max-w-[100rem]  mt-8 mx-auto min-w-7xl text-primary-foreground">
+          <div class="mb-8">
+            <Tabs tabs={tabs} />
+          </div>
           {props.children}
         </main>
       </div>
