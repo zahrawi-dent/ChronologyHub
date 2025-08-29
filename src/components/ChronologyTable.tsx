@@ -8,8 +8,34 @@ import {
   type ColumnDef,
   type SortingState,
   type ColumnFiltersState,
+  type FilterFn,
 } from '@tanstack/solid-table';
 import { permanentTeeth, primaryTeeth, type ToothData } from '../data/toothData';
+
+// Extend the table types to include custom filter functions
+declare module '@tanstack/solid-table' {
+  interface FilterFns {
+    fuzzy: FilterFn<unknown>
+    exact: FilterFn<unknown>
+  }
+}
+
+// Custom fuzzy filter function
+const fuzzyFilter: FilterFn<any> = (row, columnId, value) => {
+  if (!value) return true;
+  const itemValue = row.getValue(columnId);
+  if (typeof itemValue === 'string') {
+    return itemValue.toLowerCase().includes(value.toLowerCase());
+  }
+  return String(itemValue).toLowerCase().includes(value.toLowerCase());
+};
+
+// Custom exact filter function
+const exactFilter: FilterFn<any> = (row, columnId, value) => {
+  if (!value) return true;
+  const itemValue = row.getValue(columnId);
+  return String(itemValue) === String(value);
+};
 
 
 const getAllTeeth = () => [...primaryTeeth, ...permanentTeeth];
@@ -107,7 +133,7 @@ export default function DentalChart() {
           </span>
         );
       },
-      sortingFn: (rowA, rowB, columnId) => {
+      sortingFn: (rowA, rowB) => {
         const system = notationSystem();
         const a = rowA.original.notation[system];
         const b = rowB.original.notation[system];
@@ -152,6 +178,10 @@ export default function DentalChart() {
       getCoreRowModel: getCoreRowModel(),
       getSortedRowModel: getSortedRowModel(),
       getFilteredRowModel: getFilteredRowModel(),
+      filterFns: {
+        fuzzy: fuzzyFilter,
+        exact: exactFilter,
+      },
     })
   );
 

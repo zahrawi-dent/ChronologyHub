@@ -54,18 +54,25 @@ export const ToothChart = (props: ToothChartProps) => {
   );
 
   const mandibularRightTeeth = createMemo(() =>
-    getToothsByPosition(props.teeth, 'mandibular').filter(t => t.side === 'right').reverse()
+    getToothsByPosition(props.teeth, 'mandibular').filter(t => t.side === 'right')
   );
 
   const mandibularLeftTeeth = createMemo(() =>
     getToothsByPosition(props.teeth, 'mandibular').filter(t => t.side === 'left')
   );
 
+  // Check if we're in mixed dentition
+  const isMixedDentition = createMemo(() => {
+    const hasPrimary = props.teeth.some(t => t.type === 'primary');
+    const hasPermanent = props.teeth.some(t => t.type === 'permanent');
+    return hasPrimary && hasPermanent;
+  });
+
   const getVariant = (notationType: 'universal' | 'palmer' | 'fdi') => {
     return () => notation() === notationType ? 'default' : 'outline';
   };
 
-  // Helper component for arch display
+  // Helper component for arch display with improved mixed dentition handling
   const ArchDisplay = (tprops: {
     title: string;
     rightTeeth: ToothData[];
@@ -74,15 +81,25 @@ export const ToothChart = (props: ToothChartProps) => {
   }) => (
     <div class="text-center">
       <h3 class="text-lg font-semibold mb-4">{tprops.title}</h3>
+      
+      {/* Mixed dentition indicator */}
+      {isMixedDentition() && (
+        <div class="mb-3">
+          <Badge variant="secondary" class="text-xs">
+            Mixed Dentition Stage
+          </Badge>
+        </div>
+      )}
+      
       <div class="flex justify-center items-center gap-1 max-w-4xl mx-auto relative">
         {/* Right side teeth */}
-        <div class="flex gap-1 flex-row-reverse">
+        <div class="flex gap-1">
           <For each={tprops.rightTeeth}>
             {(tooth) => (
               <div
                 class={getToothClasses(tooth)}
                 onClick={() => props.onToothSelect?.(tooth)}
-                title={`${tooth.name} - ${tooth.notation[notation()]}`}
+                title={`${tooth.name} - ${tooth.notation[notation()]} (${tooth.type})`}
                 style={{
                   'animation-delay': props.recentlyEruptedTeeth?.()?.has(tooth.id) ? '0ms' : undefined
                 }}
@@ -96,6 +113,11 @@ export const ToothChart = (props: ToothChartProps) => {
                 {tooth.type === 'primary' && (
                   <Badge variant="secondary" class="text-[6px] px-1 py-0">
                     P
+                  </Badge>
+                )}
+                {tooth.type === 'permanent' && (
+                  <Badge variant="default" class="text-[6px] px-1 py-0">
+                    A
                   </Badge>
                 )}
               </div>
@@ -115,7 +137,7 @@ export const ToothChart = (props: ToothChartProps) => {
               <div
                 class={getToothClasses(tooth)}
                 onClick={() => props.onToothSelect?.(tooth)}
-                title={`${tooth.name} - ${tooth.notation[notation()]}`}
+                title={`${tooth.name} - ${tooth.notation[notation()]} (${tooth.type})`}
                 style={{
                   'animation-delay': props.recentlyEruptedTeeth?.()?.has(tooth.id) ? '0ms' : undefined
                 }}
@@ -129,6 +151,11 @@ export const ToothChart = (props: ToothChartProps) => {
                 {tooth.type === 'primary' && (
                   <Badge variant="secondary" class="text-[6px] px-1 py-0">
                     P
+                  </Badge>
+                )}
+                {tooth.type === 'permanent' && (
+                  <Badge variant="default" class="text-[6px] px-1 py-0">
+                    A
                   </Badge>
                 )}
               </div>
@@ -154,13 +181,6 @@ export const ToothChart = (props: ToothChartProps) => {
           size="sm"
           onClick={() => setNotation('palmer')}
         >
-          Palmer
-        </Button>
-        <Button
-          variant={getVariant('fdi')()}
-          size="sm"
-          onClick={() => setNotation('fdi')}
-        >
           FDI
         </Button>
       </div>
@@ -181,7 +201,7 @@ export const ToothChart = (props: ToothChartProps) => {
             leftTeeth={mandibularLeftTeeth()}
           />
 
-          {/* Legend */}
+          {/* Enhanced Legend */}
           <div class="flex justify-center gap-4 text-xs flex-wrap">
             <div class="flex items-center gap-1">
               <div class="w-4 h-4 rounded bg-blue-200 border border-blue-300"></div>
@@ -202,6 +222,14 @@ export const ToothChart = (props: ToothChartProps) => {
             <div class="flex items-center gap-1">
               <div class="w-4 h-4 rounded bg-yellow-400 border border-yellow-500 animate-pulse"></div>
               <span>Recently Erupted</span>
+            </div>
+            <div class="flex items-center gap-1">
+              <Badge variant="secondary" class="text-xs">P</Badge>
+              <span>Primary</span>
+            </div>
+            <div class="flex items-center gap-1">
+              <Badge variant="default" class="text-xs">A</Badge>
+              <span>Adult</span>
             </div>
           </div>
         </CardContent>

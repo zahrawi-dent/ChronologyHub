@@ -178,7 +178,7 @@ export default function Timeline() {
     const step = timelineSteps()[currentStepIndex];
 
     if (step) {
-      const newlyEruptedIds = new Set(
+      const newlyEruptedIds = new Set<string>(
         step.events.filter(e => e.type === 'eruption').map(e => e.tooth.id)
       );
 
@@ -186,10 +186,10 @@ export default function Timeline() {
 
       // If this is the final eruption step (third molars)
       if (currentStepIndex === timelineSteps().length - 1 && newlyEruptedIds.size > 0) {
-        setTimeout(() => setRecentlyEruptedTeeth(new Set()), 2000);
+        setTimeout(() => setRecentlyEruptedTeeth(new Set<string>()), 2000);
       }
     } else {
-      setRecentlyEruptedTeeth(new Set());
+      setRecentlyEruptedTeeth(new Set<string>());
     }
   });
 
@@ -220,7 +220,7 @@ export default function Timeline() {
     if (!isAnimating()) {
       setIsAnimating(true);
       setCurrentStep(0);
-      setRecentlyEruptedTeeth(new Set());
+      setRecentlyEruptedTeeth(new Set<string>());
       setTimeout(() => setIsAnimating(false), 500);
     }
   };
@@ -229,7 +229,7 @@ export default function Timeline() {
     if (!isAnimating()) {
       setIsAnimating(true);
       setCurrentStep(timelineSteps().length - 1);
-      setRecentlyEruptedTeeth(new Set());
+      setRecentlyEruptedTeeth(new Set<string>());
       setTimeout(() => setIsAnimating(false), 500);
     }
   };
@@ -291,9 +291,25 @@ export default function Timeline() {
       return 'No new eruptions at this stage';
     }
 
-    return eruptionEvents.length === 1
-      ? eruptionEvents[0].description
-      : `${eruptionEvents.length} teeth erupt`;
+    // Check if this is a mixed dentition stage
+    const visibleTeethAtStep = visibleTeeth();
+    const hasPrimary = visibleTeethAtStep.some(t => t.type === 'primary');
+    const hasPermanent = visibleTeethAtStep.some(t => t.type === 'permanent');
+    const isMixedStage = hasPrimary && hasPermanent;
+
+    let description = '';
+    if (eruptionEvents.length === 1) {
+      description = eruptionEvents[0].description;
+    } else {
+      description = `${eruptionEvents.length} teeth erupt`;
+    }
+
+    // Add mixed dentition indicator
+    if (isMixedStage) {
+      description += ' (Mixed Dentition Stage)';
+    }
+
+    return description;
   };
 
   return (
@@ -326,9 +342,9 @@ export default function Timeline() {
             <div class="text-2xl font-bold text-white">
               {currentAge()}
             </div>
-            {/* <div class="text-lg text-gray-300"> */}
-            {/*   {currentEventDescription()} */}
-            {/* </div> */}
+            <div class="text-lg text-gray-300">
+              {currentEventDescription()}
+            </div>
             {/* Show multiple events if they occur simultaneously */}
             {/* {timelineSteps()[currentStep()]?.events.some(e => e.type === 'eruption') && ( */}
             {/*   <div class="text-sm text-gray-400"> */}
