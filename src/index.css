@@ -5,7 +5,7 @@
   /* --color-secondary: oklch(0.4111 0.0199 245.46); */
   /* --color-background: oklch(0.1967 0.029 239.48); */
   /* Variations of background color for gradients */
-  --color-background-light: oklch(0.2167 0.032 239.48);
+  --color-background-light: oklch(0.2667 0.032 239.48);
   --color-background-dark: oklch(0.1767 0.025 239.48);
   --color-background-darker: oklch(0.1567 0.022 239.48);
 
@@ -37,10 +37,12 @@
     opacity: 0;
     transform: scale(0.5) translateY(20px);
   }
+
   50% {
     opacity: 0.7;
     transform: scale(0.8) translateY(10px);
   }
+
   100% {
     opacity: 1;
     transform: scale(1) translateY(0);
@@ -52,10 +54,12 @@
     opacity: 1;
     transform: scale(1);
   }
+
   50% {
     opacity: 0.5;
     transform: scale(1.1);
   }
+
   100% {
     opacity: 0;
     transform: scale(0.8);
@@ -68,4 +72,28 @@
 
 .tooth-shed {
   animation: toothShed 0.6s ease-in forwards;
+}
+
+/* Enhanced tab animations */
+@keyframes tabGlow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 10px rgb(94, 146, 138, 0.5);
+    /* box-shadow: 0 0 5px rgba(59, 130, 246, 0.5); */
+  }
+
+  50% {
+    /* box-shadow: 0 0 20px rgba(59, 130, 246, 0.8), 0 0 30px rgba(59, 130, 246, 0.4); */
+    box-shadow: 0 0 10px rgb(94, 146, 138.5, 0.8), 0 0 5px rgb(94, 146, 138.5, 0.4);
+  }
+}
+
+.tab-glow {
+  animation: tabGlow 2s ease-in-out infinite;
+}
+
+/* Smooth scale transitions */
+.hover\:scale-102:hover {
+  transform: scale(1.02);
 }

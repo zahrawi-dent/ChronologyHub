@@ -8,20 +8,23 @@ export default function Tabs(props: TabsProps) {
   const location = useLocation();
 
   return (
-    <div class="border-b border-gray-200">
-      <nav class="-mb-px flex space-x-6">
+    <div class="bg-background-light/60 backdrop-blur-md border border-gray-700/50 rounded-2xl p-2 shadow-2xl">
+      <nav class="flex space-x-1">
         {props.tabs.map((tab) => {
           const isActive = () => location.pathname === tab.path;
 
           return (
             <A
               href={tab.path}
-              class={`whitespace-nowrap border-b-2 px-3 py-2 text-sm font-medium transition-colors ${isActive()
-                ? "border-blue-500 text-blue-600"
-                : "border-transparent text-primary-foreground/80 hover:text-gray-700 hover:border-gray-300"
+              class={`relative px-6 py-3 text-sm font-semibold rounded-xl transition-all duration-300 ${isActive()
+                ? "bg-gradient-to-r from-primary/90 to-primary/60 text-white shadow-lg transform scale-105 tab-glow"
+                : "text-gray-300 hover:text-white hover:bg-background-light hover:transform"
                 }`}
             >
               {tab.label}
+              {isActive() && (
+                <div class="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-400/20 to-blue-600/20 animate-pulse"></div>
+              )}
             </A>
           );
         })}
