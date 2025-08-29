@@ -14,6 +14,7 @@
     "@tanstack/match-sorter-utils": "^8.19.4",
     "@tanstack/solid-table": "^8.21.3",
     "lucide-solid": "^0.542.0",
+    "solid-icons": "^1.1.0",
     "solid-js": "^1.9.7",
     "tailwindcss": "^4.1.11"
   },
