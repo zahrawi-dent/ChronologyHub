@@ -1,6 +1,6 @@
 import { createSignal, createMemo, For, createEffect } from 'solid-js';
 import { type ToothData, primaryTeeth, permanentTeeth } from './data/toothData';
-import { ToothChart } from './components/TimelineToothChart';
+import { ToothChart } from './components/ToothChart';
 import { Button } from './components/Button';
 import { Card, CardContent } from './components/Card';
 import { Badge } from './components/Badge';
@@ -455,6 +455,8 @@ export default function Timeline() {
             onToothSelect={setSelectedTooth}
             selectedTooth={() => selectedTooth()}
             recentlyEruptedTeeth={recentlyEruptedTeeth}
+            showMixedDentitionIndicator={true}
+            showRecentlyErupted={true}
           />
 
         </div>

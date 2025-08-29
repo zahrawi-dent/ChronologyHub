@@ -38,6 +38,8 @@ export default function ChartTab() {
             teeth={dentitionType() === 'permanent' ? permanentTeeth : primaryTeeth}
             onToothSelect={setSelectedTooth}
             selectedTooth={selectedTooth}
+            showMixedDentitionIndicator={false}
+            showRecentlyErupted={false}
           />
         </div>
         <div>

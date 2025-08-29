@@ -9,11 +9,13 @@ interface ToothChartProps {
   teeth: ToothData[];
   onToothSelect?: (tooth: ToothData) => void;
   selectedTooth?: () => ToothData | null;
+  recentlyEruptedTeeth?: () => Set<string>;
+  showMixedDentitionIndicator?: boolean;
+  showRecentlyErupted?: boolean;
 }
 
 export const ToothChart = (props: ToothChartProps) => {
   const [notation, setNotation] = createSignal<'universal' | 'palmer' | 'fdi'>('universal');
-
 
   const getCategoryColor = (category: string) => {
     switch (category) {
@@ -25,13 +27,148 @@ export const ToothChart = (props: ToothChartProps) => {
     }
   };
 
-  // Memoize the filtered and sorted teeth
-  const maxillaryTeeth = createMemo(() => getToothsByPosition(props.teeth, 'maxillary'));
-  const mandibularTeeth = createMemo(() => getToothsByPosition(props.teeth, 'mandibular'));
+  // Helper function to get tooth classes with eruption animation
+  const getToothClasses = (tooth: ToothData) => {
+    const baseClasses = `
+      text-secondary-foreground w-12 h-16 rounded-lg border-2 cursor-pointer transition-all duration-500 
+      flex flex-col items-center justify-center text-xs font-medium shadow-sm transform
+      ${getCategoryColor(tooth.category)}
+    `;
+
+    const selectedClasses = props.selectedTooth?.()?.id === tooth.id
+      ? 'ring-2 ring-primary ring-offset-2 scale-105 z-10'
+      : '';
+
+    const recentlyEruptedClasses = props.showRecentlyErupted && props.recentlyEruptedTeeth?.()?.has(tooth.id)
+      ? 'animate-pulse ring-4 ring-yellow-400 ring-opacity-75 shadow-lg shadow-yellow-400/50 scale-110 z-20'
+      : '';
+
+    return `${baseClasses} ${selectedClasses} ${recentlyEruptedClasses}`;
+  };
+
+  // Memoize the filtered and sorted teeth by position and side
+  const maxillaryRightTeeth = createMemo(() =>
+    getToothsByPosition(props.teeth, 'maxillary').filter(t => t.side === 'right')
+  );
+
+  const maxillaryLeftTeeth = createMemo(() =>
+    getToothsByPosition(props.teeth, 'maxillary').filter(t => t.side === 'left')
+  );
+
+  const mandibularRightTeeth = createMemo(() =>
+    getToothsByPosition(props.teeth, 'mandibular').filter(t => t.side === 'right')
+  );
+
+  const mandibularLeftTeeth = createMemo(() =>
+    getToothsByPosition(props.teeth, 'mandibular').filter(t => t.side === 'left')
+  );
+
+  // Check if we're in mixed dentition
+  const isMixedDentition = createMemo(() => {
+    if (!props.showMixedDentitionIndicator) return false;
+    const hasPrimary = props.teeth.some(t => t.type === 'primary');
+    const hasPermanent = props.teeth.some(t => t.type === 'permanent');
+    return hasPrimary && hasPermanent;
+  });
 
   const getVariant = (notationType: 'universal' | 'palmer' | 'fdi') => {
     return () => notation() === notationType ? 'default' : 'outline';
   };
+
+  // Helper component for arch display with improved mixed dentition handling
+  const ArchDisplay = (tprops: {
+    title: string;
+    rightTeeth: ToothData[];
+    leftTeeth: ToothData[];
+    showMidline?: boolean;
+    isMaxillary?: boolean;
+  }) => (
+    <div class="text-center">
+      <h3 class="text-lg font-semibold mb-4">{tprops.title}</h3>
+      
+      {/* Mixed dentition indicator */}
+      {isMixedDentition() && (
+        <div class="mb-3">
+          <Badge variant="secondary" class="text-xs">
+            Mixed Dentition Stage
+          </Badge>
+        </div>
+      )}
+      
+      <div class="flex justify-center items-center gap-1 max-w-4xl mx-auto relative">
+        {/* Right side teeth */}
+        <div class={`flex gap-1 ${tprops.isMaxillary ? 'flex-row-reverse' : ''}`}>
+          <For each={tprops.rightTeeth}>
+            {(tooth) => (
+              <div
+                class={getToothClasses(tooth)}
+                onClick={() => props.onToothSelect?.(tooth)}
+                title={`${tooth.name} - ${tooth.notation[notation()]} (${tooth.type})`}
+                style={{
+                  'animation-delay': props.showRecentlyErupted && props.recentlyEruptedTeeth?.()?.has(tooth.id) ? '0ms' : undefined
+                }}
+              >
+                <div class="text-[10px] font-bold">
+                  {tooth.notation[notation()]}
+                </div>
+                <div class="text-[8px] text-center leading-tight">
+                  {tooth.name.split(' ')[0]}
+                </div>
+                {tooth.type === 'primary' && (
+                  <Badge variant="secondary" class="text-[6px] px-1 py-0">
+                    P
+                  </Badge>
+                )}
+                {tooth.type === 'permanent' && (
+                  <Badge variant="default" class="text-[6px] px-1 py-0">
+                    A
+                  </Badge>
+                )}
+              </div>
+            )}
+          </For>
+        </div>
+
+        {/* Midline - only show if we have teeth on both sides */}
+        {(tprops.rightTeeth.length > 0 && tprops.leftTeeth.length > 0) && (
+          <div class="w-[3px] h-16 bg-primary/60 rounded-full mx-1 flex-shrink-0"></div>
+        )}
+
+        {/* Left side teeth */}
+        <div class="flex gap-1">
+          <For each={tprops.leftTeeth}>
+            {(tooth) => (
+              <div
+                class={getToothClasses(tooth)}
+                onClick={() => props.onToothSelect?.(tooth)}
+                title={`${tooth.name} - ${tooth.notation[notation()]} (${tooth.type})`}
+                style={{
+                  'animation-delay': props.showRecentlyErupted && props.recentlyEruptedTeeth?.()?.has(tooth.id) ? '0ms' : undefined
+                }}
+              >
+                <div class="text-[10px] font-bold">
+                  {tooth.notation[notation()]}
+                </div>
+                <div class="text-[8px] text-center leading-tight">
+                  {tooth.name.split(' ')[0]}
+                </div>
+                {tooth.type === 'primary' && (
+                  <Badge variant="secondary" class="text-[6px] px-1 py-0">
+                    P
+                  </Badge>
+                )}
+                {tooth.type === 'permanent' && (
+                  <Badge variant="default" class="text-[6px] px-1 py-0">
+                    A
+                  </Badge>
+                )}
+              </div>
+            )}
+          </For>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <div class="space-y-6">
@@ -48,13 +185,6 @@ export const ToothChart = (props: ToothChartProps) => {
           size="sm"
           onClick={() => setNotation('palmer')}
         >
-          Palmer
-        </Button>
-        <Button
-          variant={getVariant('fdi')()}
-          size="sm"
-          onClick={() => setNotation('fdi')}
-        >
           FDI
         </Button>
       </div>
@@ -62,81 +192,23 @@ export const ToothChart = (props: ToothChartProps) => {
       <Card class="p-6">
         <CardContent class="space-y-8">
           {/* Maxillary Arch */}
-          <div class="text-center">
-            <h3 class="text-lg font-semibold mb-4">Maxillary (Upper)</h3>
-            {/* <div class="flex justify-center gap-1 flex-wrap max-w-4xl mx-auto"> */}
-            <div class="relative flex justify-center gap-1 flex-wrap max-w-4xl mx-auto">
-              {/* Midline Divider */}
-              <div class="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-[2px] bg-primary"></div>
-
-
-              <For each={maxillaryTeeth()}>
-                {(tooth) => (
-                  <div
-                    class={`
-                      text-secondary-foreground w-12 h-16 rounded-lg border-2 cursor-pointer transition-all duration-200 flex flex-col items-center justify-center text-xs font-medium shadow-sm
-                      ${getCategoryColor(tooth.category)}
-                      ${props.selectedTooth?.()?.id === tooth.id ? 'ring-2 ring-primary ring-offset-2 scale-105' : ''}
-                    `}
-                    onClick={() => props.onToothSelect?.(tooth)}
-                    title={`${tooth.name} - ${tooth.notation[notation()]}`}
-                  >
-                    <div class="text-[10px] font-bold">
-                      {tooth.notation[notation()]}
-                    </div>
-                    <div class="text-[8px] text-center leading-tight">
-                      {tooth.name.split(' ')[0]}
-                    </div>
-                    {tooth.type === 'primary' && (
-                      <Badge variant="secondary" class="text-[6px] px-1 py-0">
-                        P
-                      </Badge>
-                    )}
-                  </div>
-                )}
-              </For>
-            </div>
-          </div>
+          <ArchDisplay
+            title="Maxillary (Upper)"
+            rightTeeth={maxillaryRightTeeth()}
+            leftTeeth={maxillaryLeftTeeth()}
+            isMaxillary={true}
+          />
 
           {/* Mandibular Arch */}
-          <div class="text-center">
-            <h3 class="text-lg font-semibold mb-4">Mandibular (Lower)</h3>
-            {/* <div class="flex justify-center gap-1 flex-wrap max-w-4xl mx-auto"> */}
-            <div class="relative flex justify-center gap-1 flex-wrap max-w-4xl mx-auto">
+          <ArchDisplay
+            title="Mandibular (Lower)"
+            rightTeeth={mandibularRightTeeth()}
+            leftTeeth={mandibularLeftTeeth()}
+            isMaxillary={false}
+          />
 
-              {/* Midline Divider */}
-              <div class="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-[2px] bg-primary"></div>
-
-              <For each={mandibularTeeth()}>
-                {(tooth) => (
-                  <div
-                    class={`
-                      text-secondary-foreground w-12 h-16 rounded-lg border-2 cursor-pointer transition-all duration-200 flex flex-col items-center justify-center text-xs font-medium shadow-sm
-                      ${getCategoryColor(tooth.category)}
-                      ${props.selectedTooth?.()?.id === tooth.id ? 'ring-2 ring-primary ring-offset-2 scale-105' : ''}
-                    `}
-                    onClick={() => props.onToothSelect?.(tooth)}
-                    title={`${tooth.name} - ${tooth.notation[notation()]}`}
-                  >
-                    <div class="text-[10px] font-bold">
-                      {tooth.notation[notation()]}
-                    </div>
-                    <div class="text-[8px] text-center leading-tight">
-                      {tooth.name.split(' ')[0]}
-                    </div>
-                    {tooth.type === 'primary' && (
-                      <Badge variant="secondary" class="text-[6px] px-1 py-0">
-                        P
-                      </Badge>
-                    )}
-                  </div>
-                )}
-              </For>
-            </div>
-          </div>
-
-          {/* Legend */}
-          <div class="flex justify-center gap-4 text-xs">
+          {/* Enhanced Legend */}
+          <div class="flex justify-center gap-4 text-xs flex-wrap">
             <div class="flex items-center gap-1">
               <div class="w-4 h-4 rounded bg-blue-200 border border-blue-300"></div>
               <span>Incisors</span>
@@ -153,37 +225,38 @@ export const ToothChart = (props: ToothChartProps) => {
               <div class="w-4 h-4 rounded bg-purple-200 border border-purple-300"></div>
               <span>Molars</span>
             </div>
+            {props.showRecentlyErupted && (
+              <div class="flex items-center gap-1">
+                <div class="w-4 h-4 rounded bg-yellow-400 border border-yellow-500 animate-pulse"></div>
+                <span>Recently Erupted</span>
+              </div>
+            )}
+            <div class="flex items-center gap-1">
+              <Badge variant="secondary" class="text-xs">P</Badge>
+              <span>Primary</span>
+            </div>
+            <div class="flex items-center gap-1">
+              <Badge variant="default" class="text-xs">A</Badge>
+              <span>Adult</span>
+            </div>
           </div>
         </CardContent>
       </Card>
+
+      <style>{`
+        @keyframes erupt-glow {
+          0%, 100% {
+            box-shadow: 0 0 5px rgba(251, 191, 36, 0.5);
+          }
+          50% {
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.8), 0 0 30px rgba(251, 191, 36, 0.6);
+          }
+        }
+        
+        .animate-erupt {
+          animation: erupt-glow 2s ease-in-out;
+        }
+      `}</style>
     </div>
   );
 };
-
-
-
-
-// // Component for individual tooth to reduce repetition
-// const ToothElement = (tprops: { tooth: ToothData }) => (
-//   <div
-//     class={`
-//       w-12 h-16 rounded-lg border-2 cursor-pointer transition-all duration-200 flex flex-col items-center justify-center text-xs font-medium shadow-sm
-//       ${getCategoryColor(tprops.tooth.category)}
-//       ${props.selectedTooth?.()?.id === tprops.tooth.id ? 'ring-2 ring-primary ring-offset-2 scale-105' : ''}
-//     `}
-//     onClick={() => props.onToothSelect?.(tprops.tooth)}
-//     title={`${tprops.tooth.name} - ${tprops.tooth.notation[notation()]}`}
-//   >
-//     <div class="text-[10px] font-bold">
-//       {tprops.tooth.notation[notation()]}
-//     </div>
-//     <div class="text-[8px] text-center leading-tight">
-//       {tprops.tooth.name.split(' ')[0]}
-//     </div>
-//     {tprops.tooth.type === 'primary' && (
-//       <Badge variant="secondary">
-//         P
-//       </Badge>
-//     )}
-//   </div>
-// );
