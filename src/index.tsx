@@ -17,12 +17,21 @@ if (!wrapper) {
 
 render(
   () => (
-    <Router root={Layout}>
-      <Route path="/" component={ChartTab} />
-      <Route path="/timeline" component={Timeline} />
-      <Route path="/table" component={ReferenceTable} />
-      <Route path="/study" component={StudyMode} />
+    <Router base="/ChronologyHub/">
+      <Route component={Layout}>
+        <Route path="/" component={ChartTab} />
+        <Route path="/timeline" component={Timeline} />
+        <Route path="/table" component={ReferenceTable} />
+        <Route path="/study" component={StudyMode} />
+      </Route>
     </Router>
   ),
   wrapper
 );
+
+{/* <Router root={Layout}> */ }
+{/*   <Route path="/" component={ChartTab} /> */ }
+{/*   <Route path="/timeline" component={Timeline} /> */ }
+{/*   <Route path="/table" component={ReferenceTable} /> */ }
+{/*   <Route path="/study" component={StudyMode} /> */ }
+{/* </Router> */ }
