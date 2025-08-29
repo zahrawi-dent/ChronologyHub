@@ -1,6 +1,6 @@
 import { createSignal, createMemo, For, createEffect } from 'solid-js';
 import { type ToothData, primaryTeeth, permanentTeeth } from './data/toothData';
-import { ToothChart } from './components/ToothChart';
+import { ToothChart } from './components/TimelineToothChart';
 import { Button } from './components/Button';
 import { Card, CardContent } from './components/Card';
 import { Badge } from './components/Badge';
@@ -16,17 +16,26 @@ type TimelineEvent = {
   description: string;
 };
 
+// Timeline step type for handling multiple events at same time
+type TimelineStep = {
+  ageMonths: number;
+  ageDisplay: string;
+  events: TimelineEvent[];
+  description: string;
+};
+
 export default function Timeline() {
   const [currentStep, setCurrentStep] = createSignal(0);
   const [isAnimating, setIsAnimating] = createSignal(false);
   const [isAutoPlaying, setIsAutoPlaying] = createSignal(false);
   const [autoPlaySpeed, setAutoPlaySpeed] = createSignal(1000); // milliseconds
   const [selectedTooth, setSelectedTooth] = createSignal<ToothData | null>(null);
+  const [recentlyEruptedTeeth, setRecentlyEruptedTeeth] = createSignal<Set<string>>(new Set());
 
   // Create timeline events from tooth data
   const timelineEvents = createMemo(() => {
     const events: TimelineEvent[] = [];
-    
+
     // Add primary tooth eruptions
     primaryTeeth.forEach(tooth => {
       events.push({
@@ -65,43 +74,137 @@ export default function Timeline() {
       });
     });
 
-    // Sort by age (months)
-    return events.sort((a, b) => a.ageMonths - b.ageMonths);
+    // Sort by age (months), then by type (eruption before shedding at same age)
+    return events.sort((a, b) => {
+      if (a.ageMonths !== b.ageMonths) {
+        return a.ageMonths - b.ageMonths;
+      }
+      // At same age, shedding comes before eruption
+      if (a.type !== b.type) {
+        return a.type === 'shedding' ? -1 : 1;
+      }
+      return 0;
+    });
+  });
+
+  // Group timeline events into steps (handling simultaneous events)
+  const timelineSteps = createMemo(() => {
+    const events = timelineEvents();
+    const steps: TimelineStep[] = [];
+
+    // Add initial state (no teeth)
+    steps.push({
+      ageMonths: 0,
+      ageDisplay: 'Birth',
+      events: [],
+      description: 'No teeth present yet'
+    });
+
+    let currentAge = -1;
+    let currentStepEvents: TimelineEvent[] = [];
+
+    events.forEach(event => {
+      if (event.ageMonths !== currentAge) {
+        // New age group - save previous step if it exists
+        if (currentStepEvents.length > 0) {
+          const stepDescription = currentStepEvents.length === 1
+            ? currentStepEvents[0].description
+            : `${currentStepEvents.length} teeth events occur`;
+
+          steps.push({
+            ageMonths: currentAge,
+            ageDisplay: currentStepEvents[0].ageDisplay,
+            events: [...currentStepEvents],
+            description: stepDescription
+          });
+        }
+
+        // Start new age group
+        currentAge = event.ageMonths;
+        currentStepEvents = [event];
+      } else {
+        // Same age - add to current group
+        currentStepEvents.push(event);
+      }
+    });
+
+    // Add final step if there are remaining events
+    if (currentStepEvents.length > 0) {
+      const stepDescription = currentStepEvents.length === 1
+        ? currentStepEvents[0].description
+        : `${currentStepEvents.length} teeth events occur`;
+
+      steps.push({
+        ageMonths: currentAge,
+        ageDisplay: currentStepEvents[0].ageDisplay,
+        events: [...currentStepEvents],
+        description: stepDescription
+      });
+    }
+
+    return steps;
   });
 
   // Get current visible teeth based on timeline step
   const visibleTeeth = createMemo(() => {
-    const currentEvent = timelineEvents()[currentStep()];
-    if (!currentEvent) return [];
-    
     const visible: ToothData[] = [];
-    
-    timelineEvents().slice(0, currentStep() + 1).forEach(event => {
-      if (event.type === 'eruption') {
-        // Add erupted tooth
-        visible.push(event.tooth);
-      } else if (event.type === 'shedding') {
-        // Remove shed tooth
-        const index = visible.findIndex(t => t.id === event.tooth.id);
-        if (index !== -1) {
-          visible.splice(index, 1);
+    const currentStepIndex = currentStep();
+
+    // Process all steps up to current step
+    for (let i = 1; i <= currentStepIndex; i++) {
+      const step = timelineSteps()[i];
+      if (!step) break;
+
+      step.events.forEach(event => {
+        if (event.type === 'eruption') {
+          // Add erupted tooth
+          visible.push(event.tooth);
+        } else if (event.type === 'shedding') {
+          // Remove shed tooth
+          const index = visible.findIndex(t => t.id === event.tooth.id);
+          if (index !== -1) {
+            visible.splice(index, 1);
+          }
         }
-      }
-    });
-    
+      });
+    }
+
     return visible;
+  });
+
+  // Get recently erupted teeth for highlighting
+  createEffect(() => {
+    const currentStepIndex = currentStep();
+    const currentStep_ = timelineSteps()[currentStepIndex];
+
+    if (currentStep_) {
+      // Get teeth that erupted in this step
+      const newlyEruptedIds = new Set(
+        currentStep_.events
+          .filter(event => event.type === 'eruption')
+          .map(event => event.tooth.id)
+      );
+
+      setRecentlyEruptedTeeth(newlyEruptedIds);
+
+      // Clear highlights after animation
+      if (newlyEruptedIds.size > 0) {
+        setTimeout(() => setRecentlyEruptedTeeth(new Set()), 2000);
+      }
+    } else {
+      setRecentlyEruptedTeeth(new Set());
+    }
   });
 
   // Get current age display
   const currentAge = createMemo(() => {
-    if (currentStep() === 0) return '0 months';
-    const event = timelineEvents()[currentStep() - 1];
-    return event ? event.ageDisplay : '0 months';
+    const step = timelineSteps()[currentStep()];
+    return step ? step.ageDisplay : 'Birth';
   });
 
   // Navigation functions
   const goForward = () => {
-    if (currentStep() < timelineEvents().length && !isAnimating()) {
+    if (currentStep() < timelineSteps().length - 1 && !isAnimating()) {
       setIsAnimating(true);
       setCurrentStep(prev => prev + 1);
       setTimeout(() => setIsAnimating(false), 500);
@@ -117,15 +220,21 @@ export default function Timeline() {
   };
 
   const resetTimeline = () => {
-    setIsAnimating(true);
-    setCurrentStep(0);
-    setTimeout(() => setIsAnimating(false), 500);
+    if (!isAnimating()) {
+      setIsAnimating(true);
+      setCurrentStep(0);
+      setRecentlyEruptedTeeth(new Set());
+      setTimeout(() => setIsAnimating(false), 500);
+    }
   };
 
   const goToEnd = () => {
-    setIsAnimating(true);
-    setCurrentStep(timelineEvents().length);
-    setTimeout(() => setIsAnimating(false), 500);
+    if (!isAnimating()) {
+      setIsAnimating(true);
+      setCurrentStep(timelineSteps().length - 1);
+      setRecentlyEruptedTeeth(new Set());
+      setTimeout(() => setIsAnimating(false), 500);
+    }
   };
 
   // Keyboard navigation
@@ -149,13 +258,13 @@ export default function Timeline() {
   createEffect(() => {
     if (isAutoPlaying() && !isComplete()) {
       const interval = setInterval(() => {
-        if (currentStep() < timelineEvents().length) {
+        if (currentStep() < timelineSteps().length - 1) {
           goForward();
         } else {
           setIsAutoPlaying(false);
         }
       }, autoPlaySpeed());
-      
+
       return () => clearInterval(interval);
     }
   });
@@ -169,15 +278,16 @@ export default function Timeline() {
   });
 
   // Check if timeline is complete
-  const isComplete = () => currentStep() === timelineEvents().length;
+  const isComplete = () => currentStep() === timelineSteps().length - 1;
 
   // Get current event description
   const currentEventDescription = () => {
-    if (currentStep() === 0) return 'No teeth visible yet';
-    if (isComplete()) return 'Chronology Complete! All teeth have erupted.';
-    
-    const event = timelineEvents()[currentStep() - 1];
-    return event ? event.description : '';
+    const step = timelineSteps()[currentStep()];
+    if (!step) return 'No teeth visible yet';
+
+    if (isComplete()) return 'Development Complete! All teeth have erupted.';
+
+    return step.description;
   };
 
   return (
@@ -195,12 +305,12 @@ export default function Timeline() {
           <div class="space-y-2">
             <div class="flex justify-between text-sm text-gray-300">
               <span>Progress</span>
-              <span>{currentStep()} / {timelineEvents().length}</span>
+              <span>{currentStep()} / {timelineSteps().length - 1}</span>
             </div>
             <div class="w-full bg-gray-700 rounded-full h-2">
-              <div 
+              <div
                 class="bg-blue-500 h-2 rounded-full transition-all duration-500 ease-out"
-                style={{ width: `${(currentStep() / timelineEvents().length) * 100}%` }}
+                style={{ width: `${(currentStep() / (timelineSteps().length - 1)) * 100}%` }}
               ></div>
             </div>
           </div>
@@ -213,6 +323,16 @@ export default function Timeline() {
             <div class="text-lg text-gray-300">
               {currentEventDescription()}
             </div>
+            {/* Show multiple events if they occur simultaneously */}
+            {timelineSteps()[currentStep()]?.events.length > 1 && (
+              <div class="text-sm text-gray-400">
+                <For each={timelineSteps()[currentStep()].events}>
+                  {(event) => (
+                    <div>• {event.description}</div>
+                  )}
+                </For>
+              </div>
+            )}
           </div>
 
           {/* Navigation Buttons */}
@@ -266,7 +386,7 @@ export default function Timeline() {
             >
               {isAutoPlaying() ? '⏸️ Pause' : '▶️ Play'}
             </Button>
-            
+
             <div class="flex items-center gap-2">
               <label class="text-sm text-gray-300">Speed:</label>
               <select
@@ -285,7 +405,7 @@ export default function Timeline() {
           {/* Completion Message */}
           {isComplete() && (
             <div class="text-center p-6 bg-green-500/20 border border-green-500/30 rounded-xl">
-              <div class="text-2xl font-bold text-green-300 mb-2">🎉 Chronology Complete!</div>
+              <div class="text-2xl font-bold text-green-300 mb-2">🎉 Development Complete!</div>
               <div class="text-green-200">
                 All teeth have erupted. The dental development timeline is now complete.
               </div>
@@ -308,13 +428,12 @@ export default function Timeline() {
         {/* Tooth Chart */}
         <div class="lg:col-span-2 space-y-4">
           <h2 class="text-2xl font-bold text-white text-center">Current Dental State</h2>
-          <div class={`transition-all duration-500 ${isAnimating() ? 'scale-95 opacity-80' : 'scale-100 opacity-100'}`}>
-            <ToothChart 
-              teeth={visibleTeeth()} 
-              onToothSelect={setSelectedTooth}
-              selectedTooth={() => selectedTooth()}
-            />
-          </div>
+          <ToothChart
+            teeth={visibleTeeth()}
+            onToothSelect={setSelectedTooth}
+            selectedTooth={() => selectedTooth()}
+            recentlyEruptedTeeth={recentlyEruptedTeeth}
+          />
         </div>
 
         {/* Tooth Details */}
@@ -333,37 +452,57 @@ export default function Timeline() {
         </div>
       </div>
 
-      {/* Timeline Events List */}
+      {/* Timeline Steps List */}
       <Card class="p-6">
         <CardContent>
-          <h3 class="text-xl font-bold text-white mb-4">Timeline Events</h3>
+          <h3 class="text-xl font-bold text-white mb-4">Timeline Steps</h3>
           <div class="space-y-2 max-h-96 overflow-y-auto">
-            <For each={timelineEvents()}>
-              {(event, index) => (
-                <div 
-                  class={`p-3 rounded-lg border transition-all duration-200 ${
-                    index() === currentStep() - 1 
-                      ? 'bg-blue-500/20 border-blue-500/50 text-blue-200' 
-                      : index() < currentStep()
+            <For each={timelineSteps()}>
+              {(step, index) => (
+                <div
+                  class={`p-3 rounded-lg border transition-all duration-200 cursor-pointer ${index() === currentStep()
+                    ? 'bg-blue-500/20 border-blue-500/50 text-blue-200'
+                    : index() < currentStep()
                       ? 'bg-gray-700/30 border-gray-600/50 text-gray-300'
                       : 'bg-gray-800/30 border-gray-700/50 text-gray-500'
-                  }`}
+                    }`}
+                  onClick={() => {
+                    if (!isAnimating()) {
+                      setIsAnimating(true);
+                      setCurrentStep(index());
+                      setTimeout(() => setIsAnimating(false), 500);
+                    }
+                  }}
                 >
-                  <div class="flex items-center justify-between">
+                  <div class="flex items-center justify-between mb-2">
                     <div class="flex items-center gap-3">
-                      <Badge 
-                        variant={event.type === 'eruption' ? 'default' : 'secondary'}
-                        class="text-xs"
-                      >
-                        {event.type === 'eruption' ? '🦷' : '📤'}
-                      </Badge>
-                      <span class="font-medium">{event.ageDisplay}</span>
-                      <span>{event.description}</span>
+                      <span class="font-medium">{step.ageDisplay}</span>
+                      <span>{step.description}</span>
                     </div>
                     <div class="text-xs text-gray-400">
-                      {event.tooth.type === 'primary' ? 'Primary' : 'Permanent'}
+                      Step {index()}
                     </div>
                   </div>
+                  {step.events.length > 1 && (
+                    <div class="ml-6 space-y-1">
+                      <For each={step.events}>
+                        {(event) => (
+                          <div class="flex items-center gap-2 text-sm">
+                            <Badge
+                              variant={event.type === 'eruption' ? 'default' : 'secondary'}
+                              class="text-xs"
+                            >
+                              {event.type === 'eruption' ? '🦷' : '📤'}
+                            </Badge>
+                            <span>{event.description}</span>
+                            <span class="text-xs text-gray-400">
+                              ({event.tooth.type === 'primary' ? 'Primary' : 'Permanent'})
+                            </span>
+                          </div>
+                        )}
+                      </For>
+                    </div>
+                  )}
                 </div>
               )}
             </For>
