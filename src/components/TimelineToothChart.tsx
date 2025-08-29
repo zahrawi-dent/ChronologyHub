@@ -224,3 +224,4 @@ export const ToothChart = (props: ToothChartProps) => {
     </div>
   );
 };
+

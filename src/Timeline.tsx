@@ -175,20 +175,17 @@ export default function Timeline() {
   // Get recently erupted teeth for highlighting
   createEffect(() => {
     const currentStepIndex = currentStep();
-    const currentStep_ = timelineSteps()[currentStepIndex];
+    const step = timelineSteps()[currentStepIndex];
 
-    if (currentStep_) {
-      // Get teeth that erupted in this step
+    if (step) {
       const newlyEruptedIds = new Set(
-        currentStep_.events
-          .filter(event => event.type === 'eruption')
-          .map(event => event.tooth.id)
+        step.events.filter(e => e.type === 'eruption').map(e => e.tooth.id)
       );
 
       setRecentlyEruptedTeeth(newlyEruptedIds);
 
-      // Clear highlights after animation
-      if (newlyEruptedIds.size > 0) {
+      // If this is the final eruption step (third molars)
+      if (currentStepIndex === timelineSteps().length - 1 && newlyEruptedIds.size > 0) {
         setTimeout(() => setRecentlyEruptedTeeth(new Set()), 2000);
       }
     } else {
@@ -285,9 +282,18 @@ export default function Timeline() {
     const step = timelineSteps()[currentStep()];
     if (!step) return 'No teeth visible yet';
 
+    // Only count eruption events
+    const eruptionEvents = step.events.filter(e => e.type === 'eruption');
+
     if (isComplete()) return 'Development Complete! All teeth have erupted.';
 
-    return step.description;
+    if (eruptionEvents.length === 0) {
+      return 'No new eruptions at this stage';
+    }
+
+    return eruptionEvents.length === 1
+      ? eruptionEvents[0].description
+      : `${eruptionEvents.length} teeth erupt`;
   };
 
   return (
@@ -320,19 +326,19 @@ export default function Timeline() {
             <div class="text-2xl font-bold text-white">
               {currentAge()}
             </div>
-            <div class="text-lg text-gray-300">
-              {currentEventDescription()}
-            </div>
+            {/* <div class="text-lg text-gray-300"> */}
+            {/*   {currentEventDescription()} */}
+            {/* </div> */}
             {/* Show multiple events if they occur simultaneously */}
-            {timelineSteps()[currentStep()]?.events.length > 1 && (
-              <div class="text-sm text-gray-400">
-                <For each={timelineSteps()[currentStep()].events}>
-                  {(event) => (
-                    <div>• {event.description}</div>
-                  )}
-                </For>
-              </div>
-            )}
+            {/* {timelineSteps()[currentStep()]?.events.some(e => e.type === 'eruption') && ( */}
+            {/*   <div class="text-sm text-gray-400"> */}
+            {/*     <For each={timelineSteps()[currentStep()].events.filter(e => e.type === 'eruption')}> */}
+            {/*       {(event) => ( */}
+            {/*         <div>• {event.description}</div> */}
+            {/*       )} */}
+            {/*     </For> */}
+            {/*   </div> */}
+            {/* )} */}
           </div>
 
           {/* Navigation Buttons */}
@@ -341,7 +347,7 @@ export default function Timeline() {
               variant="outline"
               size="lg"
               onClick={resetTimeline}
-              disabled={currentStep() === 0 || isAnimating()}
+              disabled={currentStep() === 0}
               class="min-w-[120px]"
             >
               Reset
@@ -350,7 +356,7 @@ export default function Timeline() {
               variant="outline"
               size="lg"
               onClick={goBackward}
-              disabled={currentStep() === 0 || isAnimating()}
+              disabled={currentStep() === 0}
               class="min-w-[120px]"
             >
               ← Previous
@@ -359,7 +365,7 @@ export default function Timeline() {
               variant="outline"
               size="lg"
               onClick={goForward}
-              disabled={isComplete() || isAnimating()}
+              disabled={isComplete()}
               class="min-w-[120px]"
             >
               Next →
@@ -368,7 +374,7 @@ export default function Timeline() {
               variant="outline"
               size="lg"
               onClick={goToEnd}
-              disabled={isComplete() || isAnimating()}
+              disabled={isComplete()}
               class="min-w-[120px]"
             >
               End
@@ -381,7 +387,7 @@ export default function Timeline() {
               variant={isAutoPlaying() ? 'default' : 'outline'}
               size="sm"
               onClick={() => setIsAutoPlaying(!isAutoPlaying())}
-              disabled={isComplete() || isAnimating()}
+              disabled={isComplete()}
               class="min-w-[100px]"
             >
               {isAutoPlaying() ? '⏸️ Pause' : '▶️ Play'}
@@ -434,6 +440,7 @@ export default function Timeline() {
             selectedTooth={() => selectedTooth()}
             recentlyEruptedTeeth={recentlyEruptedTeeth}
           />
+
         </div>
 
         {/* Tooth Details */}
