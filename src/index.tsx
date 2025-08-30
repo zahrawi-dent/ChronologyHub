@@ -17,7 +17,7 @@ if (!wrapper) {
 
 render(
   () => (
-    <Router base="/ChronologyHub/">
+    <Router base="ChronologyHub">
       <Route component={Layout}>
         <Route path="/" component={ChartTab} />
         <Route path="/timeline" component={Timeline} />

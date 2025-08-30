@@ -13,6 +13,7 @@ export default function Tabs(props: TabsProps) {
       <nav class="flex space-x-1">
         {props.tabs.map((tab) => {
           const isActive = () => location.pathname === baseUrl + tab.path;
+          console.log(location.pathname, tab.path)
           return (
             <A
               href={tab.path}

@@ -17,7 +17,7 @@ export default function HeroSection() {
         <div class="mb-8">
           <h1 class="text-6xl md:text-7xl font-bold text-white mb-6 leading-tight">
             <span class="bg-gradient-to-r from-primary/60 via-primary/80 to-primary bg-clip-text text-transparent">
-              Dental Chronology
+              Chronology Hub
             </span>
           </h1>
         </div>
