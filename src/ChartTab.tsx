@@ -32,8 +32,10 @@ export default function ChartTab() {
           🍼 Primary
         </Button>
       </div>
-      <div class="grid lg:grid-cols-3 gap-6">
-        <div class="lg:col-span-2">
+      {/* <div class="grid lg:grid-cols-3 gap-6"> */}
+      <div class="grid xl:grid-cols-3 gap-6">
+        {/* <div class="lg:col-span-2"> */}
+        <div class="xl:col-span-2">
           <ToothChart
             teeth={dentitionType() === 'permanent' ? permanentTeeth : primaryTeeth}
             onToothSelect={setSelectedTooth}

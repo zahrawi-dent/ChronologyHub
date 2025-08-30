@@ -321,8 +321,8 @@ export default function Timeline() {
       </div>
 
       {/* Timeline Controls */}
-      <Card class="p-6">
-        <CardContent class="space-y-6">
+      <Card class="pt-4">
+        <CardContent class="space-y-4">
           {/* Progress Bar */}
           <div class="space-y-2">
             <div class="flex justify-between text-sm text-gray-300">
@@ -338,7 +338,7 @@ export default function Timeline() {
           </div>
 
           {/* Current Status */}
-          <div class="text-center space-y-2">
+          <div class="text-center space-y-1">
             <div class="text-2xl font-bold text-white">
               {currentAge()}
             </div>
@@ -398,31 +398,31 @@ export default function Timeline() {
           </div>
 
           {/* Auto-play Controls */}
-          <div class="flex justify-center items-center gap-4 pt-4 border-t border-gray-700/50">
-            <Button
-              variant={isAutoPlaying() ? 'default' : 'outline'}
-              size="sm"
-              onClick={() => setIsAutoPlaying(!isAutoPlaying())}
-              disabled={isComplete()}
-              class="min-w-[100px]"
-            >
-              {isAutoPlaying() ? '⏸️ Pause' : '▶️ Play'}
-            </Button>
-
-            <div class="flex items-center gap-2">
-              <label class="text-sm text-gray-300">Speed:</label>
-              <select
-                value={autoPlaySpeed()}
-                onChange={(e) => setAutoPlaySpeed(Number(e.currentTarget.value))}
-                class="bg-gray-700/50 border border-gray-600/50 rounded px-2 py-1 text-white text-sm"
-                disabled={isAutoPlaying()}
-              >
-                <option value={500}>Fast</option>
-                <option value={1000}>Normal</option>
-                <option value={2000}>Slow</option>
-              </select>
-            </div>
-          </div>
+          {/* <div class="flex justify-center items-center gap-4 pt-4 border-t border-gray-700/50"> */}
+          {/*   <Button */}
+          {/*     variant={isAutoPlaying() ? 'default' : 'outline'} */}
+          {/*     size="sm" */}
+          {/*     onClick={() => setIsAutoPlaying(!isAutoPlaying())} */}
+          {/*     disabled={isComplete()} */}
+          {/*     class="min-w-[100px]" */}
+          {/*   > */}
+          {/*     {isAutoPlaying() ? '⏸️ Pause' : '▶️ Play'} */}
+          {/*   </Button> */}
+          {/**/}
+          {/*   <div class="flex items-center gap-2"> */}
+          {/*     <label class="text-sm text-gray-300">Speed:</label> */}
+          {/*     <select */}
+          {/*       value={autoPlaySpeed()} */}
+          {/*       onChange={(e) => setAutoPlaySpeed(Number(e.currentTarget.value))} */}
+          {/*       class="bg-gray-700/50 border border-gray-600/50 rounded px-2 py-1 text-white text-sm" */}
+          {/*       disabled={isAutoPlaying()} */}
+          {/*     > */}
+          {/*       <option value={500}>Fast</option> */}
+          {/*       <option value={1000}>Normal</option> */}
+          {/*       <option value={2000}>Slow</option> */}
+          {/*     </select> */}
+          {/*   </div> */}
+          {/* </div> */}
 
           {/* Completion Message */}
           {isComplete() && (
@@ -435,7 +435,7 @@ export default function Timeline() {
           )}
 
           {/* Keyboard Shortcuts */}
-          <div class="text-center text-sm text-gray-400 pt-2">
+          <div class="text-center text-sm text-gray-400 ">
             <div class="flex justify-center gap-4 flex-wrap">
               <span>← → Arrow keys to navigate</span>
               <span>Space to advance</span>
@@ -446,9 +446,11 @@ export default function Timeline() {
       </Card>
 
       {/* Tooth Chart and Details */}
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      {/* <div class="grid grid-cols-1 lg:grid-cols-3 gap-8"> */}
+      <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
         {/* Tooth Chart */}
-        <div class="lg:col-span-2 space-y-4">
+        {/* <div class="lg:col-span-2 space-y-4"> */}
+        <div class="xl:col-span-2 space-y-4">
           <h2 class="text-2xl font-bold text-white text-center">Current Dental State</h2>
           <ToothChart
             teeth={visibleTeeth()}
