@@ -1,13 +1,12 @@
 /* @refresh reload */
 import { render } from "solid-js/web";
-import { Router, Route, A } from "@solidjs/router";
+import { Router, Route } from "@solidjs/router";
 import "./index.css";
 import { Layout } from "./Layout";
 import ReferenceTable from "./ReferenceTable";
 import ChartTab from "./ChartTab";
 import StudyMode from "./StudyMode";
 import Timeline from "./Timeline";
-import { Button } from "./components/Button";
 import NotFound from "./NotFound";
 
 const wrapper = document.getElementById("root");
@@ -19,7 +18,7 @@ if (!wrapper) {
 
 render(
   () => (
-    <Router base="chronohub/">
+    <Router base="chronohub">
       <Route component={Layout}>
         <Route path="/" component={ChartTab} />
         <Route path="/timeline" component={Timeline} />
