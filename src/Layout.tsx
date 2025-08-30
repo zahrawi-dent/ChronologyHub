@@ -8,22 +8,10 @@ type LayoutProps = {
 
 
 const tabs = [
-  {
-    label: "Interactive Chart",
-    path: "/",
-  },
-  {
-    label: "Timeline",
-    path: "/timeline",
-  },
-  {
-    label: "Reference Table",
-    path: "/table",
-  },
-  {
-    label: "Study Mode",
-    path: "/study",
-  },
+  { label: "Interactive Chart", path: "/", },
+  { label: "Timeline", path: "/timeline", },
+  { label: "Reference Table", path: "/table", },
+  { label: "Study Mode", path: "/study", },
 ]
 
 export function Layout(props: LayoutProps) {
@@ -39,5 +27,3 @@ export function Layout(props: LayoutProps) {
     </>
   );
 }
-
-

@@ -15,6 +15,7 @@ export default function Tabs(props: TabsProps) {
           const isActive = () => location.pathname === baseUrl + tab.path;
           return (
             <A
+              noScroll={true}
               href={tab.path}
               class={`relative px-6 py-3 text-sm font-semibold rounded-xl transition-all duration-300 ${isActive()
                 ? "bg-gradient-to-r from-primary/90 to-primary/60 text-white shadow-lg transform scale-105 tab-glow"
