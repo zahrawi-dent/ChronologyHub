@@ -6,14 +6,13 @@ type TabsProps = {
 }
 export default function Tabs(props: TabsProps) {
   const location = useLocation();
-  const baseUrl = '/ChronologyHub';
+  const baseUrl = '/chronohub';
 
   return (
     <div class="bg-background-light/60 backdrop-blur-md border border-gray-700/50 rounded-2xl p-2 shadow-2xl">
       <nav class="flex space-x-1">
         {props.tabs.map((tab) => {
           const isActive = () => location.pathname === baseUrl + tab.path;
-          console.log(location.pathname, tab.path)
           return (
             <A
               href={tab.path}

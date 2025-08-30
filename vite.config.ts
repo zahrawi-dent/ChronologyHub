@@ -7,5 +7,5 @@ export default defineConfig({
     solid(),
     tailwindcss(),
   ],
-  base: "ChronologyHub/",
+  base: "chronohub/",
 })
