@@ -30,7 +30,7 @@ export const ToothChart = (props: ToothChartProps) => {
   // Helper function to get tooth classes with eruption animation
   const getToothClasses = (tooth: ToothData) => {
     const baseClasses = `
-      text-secondary-foreground w-12 h-16 rounded-lg border-2 cursor-pointer transition-all duration-500 
+      text-secondary-foreground w-8 h-12 sm:w-10 sm:h-14 lg:w-12 lg:h-16 rounded-md lg:rounded-lg border-2 cursor-pointer transition-all duration-500 
       flex flex-col items-center justify-center text-xs font-medium shadow-sm transform
       ${getCategoryColor(tooth.category)}
     `;
@@ -75,7 +75,7 @@ export const ToothChart = (props: ToothChartProps) => {
     return () => notation() === notationType ? 'default' : 'outline';
   };
 
-  // Helper component for arch display with improved mixed dentition handling
+  // Helper component for arch display with responsive and overflow handling
   const ArchDisplay = (tprops: {
     title: string;
     rightTeeth: ToothData[];
@@ -86,7 +86,6 @@ export const ToothChart = (props: ToothChartProps) => {
     <div class="text-center">
       <h3 class="text-lg font-semibold mb-4">{tprops.title}</h3>
 
-      {/* Mixed dentition indicator */}
       {isMixedDentition() && (
         <div class="mb-3">
           <Badge variant="secondary" class="text-xs">
@@ -95,76 +94,79 @@ export const ToothChart = (props: ToothChartProps) => {
         </div>
       )}
 
-      <div class="flex justify-center items-center gap-1 max-w-4xl mx-auto relative">
-        {/* Right side teeth */}
-        <div class={`flex gap-1 ${tprops.isMaxillary ? 'flex-row-reverse' : ''}`}>
-          <For each={tprops.rightTeeth}>
-            {(tooth) => (
-              <div
-                class={getToothClasses(tooth)}
-                onClick={() => props.onToothSelect?.(tooth)}
-                title={`${tooth.name} - ${tooth.notation[notation()]} (${tooth.type})`}
-                style={{
-                  'animation-delay': props.showRecentlyErupted && props.recentlyEruptedTeeth?.()?.has(tooth.id) ? '0ms' : undefined
-                }}
-              >
-                <div class="text-[10px] font-bold">
-                  {tooth.notation[notation()]}
+      {/* Wrapper for horizontal scrolling on small screens */}
+      <div class="w-full overflow-x-auto pb-2">
+        <div class="flex justify-center items-center gap-0.5 sm:gap-1 min-w-max mx-auto relative">
+          {/* Right side teeth */}
+          <div class={`flex gap-0.5 sm:gap-1 ${tprops.isMaxillary ? 'flex-row-reverse' : ''}`}>
+            <For each={tprops.rightTeeth}>
+              {(tooth) => (
+                <div
+                  class={getToothClasses(tooth)}
+                  onClick={() => props.onToothSelect?.(tooth)}
+                  title={`${tooth.name} - ${tooth.notation[notation()]} (${tooth.type})`}
+                  style={{
+                    'animation-delay': props.showRecentlyErupted && props.recentlyEruptedTeeth?.()?.has(tooth.id) ? '0ms' : undefined
+                  }}
+                >
+                  <div class="font-bold text-[8px] sm:text-[9px] lg:text-[10px]">
+                    {tooth.notation[notation()]}
+                  </div>
+                  <div class="text-center leading-tight text-[7px] sm:text-[8px] mt-0.5">
+                    {tooth.name.split(' ')[0]}
+                  </div>
+                  {tooth.type === 'primary' && (
+                    <Badge variant="secondary" class="text-[6px] px-1 py-0 mt-0.5">
+                      P
+                    </Badge>
+                  )}
+                  {tooth.type === 'permanent' && (
+                    <Badge variant="default" class="text-[6px] px-1 py-0 mt-0.5">
+                      A
+                    </Badge>
+                  )}
                 </div>
-                <div class="text-[8px] text-center leading-tight">
-                  {tooth.name.split(' ')[0]}
-                </div>
-                {tooth.type === 'primary' && (
-                  <Badge variant="secondary" class="text-[6px] px-1 py-0">
-                    P
-                  </Badge>
-                )}
-                {tooth.type === 'permanent' && (
-                  <Badge variant="default" class="text-[6px] px-1 py-0">
-                    A
-                  </Badge>
-                )}
-              </div>
-            )}
-          </For>
-        </div>
+              )}
+            </For>
+          </div>
 
-        {/* Midline - only show if we have teeth on both sides */}
-        {(tprops.rightTeeth.length > 0 && tprops.leftTeeth.length > 0) && (
-          <div class="w-[3px] h-16 bg-primary/60 rounded-full mx-1 flex-shrink-0"></div>
-        )}
+          {/* Midline */}
+          {(tprops.rightTeeth.length > 0 && tprops.leftTeeth.length > 0) && (
+            <div class="w-[2px] sm:w-[3px] h-12 sm:h-14 lg:h-16 bg-primary/60 rounded-full mx-1 flex-shrink-0"></div>
+          )}
 
-        {/* Left side teeth */}
-        <div class="flex gap-1">
-          <For each={tprops.leftTeeth}>
-            {(tooth) => (
-              <div
-                class={getToothClasses(tooth)}
-                onClick={() => props.onToothSelect?.(tooth)}
-                title={`${tooth.name} - ${tooth.notation[notation()]} (${tooth.type})`}
-                style={{
-                  'animation-delay': props.showRecentlyErupted && props.recentlyEruptedTeeth?.()?.has(tooth.id) ? '0ms' : undefined
-                }}
-              >
-                <div class="text-[10px] font-bold">
-                  {tooth.notation[notation()]}
+          {/* Left side teeth */}
+          <div class="flex gap-0.5 sm:gap-1">
+            <For each={tprops.leftTeeth}>
+              {(tooth) => (
+                <div
+                  class={getToothClasses(tooth)}
+                  onClick={() => props.onToothSelect?.(tooth)}
+                  title={`${tooth.name} - ${tooth.notation[notation()]} (${tooth.type})`}
+                  style={{
+                    'animation-delay': props.showRecentlyErupted && props.recentlyEruptedTeeth?.()?.has(tooth.id) ? '0ms' : undefined
+                  }}
+                >
+                  <div class="font-bold text-[8px] sm:text-[9px] lg:text-[10px]">
+                    {tooth.notation[notation()]}
+                  </div>
+                  <div class="text-center leading-tight text-[7px] sm:text-[8px] mt-0.5">
+                    {tooth.name.split(' ')[0]}
+                  </div>
+                  {tooth.type === 'primary' && (
+                    <Badge variant="secondary" class="text-[6px] px-1 py-0 mt-0.5">
+                      P
+                    </Badge>
+                  )}
+                  {tooth.type === 'permanent' && (
+                    <Badge variant="default" class="text-[6px] px-1 py-0 mt-0.5">
+                      A
+                    </Badge>
+                  )}
                 </div>
-                <div class="text-[8px] text-center leading-tight">
-                  {tooth.name.split(' ')[0]}
-                </div>
-                {tooth.type === 'primary' && (
-                  <Badge variant="secondary" class="text-[6px] px-1 py-0">
-                    P
-                  </Badge>
-                )}
-                {tooth.type === 'permanent' && (
-                  <Badge variant="default" class="text-[6px] px-1 py-0">
-                    A
-                  </Badge>
-                )}
-              </div>
-            )}
-          </For>
+              )}
+            </For>
+          </div>
         </div>
       </div>
     </div>
@@ -181,15 +183,15 @@ export const ToothChart = (props: ToothChartProps) => {
           Universal
         </Button>
         <Button
-          variant={getVariant('palmer')()}
+          variant={getVariant('fdi')()}
           size="sm"
-          onClick={() => setNotation('palmer')}
+          onClick={() => setNotation('fdi')}
         >
           FDI
         </Button>
       </div>
 
-      <Card class="p-6">
+      <Card class="p-2 sm:p-4 md:p-6">
         <CardContent class="space-y-8">
           {/* Maxillary Arch */}
           <ArchDisplay
@@ -208,7 +210,7 @@ export const ToothChart = (props: ToothChartProps) => {
           />
 
           {/* Enhanced Legend */}
-          <div class="flex justify-center gap-4 text-xs flex-wrap">
+          <div class="flex justify-center gap-x-4 gap-y-2 text-xs flex-wrap">
             <div class="flex items-center gap-1">
               <div class="w-4 h-4 rounded bg-blue-200 border border-blue-300"></div>
               <span>Incisors</span>
