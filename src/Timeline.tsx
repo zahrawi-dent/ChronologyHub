@@ -301,7 +301,7 @@ export default function Timeline() {
     if (eruptionEvents.length === 1) {
       description = eruptionEvents[0].description;
     } else {
-      description = `${eruptionEvents.length} teeth erupt`;
+      description = eruptionEvents.length + " teeth erupt"
     }
 
     // Add mixed dentition indicator

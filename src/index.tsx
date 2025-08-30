@@ -28,10 +28,3 @@ render(
   ),
   wrapper
 );
-
-{/* <Router root={Layout}> */ }
-{/*   <Route path="/" component={ChartTab} /> */ }
-{/*   <Route path="/timeline" component={Timeline} /> */ }
-{/*   <Route path="/table" component={ReferenceTable} /> */ }
-{/*   <Route path="/study" component={StudyMode} /> */ }
-{/* </Router> */ }
