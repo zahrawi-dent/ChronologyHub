@@ -18,7 +18,7 @@ export default function NotFound() {
       <A
         noScroll={true}
         href="/"
-        class="px-6 py-3 rounded-2xl bg-gradient-to-r from-primary/90 to-primary/70 text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+        class="px-6 py-3 rounded-2xl bg-gradient-to-r from-primary/90 to-primary/70 text-white font-semibold shadow-lg hover:scale-105 transition-transform z-10"
       >
         Go Home
       </A>

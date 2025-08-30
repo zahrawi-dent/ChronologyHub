@@ -19,7 +19,7 @@ if (!wrapper) {
 
 render(
   () => (
-    <Router base="chronohub">
+    <Router base="chronohub/">
       <Route component={Layout}>
         <Route path="/" component={ChartTab} />
         <Route path="/timeline" component={Timeline} />
