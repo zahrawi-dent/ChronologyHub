@@ -23,7 +23,10 @@ export type ToothData = {
     ageMonths: number;
   };
   // in months
-  crownCompletion: number
+  crownCompletion: {
+    ageRange: string;
+    ageMonths: number;
+  }
 }
 
 export const primaryTeeth: ToothData[] = [
@@ -39,7 +42,7 @@ export const primaryTeeth: ToothData[] = [
     eruption: { ageRange: '8-12 months', ageMonths: 10 },
     shedding: { ageRange: '6-7 years', ageMonths: 78 },
     rootCompletion: { ageRange: '18-24 months', ageMonths: 21 },
-    crownCompletion: 1.5,
+    crownCompletion: { ageRange: '1½ months', ageMonths: 1.5 },
   },
   {
     id: 'primary-maxillary-central-incisor-left',
@@ -52,7 +55,7 @@ export const primaryTeeth: ToothData[] = [
     eruption: { ageRange: '8-12 months', ageMonths: 10 },
     shedding: { ageRange: '6-7 years', ageMonths: 78 },
     rootCompletion: { ageRange: '18-24 months', ageMonths: 21 },
-    crownCompletion: 1.5,
+    crownCompletion: { ageRange: '1½ months', ageMonths: 1.5 },
   },
   {
     id: 'primary-maxillary-lateral-incisor-right',
@@ -65,7 +68,7 @@ export const primaryTeeth: ToothData[] = [
     eruption: { ageRange: '9-13 months', ageMonths: 11 },
     shedding: { ageRange: '7-8 years', ageMonths: 90 },
     rootCompletion: { ageRange: '22-30 months', ageMonths: 26 },
-    crownCompletion: 2.5
+    crownCompletion: { ageRange: '2½ months', ageMonths: 2.5 },
   },
   {
     id: 'primary-maxillary-lateral-incisor-left',
@@ -78,7 +81,7 @@ export const primaryTeeth: ToothData[] = [
     eruption: { ageRange: '9-13 months', ageMonths: 11 },
     shedding: { ageRange: '7-8 years', ageMonths: 90 },
     rootCompletion: { ageRange: '22-30 months', ageMonths: 26 },
-    crownCompletion: 2.5
+    crownCompletion: { ageRange: '2½ months', ageMonths: 2.5 },
   },
   {
     id: 'primary-maxillary-canine-right',
@@ -91,7 +94,7 @@ export const primaryTeeth: ToothData[] = [
     eruption: { ageRange: '16-22 months', ageMonths: 19 },
     shedding: { ageRange: '10-12 years', ageMonths: 132 },
     rootCompletion: { ageRange: '30-42 months', ageMonths: 36 },
-    crownCompletion: 9
+    crownCompletion: { ageRange: '9 months', ageMonths: 9 },
   },
   {
     id: 'primary-maxillary-canine-left',
@@ -104,7 +107,7 @@ export const primaryTeeth: ToothData[] = [
     eruption: { ageRange: '16-22 months', ageMonths: 19 },
     shedding: { ageRange: '10-12 years', ageMonths: 132 },
     rootCompletion: { ageRange: '30-42 months', ageMonths: 36 },
-    crownCompletion: 9
+    crownCompletion: { ageRange: '9 months', ageMonths: 9 },
   },
   {
     id: 'primary-maxillary-first-molar-right',
@@ -117,7 +120,7 @@ export const primaryTeeth: ToothData[] = [
     eruption: { ageRange: '13-19 months', ageMonths: 16 },
     shedding: { ageRange: '9-11 years', ageMonths: 120 },
     rootCompletion: { ageRange: '24-30 months', ageMonths: 27 },
-    crownCompletion: 6
+    crownCompletion: { ageRange: '6 months', ageMonths: 6 },
   },
   {
     id: 'primary-maxillary-first-molar-left',
@@ -130,7 +133,7 @@ export const primaryTeeth: ToothData[] = [
     eruption: { ageRange: '13-19 months', ageMonths: 16 },
     shedding: { ageRange: '9-11 years', ageMonths: 120 },
     rootCompletion: { ageRange: '24-30 months', ageMonths: 27 },
-    crownCompletion: 6
+    crownCompletion: { ageRange: '6 months', ageMonths: 6 },
   },
   {
     id: 'primary-maxillary-second-molar-right',
@@ -143,7 +146,7 @@ export const primaryTeeth: ToothData[] = [
     eruption: { ageRange: '25-33 months', ageMonths: 29 },
     shedding: { ageRange: '10-12 years', ageMonths: 132 },
     rootCompletion: { ageRange: '36-48 months', ageMonths: 42 },
-    crownCompletion: 11
+    crownCompletion: { ageRange: '11 months', ageMonths: 11 },
   },
   {
     id: 'primary-maxillary-second-molar-left',
@@ -156,7 +159,7 @@ export const primaryTeeth: ToothData[] = [
     eruption: { ageRange: '25-33 months', ageMonths: 29 },
     shedding: { ageRange: '10-12 years', ageMonths: 132 },
     rootCompletion: { ageRange: '36-48 months', ageMonths: 42 },
-    crownCompletion: 11
+    crownCompletion: { ageRange: '11 months', ageMonths: 11 },
   },
   // Mandibular Primary Teeth
   {
@@ -170,7 +173,7 @@ export const primaryTeeth: ToothData[] = [
     eruption: { ageRange: '6-10 months', ageMonths: 8 },
     shedding: { ageRange: '6-7 years', ageMonths: 78 },
     rootCompletion: { ageRange: '18-24 months', ageMonths: 21 },
-    crownCompletion: 2.5
+    crownCompletion: { ageRange: '2½ months', ageMonths: 2.5 },
   },
   {
     id: 'primary-mandibular-central-incisor-left',
@@ -183,7 +186,7 @@ export const primaryTeeth: ToothData[] = [
     eruption: { ageRange: '6-10 months', ageMonths: 8 },
     shedding: { ageRange: '6-7 years', ageMonths: 78 },
     rootCompletion: { ageRange: '18-24 months', ageMonths: 21 },
-    crownCompletion: 2.5
+    crownCompletion: { ageRange: '2½ months', ageMonths: 2.5 },
   },
   {
     id: 'primary-mandibular-lateral-incisor-right',
@@ -196,7 +199,7 @@ export const primaryTeeth: ToothData[] = [
     eruption: { ageRange: '10-16 months', ageMonths: 13 },
     shedding: { ageRange: '7-8 years', ageMonths: 90 },
     rootCompletion: { ageRange: '18-24 months', ageMonths: 21 },
-    crownCompletion: 3
+    crownCompletion: { ageRange: '3 months', ageMonths: 3 },
   },
   {
     id: 'primary-mandibular-lateral-incisor-left',
@@ -209,7 +212,7 @@ export const primaryTeeth: ToothData[] = [
     eruption: { ageRange: '10-16 months', ageMonths: 13 },
     shedding: { ageRange: '7-8 years', ageMonths: 90 },
     rootCompletion: { ageRange: '18-24 months', ageMonths: 21 },
-    crownCompletion: 3
+    crownCompletion: { ageRange: '3 months', ageMonths: 3 },
   },
   {
     id: 'primary-mandibular-canine-right',
@@ -222,7 +225,7 @@ export const primaryTeeth: ToothData[] = [
     eruption: { ageRange: '17-23 months', ageMonths: 20 },
     shedding: { ageRange: '9-12 years', ageMonths: 126 },
     rootCompletion: { ageRange: '30-42 months', ageMonths: 36 },
-    crownCompletion: 9
+    crownCompletion: { ageRange: '9 months', ageMonths: 9 },
   },
   {
     id: 'primary-mandibular-canine-left',
@@ -235,7 +238,7 @@ export const primaryTeeth: ToothData[] = [
     eruption: { ageRange: '17-23 months', ageMonths: 20 },
     shedding: { ageRange: '9-12 years', ageMonths: 126 },
     rootCompletion: { ageRange: '30-42 months', ageMonths: 36 },
-    crownCompletion: 9
+    crownCompletion: { ageRange: '9 months', ageMonths: 9 },
   },
   {
     id: 'primary-mandibular-first-molar-right',
@@ -248,7 +251,7 @@ export const primaryTeeth: ToothData[] = [
     eruption: { ageRange: '14-18 months', ageMonths: 16 },
     shedding: { ageRange: '9-11 years', ageMonths: 120 },
     rootCompletion: { ageRange: '24-30 months', ageMonths: 27 },
-    crownCompletion: 5.5
+    crownCompletion: { ageRange: '5½ months', ageMonths: 5.5 },
   },
   {
     id: 'primary-mandibular-first-molar-left',
@@ -261,7 +264,7 @@ export const primaryTeeth: ToothData[] = [
     eruption: { ageRange: '14-18 months', ageMonths: 16 },
     shedding: { ageRange: '9-11 years', ageMonths: 120 },
     rootCompletion: { ageRange: '24-30 months', ageMonths: 27 },
-    crownCompletion: 5.5
+    crownCompletion: { ageRange: '5½ months', ageMonths: 5.5 },
   },
   {
     id: 'primary-mandibular-second-molar-right',
@@ -274,7 +277,7 @@ export const primaryTeeth: ToothData[] = [
     eruption: { ageRange: '23-31 months', ageMonths: 27 },
     shedding: { ageRange: '10-12 years', ageMonths: 132 },
     rootCompletion: { ageRange: '36-48 months', ageMonths: 42 },
-    crownCompletion: 10
+    crownCompletion: { ageRange: '10 months', ageMonths: 10 }
   },
   {
     id: 'primary-mandibular-second-molar-left',
@@ -287,7 +290,7 @@ export const primaryTeeth: ToothData[] = [
     eruption: { ageRange: '23-31 months', ageMonths: 27 },
     shedding: { ageRange: '10-12 years', ageMonths: 132 },
     rootCompletion: { ageRange: '36-48 months', ageMonths: 42 },
-    crownCompletion: 10
+    crownCompletion: { ageRange: '10 months', ageMonths: 10 }
   }
 ];
 
@@ -303,7 +306,7 @@ export const permanentTeeth: ToothData[] = [
     side: 'right',
     eruption: { ageRange: '7-8 years', ageMonths: 90 },
     rootCompletion: { ageRange: '10-11 years', ageMonths: 126 },
-    crownCompletion: 60
+    crownCompletion: { ageRange: '4-5 years', ageMonths: 60 }
   },
   {
     id: 'permanent-maxillary-central-incisor-left',
@@ -315,7 +318,7 @@ export const permanentTeeth: ToothData[] = [
     side: 'left',
     eruption: { ageRange: '7-8 years', ageMonths: 90 },
     rootCompletion: { ageRange: '10-11 years', ageMonths: 126 },
-    crownCompletion: 60
+    crownCompletion: { ageRange: '4-5 years', ageMonths: 60 }
   },
   {
     id: 'permanent-maxillary-lateral-incisor-right',
@@ -327,7 +330,7 @@ export const permanentTeeth: ToothData[] = [
     side: 'right',
     eruption: { ageRange: '8-9 years', ageMonths: 102 },
     rootCompletion: { ageRange: '11-12 years', ageMonths: 138 },
-    crownCompletion: 60
+    crownCompletion: { ageRange: '4-5 years', ageMonths: 60 }
   },
   {
     id: 'permanent-maxillary-lateral-incisor-left',
@@ -339,7 +342,7 @@ export const permanentTeeth: ToothData[] = [
     side: 'left',
     eruption: { ageRange: '8-9 years', ageMonths: 102 },
     rootCompletion: { ageRange: '11-12 years', ageMonths: 138 },
-    crownCompletion: 60
+    crownCompletion: { ageRange: '4-5 years', ageMonths: 60 }
   },
   {
     id: 'permanent-maxillary-canine-right',
@@ -351,7 +354,7 @@ export const permanentTeeth: ToothData[] = [
     side: 'right',
     eruption: { ageRange: '11-12 years', ageMonths: 138 },
     rootCompletion: { ageRange: '13-15 years', ageMonths: 168 },
-    crownCompletion: 84
+    crownCompletion: { ageRange: '6-7 years', ageMonths: 84 }
   },
   {
     id: 'permanent-maxillary-canine-left',
@@ -363,7 +366,7 @@ export const permanentTeeth: ToothData[] = [
     side: 'left',
     eruption: { ageRange: '11-12 years', ageMonths: 138 },
     rootCompletion: { ageRange: '13-15 years', ageMonths: 168 },
-    crownCompletion: 84
+    crownCompletion: { ageRange: '6-7 years', ageMonths: 84 }
   },
   {
     id: 'permanent-maxillary-first-premolar-right',
@@ -375,7 +378,7 @@ export const permanentTeeth: ToothData[] = [
     side: 'right',
     eruption: { ageRange: '10-11 years', ageMonths: 126 },
     rootCompletion: { ageRange: '12-13 years', ageMonths: 150 },
-    crownCompletion: 72
+    crownCompletion: { ageRange: '5-6 years', ageMonths: 72 }
   },
   {
     id: 'permanent-maxillary-first-premolar-left',
@@ -387,7 +390,7 @@ export const permanentTeeth: ToothData[] = [
     side: 'left',
     eruption: { ageRange: '10-11 years', ageMonths: 126 },
     rootCompletion: { ageRange: '12-13 years', ageMonths: 150 },
-    crownCompletion: 72
+    crownCompletion: { ageRange: '5-6 years', ageMonths: 72 }
   },
   {
     id: 'permanent-maxillary-second-premolar-right',
@@ -399,7 +402,7 @@ export const permanentTeeth: ToothData[] = [
     side: 'right',
     eruption: { ageRange: '10-12 years', ageMonths: 132 },
     rootCompletion: { ageRange: '12-14 years', ageMonths: 156 },
-    crownCompletion: 84
+    crownCompletion: { ageRange: '6-7 years', ageMonths: 84 }
   },
   {
     id: 'permanent-maxillary-second-premolar-left',
@@ -411,7 +414,7 @@ export const permanentTeeth: ToothData[] = [
     side: 'left',
     eruption: { ageRange: '10-12 years', ageMonths: 132 },
     rootCompletion: { ageRange: '12-14 years', ageMonths: 156 },
-    crownCompletion: 84,
+    crownCompletion: { ageRange: '6-7 years', ageMonths: 84 }
   },
   {
     id: 'permanent-maxillary-first-molar-right',
@@ -423,7 +426,7 @@ export const permanentTeeth: ToothData[] = [
     side: 'right',
     eruption: { ageRange: '6-7 years', ageMonths: 78 },
     rootCompletion: { ageRange: '9-10 years', ageMonths: 114 },
-    crownCompletion: 36
+    crownCompletion: { ageRange: '2½–3 years', ageMonths: 36 }
   },
   {
     id: 'permanent-maxillary-first-molar-left',
@@ -435,7 +438,7 @@ export const permanentTeeth: ToothData[] = [
     side: 'left',
     eruption: { ageRange: '6-7 years', ageMonths: 78 },
     rootCompletion: { ageRange: '9-10 years', ageMonths: 114 },
-    crownCompletion: 36
+    crownCompletion: { ageRange: '2½–3 years', ageMonths: 36 }
   },
   {
     id: 'permanent-maxillary-second-molar-right',
@@ -447,7 +450,7 @@ export const permanentTeeth: ToothData[] = [
     side: 'right',
     eruption: { ageRange: '12-13 years', ageMonths: 150 },
     rootCompletion: { ageRange: '14-16 years', ageMonths: 180 },
-    crownCompletion: 96
+    crownCompletion: { ageRange: '7-8 years', ageMonths: 96 }
   },
   {
     id: 'permanent-maxillary-second-molar-left',
@@ -459,7 +462,7 @@ export const permanentTeeth: ToothData[] = [
     side: 'left',
     eruption: { ageRange: '12-13 years', ageMonths: 150 },
     rootCompletion: { ageRange: '14-16 years', ageMonths: 180 },
-    crownCompletion: 96
+    crownCompletion: { ageRange: '7-8 years', ageMonths: 96 }
   },
   {
     id: 'permanent-maxillary-third-molar-right',
@@ -471,7 +474,7 @@ export const permanentTeeth: ToothData[] = [
     side: 'right',
     eruption: { ageRange: '17-21 years', ageMonths: 228 },
     rootCompletion: { ageRange: '18-25 years', ageMonths: 276 },
-    crownCompletion: 192
+    crownCompletion: { ageRange: '12-16 years', ageMonths: 192 }
   },
   {
     id: 'permanent-maxillary-third-molar-left',
@@ -483,7 +486,7 @@ export const permanentTeeth: ToothData[] = [
     side: 'left',
     eruption: { ageRange: '17-21 years', ageMonths: 228 },
     rootCompletion: { ageRange: '18-25 years', ageMonths: 276 },
-    crownCompletion: 192
+    crownCompletion: { ageRange: '12-16 years', ageMonths: 192 }
   },
   // Mandibular Permanent Teeth
   {
@@ -496,7 +499,7 @@ export const permanentTeeth: ToothData[] = [
     side: 'right',
     eruption: { ageRange: '6-7 years', ageMonths: 78 },
     rootCompletion: { ageRange: '9-10 years', ageMonths: 114 },
-    crownCompletion: 60
+    crownCompletion: { ageRange: '4-5 years', ageMonths: 60 }
   },
   {
     id: 'permanent-mandibular-central-incisor-left',
@@ -508,7 +511,7 @@ export const permanentTeeth: ToothData[] = [
     side: 'left',
     eruption: { ageRange: '6-7 years', ageMonths: 78 },
     rootCompletion: { ageRange: '9-10 years', ageMonths: 114 },
-    crownCompletion: 60
+    crownCompletion: { ageRange: '4-5 years', ageMonths: 60 }
   },
   {
     id: 'permanent-mandibular-lateral-incisor-right',
@@ -520,7 +523,7 @@ export const permanentTeeth: ToothData[] = [
     side: 'right',
     eruption: { ageRange: '7-8 years', ageMonths: 90 },
     rootCompletion: { ageRange: '10-11 years', ageMonths: 126 },
-    crownCompletion: 60
+    crownCompletion: { ageRange: '4-5 years', ageMonths: 60 }
   },
   {
     id: 'permanent-mandibular-lateral-incisor-left',
@@ -532,7 +535,7 @@ export const permanentTeeth: ToothData[] = [
     side: 'left',
     eruption: { ageRange: '7-8 years', ageMonths: 90 },
     rootCompletion: { ageRange: '10-11 years', ageMonths: 126 },
-    crownCompletion: 60
+    crownCompletion: { ageRange: '4-5 years', ageMonths: 60 }
   },
   {
     id: 'permanent-mandibular-canine-right',
@@ -544,7 +547,7 @@ export const permanentTeeth: ToothData[] = [
     side: 'right',
     eruption: { ageRange: '9-10 years', ageMonths: 114 },
     rootCompletion: { ageRange: '12-14 years', ageMonths: 156 },
-    crownCompletion: 84
+    crownCompletion: { ageRange: '6-7 years', ageMonths: 84 }
   },
   {
     id: 'permanent-mandibular-canine-left',
@@ -556,7 +559,7 @@ export const permanentTeeth: ToothData[] = [
     side: 'left',
     eruption: { ageRange: '9-10 years', ageMonths: 114 },
     rootCompletion: { ageRange: '12-14 years', ageMonths: 156 },
-    crownCompletion: 84
+    crownCompletion: { ageRange: '6-7 years', ageMonths: 84 }
   },
   {
     id: 'permanent-mandibular-first-premolar-right',
@@ -568,7 +571,7 @@ export const permanentTeeth: ToothData[] = [
     side: 'right',
     eruption: { ageRange: '10-12 years', ageMonths: 132 },
     rootCompletion: { ageRange: '12-13 years', ageMonths: 150 },
-    crownCompletion: 72
+    crownCompletion: { ageRange: '5-6 years', ageMonths: 72 }
   },
   {
     id: 'permanent-mandibular-first-premolar-left',
@@ -580,7 +583,7 @@ export const permanentTeeth: ToothData[] = [
     side: 'left',
     eruption: { ageRange: '10-12 years', ageMonths: 132 },
     rootCompletion: { ageRange: '12-13 years', ageMonths: 150 },
-    crownCompletion: 72
+    crownCompletion: { ageRange: '5-6 years', ageMonths: 72 }
   },
   {
     id: 'permanent-mandibular-second-premolar-right',
@@ -592,7 +595,7 @@ export const permanentTeeth: ToothData[] = [
     side: 'right',
     eruption: { ageRange: '11-12 years', ageMonths: 138 },
     rootCompletion: { ageRange: '13-14 years', ageMonths: 162 },
-    crownCompletion: 84
+    crownCompletion: { ageRange: '6-7 years', ageMonths: 84 }
   },
   {
     id: 'permanent-mandibular-second-premolar-left',
@@ -604,7 +607,7 @@ export const permanentTeeth: ToothData[] = [
     side: 'left',
     eruption: { ageRange: '11-12 years', ageMonths: 138 },
     rootCompletion: { ageRange: '13-14 years', ageMonths: 162 },
-    crownCompletion: 84
+    crownCompletion: { ageRange: '6-7 years', ageMonths: 84 }
   },
   {
     id: 'permanent-mandibular-first-molar-right',
@@ -616,7 +619,7 @@ export const permanentTeeth: ToothData[] = [
     side: 'right',
     eruption: { ageRange: '6-7 years', ageMonths: 78 },
     rootCompletion: { ageRange: '9-10 years', ageMonths: 114 },
-    crownCompletion: 36
+    crownCompletion: { ageRange: '2½–3 years', ageMonths: 36 }
   },
   {
     id: 'permanent-mandibular-first-molar-left',
@@ -628,7 +631,7 @@ export const permanentTeeth: ToothData[] = [
     side: 'left',
     eruption: { ageRange: '6-7 years', ageMonths: 78 },
     rootCompletion: { ageRange: '9-10 years', ageMonths: 114 },
-    crownCompletion: 36
+    crownCompletion: { ageRange: '2½–3 years', ageMonths: 36 }
   },
   {
     id: 'permanent-mandibular-second-molar-right',
@@ -640,7 +643,7 @@ export const permanentTeeth: ToothData[] = [
     side: 'right',
     eruption: { ageRange: '11-13 years', ageMonths: 144 },
     rootCompletion: { ageRange: '14-15 years', ageMonths: 174 },
-    crownCompletion: 96
+    crownCompletion: { ageRange: '7-8 years', ageMonths: 96 }
   },
   {
     id: 'permanent-mandibular-second-molar-left',
@@ -652,7 +655,7 @@ export const permanentTeeth: ToothData[] = [
     side: 'left',
     eruption: { ageRange: '11-13 years', ageMonths: 144 },
     rootCompletion: { ageRange: '14-15 years', ageMonths: 174 },
-    crownCompletion: 96
+    crownCompletion: { ageRange: '7-8 years', ageMonths: 96 }
   },
   {
     id: 'permanent-mandibular-third-molar-right',
@@ -664,7 +667,7 @@ export const permanentTeeth: ToothData[] = [
     side: 'right',
     eruption: { ageRange: '17-21 years', ageMonths: 228 },
     rootCompletion: { ageRange: '18-25 years', ageMonths: 276 },
-    crownCompletion: 192
+    crownCompletion: { ageRange: '12-16 years', ageMonths: 192 }
   },
   {
     id: 'permanent-mandibular-third-molar-left',
@@ -676,7 +679,7 @@ export const permanentTeeth: ToothData[] = [
     side: 'left',
     eruption: { ageRange: '17-21 years', ageMonths: 228 },
     rootCompletion: { ageRange: '18-25 years', ageMonths: 276 },
-    crownCompletion: 192
+    crownCompletion: { ageRange: '12-16 years', ageMonths: 192 }
   }
 ];
 

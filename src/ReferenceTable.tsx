@@ -3,95 +3,21 @@ import { createSignal, For } from 'solid-js';
 import { permanentTeeth, primaryTeeth, type ToothData } from './data/toothData';
 
 
-// Import the match-sorter utils for fuzzy filtering
-import { rankItem, type RankingInfo } from '@tanstack/match-sorter-utils';
 
-// Extend the table types to include both fuzzy and exact filters
-declare module '@tanstack/solid-table' {
-  interface FilterFns {
-    fuzzy: FilterFn<unknown>
-    exact: FilterFn<unknown>
-  }
-  interface FilterMeta {
-    itemRank: RankingInfo
-  }
-}
-
-
-const columnHelper = createColumnHelper<ToothData>();
-
-// // Define a custom fuzzy filter function that will apply ranking info to rows
-// const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
-//   // Rank the item
-//   const itemRank = rankItem(row.getValue(columnId), value)
-//
-//   // Store the itemRank info
-//   addMeta({
-//     itemRank,
-//   })
-//
-//   // Return if the item should be filtered in/out
-//   return itemRank.passed
-// }
-//
-// // Define a custom fuzzy sort function that will sort by rank if the row has ranking information
-// const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
-//   let dir = 0
-//
-//   // Only sort by rank if the column has ranking information
-//   if (rowA.columnFiltersMeta[columnId]) {
-//     dir = compareItems(
-//       rowA.columnFiltersMeta[columnId]?.itemRank!,
-//       rowB.columnFiltersMeta[columnId]?.itemRank!
-//     )
-//   }
-//
-//   // Provide an alphanumeric fallback for when the item ranks are equal
-//   return dir === 0 ? sortingFns.alphanumeric(rowA, rowB, columnId) : dir
-// }
-
-// Custom global fuzzy filter that searches across multiple fields
-const globalFuzzyFilter: FilterFn<any> = (row, _, value, addMeta) => {
-  if (!value) return true;
-
-  const data = row.original;
-
-  // Define all searchable fields
-  const searchableFields = [
-    data.name || '',
-    data.type || '',
-    data.position || '',
-    data.side || '',
-    data.eruption?.ageRange || '',
-    data.shedding?.ageRange || '',
-    data.rootCompletion?.ageRange || '',
-    // Combined display text
-    `${data.position} ${data.side} ${data.name}`,
-  ];
-
-  // Combine all fields into a single searchable string
-  const combinedText = searchableFields.join(' ');
-
-  // Use rankItem on the combined text
-  const itemRank = rankItem(combinedText, value);
-
-  // Store the itemRank info
-  addMeta({
-    itemRank,
-  });
-
-  // Return if the item should be filtered in/out
-  return itemRank.passed;
-}
-
-// Non-fuzzy exact string matching filter
-const customGlobalFilter: FilterFn<any> = (row, _, filterValue, __) => {
+// Tokenized, unordered, partial substring search across multiple fields.
+// Example: "max can right" => matches "maxillary canine right"
+const tokenizedGlobalFilter: FilterFn<any> = (row, _, filterValue) => {
   if (!filterValue) return true;
 
-  const searchTerm = filterValue.toLowerCase().trim();
+  const raw = String(filterValue).toLowerCase().trim();
+  if (!raw) return true;
+
+  // split by whitespace, ignore empty tokens
+  const tokens = raw.split(/\s+/).filter(Boolean);
+
   const data = row.original;
 
-  // Define all searchable fields
+  // Build searchable strings for each record -- all lowercased
   const searchableFields = [
     data.name?.toLowerCase() || '',
     data.type?.toLowerCase() || '',
@@ -100,13 +26,16 @@ const customGlobalFilter: FilterFn<any> = (row, _, filterValue, __) => {
     data.eruption?.ageRange?.toLowerCase() || '',
     data.shedding?.ageRange?.toLowerCase() || '',
     data.rootCompletion?.ageRange?.toLowerCase() || '',
-    // You can also search the combined display text
-    `${data.position} ${data.side} ${data.name}`.toLowerCase()
-  ];
+    // combined full text
+    `${data.position} ${data.side} ${data.name}`.toLowerCase(),
+  ].join(' ');
 
-  // Check if any field contains the search term
-  return searchableFields.some(field => field.includes(searchTerm));
+  // Each token must appear somewhere (substring) in the combined searchable text.
+  // This enables tokens in any order and partial words.
+  return tokens.every((t) => searchableFields.includes(t));
 };
+
+const columnHelper = createColumnHelper<ToothData>();
 
 const defaultColumns = [
   columnHelper.accessor('name', {
@@ -127,28 +56,25 @@ const defaultColumns = [
           <span class="capitalize font-medium text-gray-100">
             {position} {side} {name}
           </span>
-          <span class="text-xs text-gray-400 mt-1">
-            {row.original.type === 'primary' ? 'Primary' : 'Permanent'}
+          <span class={`w-fit px-3 py-1 mt-1 rounded-full text-xs font-semibold ${row.original.type === 'primary'
+            ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30'
+            : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+            }`}>
+            {row.original.type.charAt(0).toUpperCase() + row.original.type.slice(1)}
           </span>
         </div>
       );
     },
   }),
 
-  columnHelper.accessor('type', {
-    id: 'type',
-    header: () => <span class="font-semibold text-gray-100">Type</span>,
-    cell: ({ cell }) => {
-      const type = cell.getValue();
-      return (
-        <span class={`inline-flex px-3 py-1 rounded-full text-xs font-semibold ${type === 'primary'
-          ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30'
-          : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
-          }`}>
-          {type.charAt(0).toUpperCase() + type.slice(1)}
-        </span>
-      );
-    },
+  columnHelper.accessor('crownCompletion.ageRange', {
+    id: 'crownCompletion',
+    header: () => <span class="font-semibold text-gray-100">Crown Completion</span>,
+    cell: ({ cell }) => (
+      <span class="text-gray-200 font-medium">
+        {cell.getValue()}
+      </span>
+    ),
   }),
 
   columnHelper.accessor('eruption.ageRange', {
@@ -191,7 +117,6 @@ const defaultColumns = [
 
 export default function ReferenceTable() {
   const [search, setSearch] = createSignal('');
-  const [isFuzzySearch, setIsFuzzySearch] = createSignal(false);
   const [toothTypeFilter, setToothTypeFilter] = createSignal('all'); // 'all', 'primary', 'permanent'
 
   // Filter data based on tooth type selection
@@ -205,15 +130,13 @@ export default function ReferenceTable() {
     get data() { return filteredData() },
     columns: defaultColumns,
     filterFns: {
-      fuzzy: globalFuzzyFilter,
-      exact: customGlobalFilter,
+      exact: tokenizedGlobalFilter,
+      fuzzy: tokenizedGlobalFilter
     },
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    get globalFilterFn() {
-      return isFuzzySearch() ? 'fuzzy' : 'exact';
-    },
+    globalFilterFn: tokenizedGlobalFilter,
     state: {
       get globalFilter() {
         return search()
@@ -251,9 +174,7 @@ export default function ReferenceTable() {
               </div>
               <input
                 type="text"
-                placeholder={isFuzzySearch()
-                  ? "Try fuzzy search: 'max cen', 'prmry mol sec', ..."
-                  : "Search teeth with exact matching..."}
+                placeholder="Try search: 'max cen', 'pri mol sec', ..."
                 value={search()}
                 oninput={(e) => setSearch(e.currentTarget.value)}
                 class="w-full pl-10 pr-4 py-3 bg-gray-700/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all duration-200"
@@ -283,35 +204,6 @@ export default function ReferenceTable() {
               </div>
             </div>
 
-            {/* Search Mode Toggle */}
-            <div class="flex flex-col items-center">
-              <label class="block text-sm font-semibold text-gray-200 mb-2">
-                Search Mode
-              </label>
-              <button
-                onclick={() => setIsFuzzySearch(!isFuzzySearch())}
-                class={`inline-flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${isFuzzySearch()
-                  ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30 hover:bg-purple-500/30'
-                  : 'bg-gray-600/50 text-gray-300 border border-gray-600/50 hover:bg-gray-600/70'
-                  }`}
-              >
-                {isFuzzySearch() ? (
-                  <>
-                    <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                      <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
-                    </svg>
-                    Fuzzy
-                  </>
-                ) : (
-                  <>
-                    <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                      <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
-                    </svg>
-                    Exact
-                  </>
-                )}
-              </button>
-            </div>
           </div>
 
           {/* Results Info */}
@@ -326,11 +218,7 @@ export default function ReferenceTable() {
                   </span>
                 )}
               </span>
-              {search() && table.getFilteredRowModel().rows.length > 0 && isFuzzySearch() && (
-                <span class="text-purple-300 text-xs font-medium">
-                  Sorted by relevance
-                </span>
-              )}
+              {search() && table.getFilteredRowModel().rows.length > 0}
             </div>
           </div>
         </div>
@@ -394,51 +282,22 @@ export default function ReferenceTable() {
       </div>
 
       {/* Search Tips */}
-      {!search() && (
-        <div class={`mt-6 p-4 rounded-xl border ${isFuzzySearch()
-          ? 'bg-purple-500/10 border-purple-500/20 backdrop-blur-sm'
-          : 'bg-gray-700/20 border-gray-600/30 backdrop-blur-sm'
-          }`}>
-          <h3 class={`text-sm font-semibold mb-3 ${isFuzzySearch() ? 'text-purple-300' : 'text-gray-300'
-            }`}>
-            {isFuzzySearch() ? '🔍 Fuzzy Search Examples:' : '📝 Exact Search Examples:'}
-          </h3>
-          <div class={`text-xs space-y-2 ${isFuzzySearch() ? 'text-purple-200' : 'text-gray-400'
-            }`}>
-            {isFuzzySearch() ? (
-              <>
-                <div class="flex items-center">
-                  <code class="bg-purple-500/20 text-purple-200 px-2 py-1 rounded text-xs mr-2">"uppr mlr"</code>
-                  <span>finds "upper molar"</span>
-                </div>
-                <div class="flex items-center">
-                  <code class="bg-purple-500/20 text-purple-200 px-2 py-1 rounded text-xs mr-2">"canin"</code>
-                  <span>finds "canine"</span>
-                </div>
-                <div class="flex items-center">
-                  <code class="bg-purple-500/20 text-purple-200 px-2 py-1 rounded text-xs mr-2">"prmry"</code>
-                  <span>finds "primary" teeth</span>
-                </div>
-              </>
-            ) : (
-              <>
-                <div class="flex items-center">
-                  <code class="bg-gray-600/50 text-gray-200 px-2 py-1 rounded text-xs mr-2">"upper molar"</code>
-                  <span>finds upper molars</span>
-                </div>
-                <div class="flex items-center">
-                  <code class="bg-gray-600/50 text-gray-200 px-2 py-1 rounded text-xs mr-2">"canine"</code>
-                  <span>finds canine teeth</span>
-                </div>
-                <div class="flex items-center">
-                  <code class="bg-gray-600/50 text-gray-200 px-2 py-1 rounded text-xs mr-2">"primary"</code>
-                  <span>finds primary teeth</span>
-                </div>
-              </>
-            )}
-          </div>
-        </div>
-      )}
+      {/* <div class="mt-6 p-4 rounded-xl border bg-gray-700/20 border-gray-600/30 backdrop-blur-sm"> */}
+      {/*   <div class="text-xs space-y-2  text-gray-300" > */}
+      {/*     <div class="flex items-center"> */}
+      {/*       <code class="bg-gray-600/50 text-gray-200 px-2 py-1 rounded text-xs mr-2">"max mol pri"</code> */}
+      {/*       <span>finds maxillary primary molars</span> */}
+      {/*     </div> */}
+      {/*     <div class="flex items-center"> */}
+      {/*       <code class="bg-gray-600/50 text-gray-200 px-2 py-1 rounded text-xs mr-2">"can"</code> */}
+      {/*       <span>finds canine teeth</span> */}
+      {/*     </div> */}
+      {/*     <div class="flex items-center"> */}
+      {/*       <code class="bg-gray-600/50 text-gray-200 px-2 py-1 rounded text-xs mr-2">"primary"</code> */}
+      {/*       <span>finds primary teeth</span> */}
+      {/*     </div> */}
+      {/*   </div> */}
+      {/* </div> */}
     </div>
   )
 }

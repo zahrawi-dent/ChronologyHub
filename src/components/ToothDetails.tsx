@@ -99,11 +99,11 @@ export const ToothDetails = (props: ToothDetailsProps) => {
                   </h4>
                   <div class="px-4 bg-secondary rounded-lg">
                     <div class="text-lg font-semibold">
-                      {tooth().crownCompletion}
+                      {tooth().crownCompletion.ageRange}
                     </div>
-                    {/* <div class="text-sm text-muted-foreground"> */}
-                    {/*   Average: {formatAge(tooth().rootCompletion!.ageMonths)} */}
-                    {/* </div> */}
+                    <div class="text-sm text-muted-foreground">
+                      Average: {formatAge(tooth().rootCompletion!.ageMonths)}
+                    </div>
                   </div>
                 </div>
               </Show>

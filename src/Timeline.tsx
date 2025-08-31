@@ -263,7 +263,7 @@ export default function Timeline() {
 
   // Keyboard navigation
   const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.key === 'ArrowRight' || event.key === ' ') {
+    if (event.key === 'ArrowRight') {
       event.preventDefault();
       goForward();
     } else if (event.key === 'ArrowLeft') {
@@ -465,7 +465,7 @@ export default function Timeline() {
           <div class="text-center text-sm text-gray-400 ">
             <div class="flex justify-center gap-4 flex-wrap">
               <span>← → Arrow keys to navigate</span>
-              <span>Space to advance</span>
+              {/* <span>Space to advance</span> */}
               <span>Home/End to jump</span>
             </div>
           </div>
