@@ -181,11 +181,19 @@ export const ToothChart = (props: ToothChartProps) => {
           Universal
         </Button>
         <Button
+          variant={getVariant('fdi')()}
+          size="sm"
+          onClick={() => setNotation('fdi')}
+        >
+          FDI
+        </Button>
+
+        <Button
           variant={getVariant('palmer')()}
           size="sm"
           onClick={() => setNotation('palmer')}
         >
-          FDI
+          Palmer
         </Button>
       </div>
 
