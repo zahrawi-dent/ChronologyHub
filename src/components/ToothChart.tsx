@@ -100,7 +100,7 @@ export const ToothChart = (props: ToothChartProps) => {
         <div class={`flex gap-1 ${tprops.isMaxillary ? 'flex-row-reverse' : ''}`}>
           <For each={tprops.rightTeeth}>
             {(tooth) => (
-              <div
+              <button
                 class={getToothClasses(tooth)}
                 onClick={() => props.onToothSelect?.(tooth)}
                 title={`${tooth.name} - ${tooth.notation[notation()]} (${tooth.type})`}
@@ -124,7 +124,7 @@ export const ToothChart = (props: ToothChartProps) => {
                     A
                   </Badge>
                 )}
-              </div>
+              </button>
             )}
           </For>
         </div>
@@ -138,7 +138,7 @@ export const ToothChart = (props: ToothChartProps) => {
         <div class="flex gap-1">
           <For each={tprops.leftTeeth}>
             {(tooth) => (
-              <div
+              <button
                 class={getToothClasses(tooth)}
                 onClick={() => props.onToothSelect?.(tooth)}
                 title={`${tooth.name} - ${tooth.notation[notation()]} (${tooth.type})`}
@@ -162,7 +162,7 @@ export const ToothChart = (props: ToothChartProps) => {
                     A
                   </Badge>
                 )}
-              </div>
+              </button>
             )}
           </For>
         </div>

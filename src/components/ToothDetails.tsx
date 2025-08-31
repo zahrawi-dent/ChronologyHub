@@ -41,12 +41,9 @@ export const ToothDetails = (props: ToothDetailsProps) => {
                   }`}></div>
                 {tooth().position === 'maxillary' ? 'Upper' : 'Lower'} {tooth().name}
               </CardTitle>
-              <div class="flex gap-2">
+              <div class="flex gap-2 py-2">
                 <Badge variant={tooth().type === 'primary' ? 'secondary' : 'default'}>
                   {tooth().type === 'primary' ? 'Primary' : 'Permanent'}
-                </Badge>
-                <Badge variant="outline">
-                  {tooth().category}
                 </Badge>
                 <Badge variant="outline">
                   {tooth().side}
@@ -62,15 +59,15 @@ export const ToothDetails = (props: ToothDetailsProps) => {
                   Notation Systems
                 </h4>
                 <div class="grid grid-cols-3 gap-4">
-                  <div class="text-center p-3 bg-secondary rounded-lg">
+                  <div class="text-center px-3 bg-secondary rounded-lg">
                     <div class="font-semibold text-lg">{tooth().notation.universal}</div>
                     <div class="text-xs text-muted-foreground">Universal</div>
                   </div>
-                  <div class="text-center p-3 bg-secondary rounded-lg">
+                  <div class="text-center px-3 bg-secondary rounded-lg">
                     <div class="font-semibold text-lg">{tooth().notation.palmer}</div>
                     <div class="text-xs text-muted-foreground">Palmer</div>
                   </div>
-                  <div class="text-center p-3 bg-secondary rounded-lg">
+                  <div class="text-center px-3 bg-secondary rounded-lg">
                     <div class="font-semibold text-lg">{tooth().notation.fdi}</div>
                     <div class="text-xs text-muted-foreground">FDI</div>
                   </div>
@@ -83,7 +80,7 @@ export const ToothDetails = (props: ToothDetailsProps) => {
                   <Calendar class="h-4 w-4" />
                   Eruption
                 </h4>
-                <div class="p-4 bg-primary-light rounded-lg">
+                <div class="px-4 bg-primary-light rounded-lg">
                   <div class="text-lg font-semibold text-primary">
                     {tooth().eruption.ageRange}
                   </div>
@@ -93,6 +90,24 @@ export const ToothDetails = (props: ToothDetailsProps) => {
                 </div>
               </div>
 
+              {/* Crown Completion */}
+              <Show when={tooth().rootCompletion}>
+                <div>
+                  <h4 class="font-semibold mb-3 flex items-center gap-2">
+                    <Clock class="h-4 w-4" />
+                    Crown Completion
+                  </h4>
+                  <div class="px-4 bg-secondary rounded-lg">
+                    <div class="text-lg font-semibold">
+                      {tooth().crownCompletion}
+                    </div>
+                    {/* <div class="text-sm text-muted-foreground"> */}
+                    {/*   Average: {formatAge(tooth().rootCompletion!.ageMonths)} */}
+                    {/* </div> */}
+                  </div>
+                </div>
+              </Show>
+
               {/* Shedding (Primary teeth only) */}
               <Show when={tooth().shedding}>
                 <div>
@@ -100,7 +115,7 @@ export const ToothDetails = (props: ToothDetailsProps) => {
                     <Calendar class="h-4 w-4" />
                     Shedding
                   </h4>
-                  <div class="p-4 bg-accent-light rounded-lg">
+                  <div class="px-4 bg-accent-light rounded-lg">
                     <div class="text-lg font-semibold text-accent">
                       {tooth().shedding!.ageRange}
                     </div>
@@ -118,7 +133,7 @@ export const ToothDetails = (props: ToothDetailsProps) => {
                     <Clock class="h-4 w-4" />
                     Root Completion
                   </h4>
-                  <div class="p-4 bg-secondary rounded-lg">
+                  <div class="px-4 bg-secondary rounded-lg">
                     <div class="text-lg font-semibold">
                       {tooth().rootCompletion!.ageRange}
                     </div>
@@ -130,21 +145,21 @@ export const ToothDetails = (props: ToothDetailsProps) => {
               </Show>
 
               {/* Position Details */}
-              <div>
-                <h4 class="font-semibold mb-3">Position Details</h4>
-                <div class="grid grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <div class="font-medium">Arch</div>
-                    <div class="text-muted-foreground capitalize">
-                      {tooth().position === 'maxillary' ? 'Upper (Maxillary)' : 'Lower (Mandibular)'}
-                    </div>
-                  </div>
-                  <div>
-                    <div class="font-medium">Side</div>
-                    <div class="text-muted-foreground capitalize">{tooth().side}</div>
-                  </div>
-                </div>
-              </div>
+              {/* <div> */}
+              {/*   <h4 class="font-semibold mb-3">Position Details</h4> */}
+              {/*   <div class="grid grid-cols-2 gap-4 text-sm"> */}
+              {/*     <div> */}
+              {/*       <div class="font-medium">Arch</div> */}
+              {/*       <div class="text-muted-foreground capitalize"> */}
+              {/*         {tooth().position === 'maxillary' ? 'Upper (Maxillary)' : 'Lower (Mandibular)'} */}
+              {/*       </div> */}
+              {/*     </div> */}
+              {/*     <div> */}
+              {/*       <div class="font-medium">Side</div> */}
+              {/*       <div class="text-muted-foreground capitalize">{tooth().side}</div> */}
+              {/*     </div> */}
+              {/*   </div> */}
+              {/* </div> */}
             </CardContent>
           </>
         )}
