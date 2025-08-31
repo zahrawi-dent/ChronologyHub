@@ -27,8 +27,8 @@ type TimelineStep = {
 export default function Timeline() {
   const [currentStep, setCurrentStep] = createSignal(0);
   const [isAnimating, setIsAnimating] = createSignal(false);
-  const [isAutoPlaying, setIsAutoPlaying] = createSignal(false);
-  const [autoPlaySpeed, setAutoPlaySpeed] = createSignal(1000); // milliseconds
+  // const [isAutoPlaying, setIsAutoPlaying] = createSignal(false);
+  // const [autoPlaySpeed, setAutoPlaySpeed] = createSignal(1000); // milliseconds
   const [selectedTooth, setSelectedTooth] = createSignal<ToothData | null>(null);
   const [recentlyEruptedTeeth, setRecentlyEruptedTeeth] = createSignal<Set<string>>(new Set());
 
@@ -49,18 +49,18 @@ export default function Timeline() {
     });
 
     // Add primary tooth shedding
-    primaryTeeth.forEach(tooth => {
-      if (tooth.shedding) {
-        events.push({
-          id: `shed-${tooth.id}`,
-          type: 'shedding',
-          tooth,
-          ageMonths: tooth.shedding.ageMonths,
-          ageDisplay: tooth.shedding.ageRange,
-          description: `${tooth.position} ${tooth.side} ${tooth.name} sheds`
-        });
-      }
-    });
+    // primaryTeeth.forEach(tooth => {
+    //   // if (tooth.shedding) {
+    //   events.push({
+    //     id: `shed-${tooth.id}`,
+    //     type: 'shedding',
+    //     tooth,
+    //     ageMonths: tooth.shedding!.ageMonths,
+    //     ageDisplay: tooth.shedding!.ageRange,
+    //     description: `${tooth.position} ${tooth.side} ${tooth.name} sheds`
+    //   });
+    //   // }
+    // });
 
     // Add permanent tooth eruptions
     permanentTeeth.forEach(tooth => {
@@ -74,17 +74,19 @@ export default function Timeline() {
       });
     });
 
-    // Sort by age (months), then by type (eruption before shedding at same age)
-    return events.sort((a, b) => {
-      if (a.ageMonths !== b.ageMonths) {
-        return a.ageMonths - b.ageMonths;
-      }
-      // At same age, shedding comes before eruption
-      if (a.type !== b.type) {
-        return a.type === 'shedding' ? -1 : 1;
-      }
-      return 0;
-    });
+
+    return events.sort((a, b) => a.ageMonths - b.ageMonths);
+    // // Sort by age (months), then by type (eruption before shedding at same age)
+    // return events.sort((a, b) => {
+    //   if (a.ageMonths !== b.ageMonths) {
+    //     return a.ageMonths - b.ageMonths;
+    //   }
+    //   // At same age, shedding comes before eruption
+    //   if (a.type !== b.type) {
+    //     return a.type === 'shedding' ? -1 : 1;
+    //   }
+    //   return 0;
+    // });
   });
 
   // Group timeline events into steps (handling simultaneous events)
@@ -144,28 +146,53 @@ export default function Timeline() {
 
     return steps;
   });
+  // Helper: get the FDI of the primary predecessor for a permanent tooth
+  function fdiPredecessorOf(permanent: ToothData): string | null {
+    const fdi = permanent.notation?.fdi; // e.g., "14"
+    if (!fdi || fdi.length < 2) return null;
+
+    const quadrant = parseInt(fdi[0], 10);
+    const pos = parseInt(fdi[1], 10);
+    if (Number.isNaN(quadrant) || Number.isNaN(pos)) return null;
+
+    // Only positions 1–5 have primary predecessors (incisors, canines, PREMOLARS)
+    if (pos < 1 || pos > 5) return null;
+
+    // Primary quadrants are permanent+4 (1→5, 2→6, 3→7, 4→8)
+    const primaryQuadrant = quadrant + 4;
+    const primaryPos = pos;
+
+    return `${primaryQuadrant}${primaryPos}`; // e.g., "54" (primary first molar) for "14" (perm first premolar)
+  }
 
   // Get current visible teeth based on timeline step
   const visibleTeeth = createMemo(() => {
     const visible: ToothData[] = [];
     const currentStepIndex = currentStep();
 
-    // Process all steps up to current step
     for (let i = 1; i <= currentStepIndex; i++) {
       const step = timelineSteps()[i];
       if (!step) break;
 
       step.events.forEach(event => {
-        if (event.type === 'eruption') {
-          // Add erupted tooth
-          visible.push(event.tooth);
-        } else if (event.type === 'shedding') {
-          // Remove shed tooth
-          const index = visible.findIndex(t => t.id === event.tooth.id);
-          if (index !== -1) {
-            visible.splice(index, 1);
+        if (event.type !== 'eruption') return;
+
+        // If a permanent with a predecessor erupts, remove that primary (if present)
+        if (event.tooth.type === 'permanent') {
+          const predFdi = fdiPredecessorOf(event.tooth);
+          if (predFdi) {
+            const idx = visible.findIndex(
+              t => t.type === 'primary' && t.notation?.fdi === predFdi
+            );
+            if (idx !== -1) {
+              visible.splice(idx, 1); // replace primary with permanent
+            }
           }
+          // If predFdi is null (molars 6–8), do nothing — they don't replace anything
         }
+
+        // Add the erupted tooth (primary or permanent)
+        visible.push(event.tooth);
       });
     }
 
@@ -252,19 +279,19 @@ export default function Timeline() {
   };
 
   // Auto-play functionality
-  createEffect(() => {
-    if (isAutoPlaying() && !isComplete()) {
-      const interval = setInterval(() => {
-        if (currentStep() < timelineSteps().length - 1) {
-          goForward();
-        } else {
-          setIsAutoPlaying(false);
-        }
-      }, autoPlaySpeed());
-
-      return () => clearInterval(interval);
-    }
-  });
+  // createEffect(() => {
+  //   if (isAutoPlaying() && !isComplete()) {
+  //     const interval = setInterval(() => {
+  //       if (currentStep() < timelineSteps().length - 1) {
+  //         goForward();
+  //       } else {
+  //         setIsAutoPlaying(false);
+  //       }
+  //     }, autoPlaySpeed());
+  //
+  //     return () => clearInterval(interval);
+  //   }
+  // });
 
   // Add keyboard event listener
   createEffect(() => {
@@ -425,14 +452,14 @@ export default function Timeline() {
           {/* </div> */}
 
           {/* Completion Message */}
-          {isComplete() && (
-            <div class="text-center p-6 bg-green-500/20 border border-green-500/30 rounded-xl">
-              <div class="text-2xl font-bold text-green-300 mb-2">🎉 Development Complete!</div>
-              <div class="text-green-200">
-                All teeth have erupted. The dental development timeline is now complete.
-              </div>
-            </div>
-          )}
+          {/* {isComplete() && ( */}
+          {/*   <div class="text-center p-6 bg-green-500/20 border border-green-500/30 rounded-xl"> */}
+          {/*     <div class="text-2xl font-bold text-green-300 mb-2">🎉 Development Complete!</div> */}
+          {/*     <div class="text-green-200"> */}
+          {/*       All teeth have erupted. The dental development timeline is now complete. */}
+          {/*     </div> */}
+          {/*   </div> */}
+          {/* )} */}
 
           {/* Keyboard Shortcuts */}
           <div class="text-center text-sm text-gray-400 ">
