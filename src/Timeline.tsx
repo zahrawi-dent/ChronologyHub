@@ -369,9 +369,9 @@ export default function Timeline() {
             <div class="text-2xl font-bold text-white">
               {currentAge()}
             </div>
-            <div class="text-lg text-gray-300">
-              {currentEventDescription()}
-            </div>
+            {/* <div class="text-lg text-gray-300"> */}
+            {/*   {currentEventDescription()} */}
+            {/* </div> */}
             {/* Show multiple events if they occur simultaneously */}
             {/* {timelineSteps()[currentStep()]?.events.some(e => e.type === 'eruption') && ( */}
             {/*   <div class="text-sm text-gray-400"> */}
