@@ -38,7 +38,7 @@ export default function Footer() {
             </A>
 
             <A
-              href="https://discord.com/invite/solidjs"
+              href="https://discord.com/"
               target="_blank"
               rel="noopener noreferrer"
               class="flex items-center gap-2 text-gray-300 hover:text-white transition-colors duration-200"
@@ -61,12 +61,10 @@ export default function Footer() {
         <div class="mt-8 pt-6 border-t border-gray-700/30">
           <div class="flex flex-col md:flex-row justify-between items-center gap-4">
             <p class="text-gray-500 text-sm text-center md:text-left">
-              © {new Date().getFullYear()} Chronology Hub. Built with ❤️ using SolidJS.
+              Built in Egypt with ❤️ for the dental community.
             </p>
             <div class="flex items-center gap-4 text-sm text-gray-500">
-              <span>v1.0.0</span>
-              <span>•</span>
-              <span>MIT License</span>
+              <span>AGPLv3 License</span>
             </div>
           </div>
         </div>
