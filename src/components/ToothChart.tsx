@@ -86,15 +86,6 @@ export const ToothChart = (props: ToothChartProps) => {
     <div class="text-center">
       <h3 class="text-lg font-semibold mb-4">{tprops.title}</h3>
 
-      {/* Mixed dentition indicator */}
-      {isMixedDentition() && (
-        <div class="mb-3">
-          <Badge variant="secondary" class="text-xs">
-            Mixed Dentition Stage
-          </Badge>
-        </div>
-      )}
-
       <div class="flex justify-center items-center gap-1 max-w-4xl mx-auto relative">
         {/* Right side teeth */}
         <div class={`flex gap-1 ${tprops.isMaxillary ? 'flex-row-reverse' : ''}`}>
@@ -198,6 +189,15 @@ export const ToothChart = (props: ToothChartProps) => {
       </div>
 
       <Card class="p-6">
+
+        {/* Mixed dentition indicator */}
+        {isMixedDentition() && (
+          <div class="mb-3">
+            <Badge variant="secondary" class="text-xs">
+              Mixed Dentition Stage
+            </Badge>
+          </div>
+        )}
         <CardContent class="space-y-8">
           {/* Maxillary Arch */}
           <ArchDisplay
