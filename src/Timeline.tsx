@@ -1,4 +1,4 @@
-import { createSignal, createMemo, For, createEffect } from 'solid-js';
+import { createSignal, createMemo, For, createEffect, onMount } from 'solid-js';
 import { type ToothData, primaryTeeth, permanentTeeth } from './data/toothData';
 import { ToothChart } from './components/ToothChart';
 import { Button } from './components/Button';
@@ -24,6 +24,35 @@ type TimelineStep = {
   description: string;
 };
 
+// Saved timeline session type
+type SavedTimelineSession = {
+  currentStep: number;
+  selectedToothId: string | null;
+  recentlyEruptedTeeth: string[];
+};
+
+// localStorage keys
+const TIMELINE_SESSION_KEY = 'timeline_session';
+
+// localStorage utility functions
+const saveTimelineSession = (session: SavedTimelineSession) => {
+  try {
+    localStorage.setItem(TIMELINE_SESSION_KEY, JSON.stringify(session));
+  } catch (error) {
+    console.warn('Failed to save timeline session to localStorage:', error);
+  }
+};
+
+const loadTimelineSession = (): SavedTimelineSession | null => {
+  try {
+    const saved = localStorage.getItem(TIMELINE_SESSION_KEY);
+    return saved ? JSON.parse(saved) : null;
+  } catch (error) {
+    console.warn('Failed to load timeline session from localStorage:', error);
+    return null;
+  }
+};
+
 export default function Timeline() {
   const [currentStep, setCurrentStep] = createSignal(0);
   const [isAnimating, setIsAnimating] = createSignal(false);
@@ -31,6 +60,26 @@ export default function Timeline() {
   // const [autoPlaySpeed, setAutoPlaySpeed] = createSignal(1000); // milliseconds
   const [selectedTooth, setSelectedTooth] = createSignal<ToothData | null>(null);
   const [recentlyEruptedTeeth, setRecentlyEruptedTeeth] = createSignal<Set<string>>(new Set());
+
+  // Load saved session on mount
+  onMount(() => {
+    const savedSession = loadTimelineSession();
+    if (savedSession) {
+      setCurrentStep(savedSession.currentStep);
+
+      // Restore selected tooth if it exists
+      if (savedSession.selectedToothId) {
+        const allTeeth = [...primaryTeeth, ...permanentTeeth];
+        const tooth = allTeeth.find(t => t.id === savedSession.selectedToothId);
+        if (tooth) {
+          setSelectedTooth(tooth);
+        }
+      }
+
+      // Restore recently erupted teeth
+      setRecentlyEruptedTeeth(new Set(savedSession.recentlyEruptedTeeth));
+    }
+  });
 
   // Create timeline events from tooth data
   const timelineEvents = createMemo(() => {
@@ -213,10 +262,16 @@ export default function Timeline() {
 
       // If this is the final eruption step (third molars)
       if (currentStepIndex === timelineSteps().length - 1 && newlyEruptedIds.size > 0) {
-        setTimeout(() => setRecentlyEruptedTeeth(new Set<string>()), 2000);
+        setTimeout(() => {
+          setRecentlyEruptedTeeth(new Set<string>());
+          saveCurrentSession();
+        }, 2000);
+      } else {
+        saveCurrentSession();
       }
     } else {
       setRecentlyEruptedTeeth(new Set<string>());
+      saveCurrentSession();
     }
   });
 
@@ -226,12 +281,25 @@ export default function Timeline() {
     return step ? step.ageDisplay : 'Birth';
   });
 
+  // Save current timeline session to localStorage
+  const saveCurrentSession = () => {
+    const session: SavedTimelineSession = {
+      currentStep: currentStep(),
+      selectedToothId: selectedTooth()?.id || null,
+      recentlyEruptedTeeth: Array.from(recentlyEruptedTeeth()),
+    };
+    saveTimelineSession(session);
+  };
+
   // Navigation functions
   const goForward = () => {
     if (currentStep() < timelineSteps().length - 1 && !isAnimating()) {
       setIsAnimating(true);
       setCurrentStep(prev => prev + 1);
-      setTimeout(() => setIsAnimating(false), 500);
+      setTimeout(() => {
+        setIsAnimating(false);
+        saveCurrentSession();
+      }, 500);
     }
   };
 
@@ -239,7 +307,10 @@ export default function Timeline() {
     if (currentStep() > 0 && !isAnimating()) {
       setIsAnimating(true);
       setCurrentStep(prev => prev - 1);
-      setTimeout(() => setIsAnimating(false), 500);
+      setTimeout(() => {
+        setIsAnimating(false);
+        saveCurrentSession();
+      }, 500);
     }
   };
 
@@ -248,7 +319,10 @@ export default function Timeline() {
       setIsAnimating(true);
       setCurrentStep(0);
       setRecentlyEruptedTeeth(new Set<string>());
-      setTimeout(() => setIsAnimating(false), 500);
+      setTimeout(() => {
+        setIsAnimating(false);
+        saveCurrentSession();
+      }, 500);
     }
   };
 
@@ -257,7 +331,10 @@ export default function Timeline() {
       setIsAnimating(true);
       setCurrentStep(timelineSteps().length - 1);
       setRecentlyEruptedTeeth(new Set<string>());
-      setTimeout(() => setIsAnimating(false), 500);
+      setTimeout(() => {
+        setIsAnimating(false);
+        saveCurrentSession();
+      }, 500);
     }
   };
 
@@ -479,14 +556,17 @@ export default function Timeline() {
         {/* <div class="lg:col-span-2 space-y-4"> */}
         <div class="xl:col-span-2 space-y-4">
           <h2 class="text-2xl font-bold text-white text-center">Current Dental State</h2>
-          <ToothChart
-            teeth={visibleTeeth()}
-            onToothSelect={setSelectedTooth}
-            selectedTooth={() => selectedTooth()}
-            recentlyEruptedTeeth={recentlyEruptedTeeth}
-            showMixedDentitionIndicator={true}
-            showRecentlyErupted={true}
-          />
+           <ToothChart
+             teeth={visibleTeeth()}
+             onToothSelect={(tooth) => {
+               setSelectedTooth(tooth);
+               saveCurrentSession();
+             }}
+             selectedTooth={() => selectedTooth()}
+             recentlyEruptedTeeth={recentlyEruptedTeeth}
+             showMixedDentitionIndicator={true}
+             showRecentlyErupted={true}
+           />
 
         </div>
 
@@ -520,13 +600,16 @@ export default function Timeline() {
                       ? 'bg-gray-700/30 border-gray-600/50 text-gray-300'
                       : 'bg-gray-800/30 border-gray-700/50 text-gray-500'
                     }`}
-                  onClick={() => {
-                    if (!isAnimating()) {
-                      setIsAnimating(true);
-                      setCurrentStep(index());
-                      setTimeout(() => setIsAnimating(false), 500);
-                    }
-                  }}
+                   onClick={() => {
+                     if (!isAnimating()) {
+                       setIsAnimating(true);
+                       setCurrentStep(index());
+                       setTimeout(() => {
+                         setIsAnimating(false);
+                         saveCurrentSession();
+                       }, 500);
+                     }
+                   }}
                 >
                   <div class="flex items-center justify-between mb-2">
                     <div class="flex items-center gap-3">

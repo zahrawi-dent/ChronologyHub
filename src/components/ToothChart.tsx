@@ -233,12 +233,12 @@ export const ToothChart = (props: ToothChartProps) => {
               <div class="w-4 h-4 rounded bg-purple-200 border border-purple-300"></div>
               <span>Molars</span>
             </div>
-            {props.showRecentlyErupted && (
-              <div class="flex items-center gap-1">
-                <div class="w-4 h-4 rounded bg-yellow-400 border border-yellow-500 animate-pulse"></div>
-                <span>Recently Erupted</span>
-              </div>
-            )}
+            {/* {props.showRecentlyErupted && ( */}
+            {/*   <div class="flex items-center gap-1"> */}
+            {/*     <div class="w-4 h-4 rounded bg-yellow-400 border border-yellow-500 animate-pulse"></div> */}
+            {/*     <span>Recently Erupted</span> */}
+            {/*   </div> */}
+            {/* )} */}
             <div class="flex items-center gap-1">
               <Badge variant="secondary" class="text-xs">P</Badge>
               <span>Primary</span>
