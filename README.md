@@ -29,16 +29,11 @@ A comprehensive dental development reference application built with SolidJS, fea
 - **Tables**: [TanStack Table](https://tanstack.com/table)
 - **Icons**: [Solid Icons](https://solid-icons.vercel.app)
 
-## Getting Started
-
-
 
 ## Community
 
 Join our community for discussions, support, and contributions:
-
-- **GitHub**: [View source code and contribute](https://github.com/sst/opencode)
-- **Discord**: [Join the SolidJS community](https://discord.com/invite/solidjs)
+- **Discord**: [Join the SolidJS community](https://discord.gg/whYZhM8r)
 
 ## Contributing
 

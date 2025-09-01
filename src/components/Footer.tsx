@@ -38,7 +38,7 @@ export default function Footer() {
             </A>
 
             <A
-              href="https://discord.com/"
+              href="https://discord.gg/whYZhM8r"
               target="_blank"
               rel="noopener noreferrer"
               class="flex items-center gap-2 text-gray-300 hover:text-white transition-colors duration-200"
