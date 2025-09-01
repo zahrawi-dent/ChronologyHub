@@ -1,6 +1,7 @@
 import { type JSX } from "solid-js";
 import HeroSection from "./components/Hero";
 import Tabs from "./components/Tabs";
+import Footer from "./components/Footer";
 
 type LayoutProps = {
   children?: JSX.Element
@@ -24,6 +25,7 @@ export function Layout(props: LayoutProps) {
         </div>
         {props.children}
       </main>
+      <Footer />
     </>
   );
 }

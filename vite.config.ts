@@ -7,7 +7,7 @@ export default defineConfig({
     solid(),
     tailwindcss(),
   ],
-  base: process.env.VITE_BASE_PATH || "/chronohub/",
+  base: "/chronohub/",
   esbuild: {
     drop: ['console', 'debugger'],
   },

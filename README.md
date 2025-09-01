@@ -33,6 +33,13 @@ A comprehensive dental development reference application built with SolidJS, fea
 
 
 
+## Community
+
+Join our community for discussions, support, and contributions:
+
+- **GitHub**: [View source code and contribute](https://github.com/sst/opencode)
+- **Discord**: [Join the SolidJS community](https://discord.com/invite/solidjs)
+
 ## Contributing
 
 1. Fork the repository
