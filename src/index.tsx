@@ -8,6 +8,7 @@ import ChartTab from "./ChartTab";
 import StudyMode from "./StudyMode";
 import Timeline from "./Timeline";
 import NotFound from "./NotFound";
+import { initPosthog } from "./posthog";
 
 // Configuration
 const config = {
@@ -20,6 +21,7 @@ if (!wrapper) {
   throw new Error("Wrapper div not found");
 }
 
+initPosthog()
 
 render(
   () => (
@@ -35,6 +37,7 @@ render(
   ),
   wrapper
 );
+
 
 
 
