@@ -19,6 +19,62 @@ type StudySession = {
   studyType: StudyModeType;
 };
 
+type SavedSession = {
+  currentIndex: number;
+  showAnswer: boolean;
+  studyType: StudyModeType;
+  shuffledTeeth: ToothData[];
+  correctAnswers: number;
+  totalAnswered: number;
+  isSessionActive: boolean;
+};
+
+type SavedStats = {
+  bestScore: number;
+  studyHistory: StudySession[];
+};
+
+// localStorage keys
+const SESSION_KEY = 'studyMode_session';
+const STATS_KEY = 'studyMode_stats';
+
+// localStorage utility functions
+const saveSession = (session: SavedSession) => {
+  try {
+    localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+  } catch (error) {
+    console.warn('Failed to save session to localStorage:', error);
+  }
+};
+
+const loadSession = (): SavedSession | null => {
+  try {
+    const saved = localStorage.getItem(SESSION_KEY);
+    return saved ? JSON.parse(saved) : null;
+  } catch (error) {
+    console.warn('Failed to load session from localStorage:', error);
+    return null;
+  }
+};
+
+const saveStats = (stats: SavedStats) => {
+  try {
+    localStorage.setItem(STATS_KEY, JSON.stringify(stats));
+  } catch (error) {
+    console.warn('Failed to save stats to localStorage:', error);
+  }
+};
+
+const loadStats = (): SavedStats | null => {
+  try {
+    const saved = localStorage.getItem(STATS_KEY);
+    return saved ? JSON.parse(saved) : null;
+  } catch (error) {
+    console.warn('Failed to load stats from localStorage:', error);
+    return null;
+  }
+};
+
 export default function StudyMode() {
   // Core state
   const [currentIndex, setCurrentIndex] = createSignal(0);
@@ -39,6 +95,22 @@ export default function StudyMode() {
 
   const teeth = [primaryTeeth, permanentTeeth].flat();
 
+  // Save current session to localStorage
+  const saveCurrentSession = () => {
+    if (isSessionActive()) {
+      const session: SavedSession = {
+        currentIndex: currentIndex(),
+        showAnswer: showAnswer(),
+        studyType: studyType(),
+        shuffledTeeth: shuffledTeeth(),
+        correctAnswers: correctAnswers(),
+        totalAnswered: totalAnswered(),
+        isSessionActive: true,
+      };
+      saveSession(session);
+    }
+  };
+
   // Initialize session
   const startNewSession = () => {
     const shuffled = teeth.sort(() => Math.random() - 0.5);
@@ -49,6 +121,18 @@ export default function StudyMode() {
     setTotalAnswered(0);
     setIsSessionActive(true);
     setShowStats(false);
+
+    // Save new session to localStorage
+    const session: SavedSession = {
+      currentIndex: 0,
+      showAnswer: false,
+      studyType: studyType(),
+      shuffledTeeth: shuffled,
+      correctAnswers: 0,
+      totalAnswered: 0,
+      isSessionActive: true,
+    };
+    saveSession(session);
   };
 
   // End session and save stats
@@ -67,6 +151,16 @@ export default function StudyMode() {
     }
 
     setIsSessionActive(false);
+
+    // Save stats to localStorage
+    const stats: SavedStats = {
+      bestScore: bestScore(),
+      studyHistory: studyHistory(),
+    };
+    saveStats(stats);
+
+    // Clear session from localStorage
+    localStorage.removeItem(SESSION_KEY);
   };
 
   // Navigation
@@ -74,6 +168,7 @@ export default function StudyMode() {
     if (currentIndex() < shuffledTeeth().length - 1) {
       setCurrentIndex(currentIndex() + 1);
       setShowAnswer(false);
+      saveCurrentSession();
     } else {
       endSession();
     }
@@ -83,6 +178,7 @@ export default function StudyMode() {
     if (currentIndex() > 0) {
       setCurrentIndex(currentIndex() - 1);
       setShowAnswer(false);
+      saveCurrentSession();
     }
   };
 
@@ -92,6 +188,7 @@ export default function StudyMode() {
       setCorrectAnswers(prev => prev + 1);
       setTotalAnswered(prev => prev + 1);
       setShowAnswer(true);
+      saveCurrentSession();
     }
   };
 
@@ -99,12 +196,14 @@ export default function StudyMode() {
     if (!showAnswer()) {
       setTotalAnswered(prev => prev + 1);
       setShowAnswer(true);
+      saveCurrentSession();
     }
   };
 
   const skipCard = () => {
     setTotalAnswered(prev => prev + 1);
     setShowAnswer(true);
+    saveCurrentSession();
   };
 
   // Utility functions
@@ -119,7 +218,26 @@ export default function StudyMode() {
 
   // Initialize on mount
   onMount(() => {
-    startNewSession();
+    // Load saved stats
+    const savedStats = loadStats();
+    if (savedStats) {
+      setBestScore(savedStats.bestScore);
+      setStudyHistory(savedStats.studyHistory);
+    }
+
+    // Load saved session
+    const savedSession = loadSession();
+    if (savedSession) {
+      setCurrentIndex(savedSession.currentIndex);
+      setShowAnswer(savedSession.showAnswer);
+      setStudyType(savedSession.studyType);
+      setShuffledTeeth(savedSession.shuffledTeeth);
+      setCorrectAnswers(savedSession.correctAnswers);
+      setTotalAnswered(savedSession.totalAnswered);
+      setIsSessionActive(savedSession.isSessionActive);
+    } else {
+      startNewSession();
+    }
   });
 
 
@@ -224,12 +342,15 @@ export default function StudyMode() {
                 { key: "notation", label: "Tooth Notation", icon: FiTarget, desc: "Master numbering systems" },
                 { key: "mixed", label: "Mixed Review", icon: FaSolidBrain, desc: "Comprehensive knowledge test" },
               ].map(({ key, label, icon: Icon }) => (
-                <Button
-                  variant={studyType() === key ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setStudyType(key as StudyModeType)}
-                  class="flex items-center gap-2 min-w-[140px] justify-start"
-                >
+                 <Button
+                   variant={studyType() === key ? "default" : "outline"}
+                   size="sm"
+                   onClick={() => {
+                     setStudyType(key as StudyModeType);
+                     saveCurrentSession();
+                   }}
+                   class="flex items-center gap-2 min-w-[140px] justify-start"
+                 >
                   <Icon class="h-4 w-4" />
                   {label}
                 </Button>
@@ -293,20 +414,16 @@ export default function StudyMode() {
             <div class="flex justify-between items-start">
               <div class="space-y-2">
                 <CardTitle class="text-2xl flex items-center gap-2">
-                  <span class="text-primary">
+                  <span class="text-primary"
+                  > {currentTooth()?.type === "primary" ? "Primary" : "Permanent"} </span>
+                  <span>
                     {currentTooth()?.position === "maxillary" ? "Upper" : "Lower"}
                   </span>
                   <span>{currentTooth()?.name}</span>
                 </CardTitle>
                 <div class="flex gap-2">
-                  <Badge variant={currentTooth()?.type === "primary" ? "secondary" : "default"}>
-                    {currentTooth()?.type === "primary" ? "Primary" : "Permanent"}
-                  </Badge>
-                  <Badge variant="outline" class="capitalize">
-                    {currentTooth()?.category}
-                  </Badge>
                   <Badge variant="outline">
-                    {currentTooth()?.side} {currentTooth()?.position}
+                    {currentTooth()?.side}
                   </Badge>
                 </div>
               </div>

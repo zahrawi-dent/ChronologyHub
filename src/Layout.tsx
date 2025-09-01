@@ -8,8 +8,8 @@ type LayoutProps = {
 
 
 const tabs = [
-  { label: "Interactive Chart", path: "/", },
-  { label: "Timeline", path: "/timeline", },
+  { label: "Chart", path: "/", },
+  { label: "Interactive Timeline", path: "/timeline", },
   { label: "Reference Table", path: "/table", },
   { label: "Study Mode", path: "/study", },
 ]
