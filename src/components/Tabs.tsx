@@ -4,9 +4,14 @@ type TabsProps = {
   tabs: { label: string; path: string }[];
 };
 
+// Configuration
+const config = {
+  basePath: import.meta.env.VITE_BASE_PATH || '/chronohub',
+};
+
 export default function Tabs(props: TabsProps) {
   const location = useLocation();
-  const baseURL = '/chronohub'
+  const baseURL = config.basePath;
 
 
   // helper to normalize trailing slash

@@ -23,25 +23,37 @@ export default function HeroSection() {
         </div>
 
         {/* Feature highlights */}
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-12">
-          <A href="/timeline" class="bg-primary/20 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-primary/40 transition-all duration-300 hover:transform hover:scale-105">
-            <div class="text-3xl mb-3">🦷</div>
-            <h3 class="text-lg font-semibold text-white mb-2">Interactive Timeline</h3>
-            <p class="text-gray-300 text-sm">Step through dental development milestones with visual feedback</p>
-          </A>
+         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-12">
+           <A
+             href="/timeline"
+             class="bg-primary/20 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-primary/40 transition-all duration-300 hover:transform hover:scale-105"
+             aria-label="Navigate to Interactive Timeline - Step through dental development milestones with visual feedback"
+           >
+             <div class="text-3xl mb-3" role="img" aria-label="Tooth icon">🦷</div>
+             <h3 class="text-lg font-semibold text-white mb-2">Interactive Timeline</h3>
+             <p class="text-gray-300 text-sm">Step through dental development milestones with visual feedback</p>
+           </A>
 
-          <A href="/table" class="bg-primary/20 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-primary/40 transition-all duration-300 hover:transform hover:scale-105">
-            <div class="text-3xl mb-3">📊</div>
-            <h3 class="text-lg font-semibold text-white mb-2">Comprehensive Data</h3>
-            <p class="text-gray-300 text-sm">Detailed information on eruption ages, shedding, and development</p>
-          </A>
+           <A
+             href="/table"
+             class="bg-primary/20 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-primary/40 transition-all duration-300 hover:transform hover:scale-105"
+             aria-label="Navigate to Reference Table - View comprehensive data on eruption ages, shedding, and development"
+           >
+             <div class="text-3xl mb-3" role="img" aria-label="Chart icon">📊</div>
+             <h3 class="text-lg font-semibold text-white mb-2">Comprehensive Data</h3>
+             <p class="text-gray-300 text-sm">Detailed information on eruption ages, shedding, and development</p>
+           </A>
 
-          <A href="/study" class="bg-primary/20 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-primary/40 transition-all duration-300 hover:transform hover:scale-105">
-            <div class="text-3xl mb-3">🎯</div>
-            <h3 class="text-lg font-semibold text-white mb-2">Study Mode</h3>
-            <p class="text-gray-300 text-sm">Test your knowledge with interactive quizzes and challenges</p>
-          </A>
-        </div>
+           <A
+             href="/study"
+             class="bg-primary/20 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-primary/40 transition-all duration-300 hover:transform hover:scale-105"
+             aria-label="Navigate to Study Mode - Test your knowledge with interactive quizzes and challenges"
+           >
+             <div class="text-3xl mb-3" role="img" aria-label="Target icon">🎯</div>
+             <h3 class="text-lg font-semibold text-white mb-2">Study Mode</h3>
+             <p class="text-gray-300 text-sm">Test your knowledge with interactive quizzes and challenges</p>
+           </A>
+         </div>
       </div>
     </div>
   );

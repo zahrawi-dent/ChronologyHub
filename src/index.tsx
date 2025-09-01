@@ -9,6 +9,11 @@ import StudyMode from "./StudyMode";
 import Timeline from "./Timeline";
 import NotFound from "./NotFound";
 
+// Configuration
+const config = {
+  basePath: import.meta.env.VITE_BASE_PATH || '/chronohub',
+};
+
 const wrapper = document.getElementById("root");
 
 if (!wrapper) {
@@ -18,7 +23,7 @@ if (!wrapper) {
 
 render(
   () => (
-    <Router base="chronohub">
+    <Router base={config.basePath}>
       <Route component={Layout}>
         <Route path="/" component={ChartTab} />
         <Route path="/timeline" component={Timeline} />

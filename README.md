@@ -1,28 +1,46 @@
-## Usage
+# Chronology Hub
 
-```bash
-$ npm install # or pnpm install or yarn install
-```
+A comprehensive dental development reference application built with SolidJS, featuring interactive timelines, study modes, and detailed tooth data.
 
-### Learn more on the [Solid Website](https://solidjs.com) and come chat with us on our [Discord](https://discord.com/invite/solidjs)
+## Features
 
-## Available Scripts
+### 🦷 Interactive Timeline
+- Step through dental development from birth to adulthood
+- Visual tooth chart with eruption animations
+- Clickable timeline steps for quick navigation
+- Keyboard shortcuts for navigation
 
-In the project directory, you can run:
+### 📊 Reference Table
+- Comprehensive data on all 32 permanent and 20 primary teeth
+- Filter by tooth type (primary/permanent)
+- Detailed information on eruption ages, shedding, and root completion
+- Advanced search functionality with tokenized queries
 
-### `npm run dev`
+### 🎯 Study Mode
+- Interactive quiz system to test dental knowledge
+- Multiple study types: eruption ages, tooth notation, mixed review
+- Progress tracking and statistics
+- Session persistence with localStorage
 
-Runs the app in the development mode.<br>
-Open [http://localhost:5173](http://localhost:5173) to view it in the browser.
+## Tech Stack
+- **Framework**: [SolidJS](https://solidjs.com) 
+- **Routing**: [Solid Router](https://github.com/solidjs/solid-router)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com)
+- **Tables**: [TanStack Table](https://tanstack.com/table)
+- **Icons**: [Solid Icons](https://solid-icons.vercel.app)
 
-### `npm run build`
+## Getting Started
 
-Builds the app for production to the `dist` folder.<br>
-It correctly bundles Solid in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
 
-## Deployment
+## Contributing
 
-Learn more about deploying your application with the [documentations](https://vite.dev/guide/static-deploy.html)
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/{new-feature}`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

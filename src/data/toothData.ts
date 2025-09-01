@@ -672,7 +672,7 @@ export const permanentTeeth: ToothData[] = [
   {
     id: 'permanent-mandibular-third-molar-left',
     name: 'Third Molar (Wisdom)',
-    notation: { universal: '17', palmer: '8', fdi: '48' },
+    notation: { universal: '17', palmer: '8', fdi: '38' },
     type: 'permanent',
     category: 'molar',
     position: 'mandibular',

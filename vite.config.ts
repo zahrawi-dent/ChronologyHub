@@ -7,6 +7,11 @@ export default defineConfig({
     solid(),
     tailwindcss(),
   ],
-  base: "chronohub/",
-
+  base: process.env.VITE_BASE_PATH || "/chronohub/",
+  build: {
+    minify: 'terser',
+  },
+  esbuild: {
+    drop: ['console', 'debugger'],
+  },
 })
