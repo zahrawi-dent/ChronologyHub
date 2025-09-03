@@ -1,7 +1,8 @@
 import { A, useLocation } from "@solidjs/router";
+import { isRTL } from "../i18n";
 
 type TabsProps = {
-  tabs: { label: string; path: string }[];
+  tabs: { label: string | (() => string); path: string }[];
 };
 
 // Configuration
@@ -20,7 +21,7 @@ export default function Tabs(props: TabsProps) {
 
   return (
     <div class="bg-background-light/60 backdrop-blur-md border border-gray-700/50 rounded-2xl p-2 shadow-2xl">
-      <nav class="flex space-x-1">
+      <nav class={`flex ${isRTL() ? 'flex-row-reverse space-x-reverse' : 'space-x-1'}`}>
         {props.tabs.map((tab) => {
 
           const current = normalize(location.pathname);
@@ -38,7 +39,7 @@ export default function Tabs(props: TabsProps) {
                 : "text-gray-300 hover:text-white hover:bg-background-light hover:transform"
                 }`}
             >
-              {tab.label}
+              {typeof tab.label === "function" ? tab.label() : tab.label}
               {/* This conditional rendering also works correctly now */}
               {isActive && (
                 <div class="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-400/20 to-blue-600/20 animate-pulse"></div>

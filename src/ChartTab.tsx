@@ -3,6 +3,7 @@ import { ToothChart } from "./components/ToothChart";
 import { ToothDetails } from "./components/ToothDetails";
 import { permanentTeeth, primaryTeeth, type ToothData } from "./data/toothData";
 import { Button } from "./components/Button";
+import { t } from "./i18n";
 
 export default function ChartTab() {
   const [selectedTooth, setSelectedTooth] = createSignal<ToothData | null>(null);
@@ -22,14 +23,14 @@ export default function ChartTab() {
           variant={dentitionType() === 'permanent' ? 'default' : 'outline'}
           onClick={() => handleDentitionTypeSelect('permanent')}
         >
-          🦷 Permanent
+          🦷 {t('referenceTable.permanent')}
         </Button>
         <Button
           class="px-6 py-2 rounded-full font-semibold"
           variant={dentitionType() === 'primary' ? 'default' : 'outline'}
           onClick={() => handleDentitionTypeSelect('primary')}
         >
-          🍼 Primary
+          🍼 {t('referenceTable.primary')}
         </Button>
       </div>
       {/* <div class="grid lg:grid-cols-3 gap-6"> */}

@@ -4,6 +4,7 @@ import { Badge } from './Badge';
 import { Button } from './Button';
 import { createSignal, createMemo, For } from 'solid-js';
 import { getToothsByPosition } from '../utils/toothChart';
+import { getToothName } from '../i18n';
 
 interface ToothChartProps {
   teeth: ToothData[];
@@ -94,7 +95,7 @@ export const ToothChart = (props: ToothChartProps) => {
               <button
                 class={getToothClasses(tooth)}
                 onClick={() => props.onToothSelect?.(tooth)}
-                title={`${tooth.name} - ${tooth.notation[notation()]} (${tooth.type})`}
+                title={`${getToothName(tooth.nameKey)} - ${tooth.notation[notation()]} (${tooth.type})`}
                 style={{
                   'animation-delay': props.showRecentlyErupted && props.recentlyEruptedTeeth?.()?.has(tooth.id) ? '0ms' : undefined
                 }}
@@ -103,7 +104,7 @@ export const ToothChart = (props: ToothChartProps) => {
                   {tooth.notation[notation()]}
                 </div>
                 <div class="text-[8px] text-center leading-tight">
-                  {tooth.name.split(' ')[0]}
+                  {getToothName(tooth.nameKey).split(' ')[0]}
                 </div>
                 {tooth.type === 'primary' && (
                   <Badge variant="secondary" class="text-[6px] px-1 py-0">
@@ -132,7 +133,7 @@ export const ToothChart = (props: ToothChartProps) => {
               <button
                 class={getToothClasses(tooth)}
                 onClick={() => props.onToothSelect?.(tooth)}
-                title={`${tooth.name} - ${tooth.notation[notation()]} (${tooth.type})`}
+                title={`${getToothName(tooth.nameKey)} - ${tooth.notation[notation()]} (${tooth.type})`}
                 style={{
                   'animation-delay': props.showRecentlyErupted && props.recentlyEruptedTeeth?.()?.has(tooth.id) ? '0ms' : undefined
                 }}
@@ -141,7 +142,7 @@ export const ToothChart = (props: ToothChartProps) => {
                   {tooth.notation[notation()]}
                 </div>
                 <div class="text-[8px] text-center leading-tight">
-                  {tooth.name.split(' ')[0]}
+                  {getToothName(tooth.nameKey).split(' ')[0]}
                 </div>
                 {tooth.type === 'primary' && (
                   <Badge variant="secondary" class="text-[6px] px-1 py-0">

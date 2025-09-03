@@ -2,6 +2,8 @@ import { type JSX } from "solid-js";
 import HeroSection from "./components/Hero";
 import Tabs from "./components/Tabs";
 import Footer from "./components/Footer";
+import LanguageSwitcher from "./components/LanguageSwitcher";
+import { t } from "./i18n";
 
 type LayoutProps = {
   children?: JSX.Element
@@ -9,15 +11,16 @@ type LayoutProps = {
 
 
 const tabs = [
-  { label: "Chart", path: "/", },
-  { label: "Interactive Timeline", path: "/timeline", },
-  { label: "Reference Table", path: "/table", },
-  { label: "Study Mode", path: "/study", },
+  { label: () => t("common.chart"), path: "/" },
+  { label: () => t("common.timeline"), path: "/timeline" },
+  { label: () => t("common.table"), path: "/table" },
+  { label: () => t("common.study"), path: "/study" },
 ]
 
 export function Layout(props: LayoutProps) {
   return (
     <>
+      <LanguageSwitcher />
       <HeroSection />
       <main class="mt-8 text-primary-foreground">
         <div class="mb-8">

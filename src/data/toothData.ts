@@ -1,6 +1,6 @@
 export type ToothData = {
   id: string;
-  name: string;
+  nameKey: string; // Translation key for the tooth name
   notation: {
     universal: string;
     palmer: string;
@@ -33,7 +33,7 @@ export const primaryTeeth: ToothData[] = [
   // Maxillary Primary Teeth
   {
     id: 'primary-maxillary-central-incisor-right',
-    name: 'Central Incisor',
+    nameKey: 'centralIncisor',
     notation: { universal: 'E', palmer: 'A', fdi: '51' },
     type: 'primary',
     category: 'incisor',
@@ -46,7 +46,7 @@ export const primaryTeeth: ToothData[] = [
   },
   {
     id: 'primary-maxillary-central-incisor-left',
-    name: 'Central Incisor',
+    nameKey: 'centralIncisor',
     notation: { universal: 'F', palmer: 'A', fdi: '61' },
     type: 'primary',
     category: 'incisor',
@@ -59,7 +59,7 @@ export const primaryTeeth: ToothData[] = [
   },
   {
     id: 'primary-maxillary-lateral-incisor-right',
-    name: 'Lateral Incisor',
+    nameKey: 'lateralIncisor',
     notation: { universal: 'D', palmer: 'B', fdi: '52' },
     type: 'primary',
     category: 'incisor',
@@ -72,7 +72,7 @@ export const primaryTeeth: ToothData[] = [
   },
   {
     id: 'primary-maxillary-lateral-incisor-left',
-    name: 'Lateral Incisor',
+    nameKey: 'lateralIncisor',
     notation: { universal: 'G', palmer: 'B', fdi: '62' },
     type: 'primary',
     category: 'incisor',
@@ -85,7 +85,7 @@ export const primaryTeeth: ToothData[] = [
   },
   {
     id: 'primary-maxillary-canine-right',
-    name: 'Canine',
+    nameKey: 'canine',
     notation: { universal: 'C', palmer: 'C', fdi: '53' },
     type: 'primary',
     category: 'canine',
@@ -98,7 +98,7 @@ export const primaryTeeth: ToothData[] = [
   },
   {
     id: 'primary-maxillary-canine-left',
-    name: 'Canine',
+    nameKey: 'canine',
     notation: { universal: 'H', palmer: 'C', fdi: '63' },
     type: 'primary',
     category: 'canine',
@@ -111,7 +111,7 @@ export const primaryTeeth: ToothData[] = [
   },
   {
     id: 'primary-maxillary-first-molar-right',
-    name: 'First Molar',
+    nameKey: 'firstMolar',
     notation: { universal: 'B', palmer: 'D', fdi: '54' },
     type: 'primary',
     category: 'molar',
@@ -124,7 +124,7 @@ export const primaryTeeth: ToothData[] = [
   },
   {
     id: 'primary-maxillary-first-molar-left',
-    name: 'First Molar',
+    nameKey: 'firstMolar',
     notation: { universal: 'I', palmer: 'D', fdi: '64' },
     type: 'primary',
     category: 'molar',
@@ -137,7 +137,7 @@ export const primaryTeeth: ToothData[] = [
   },
   {
     id: 'primary-maxillary-second-molar-right',
-    name: 'Second Molar',
+    nameKey: 'secondMolar',
     notation: { universal: 'A', palmer: 'E', fdi: '55' },
     type: 'primary',
     category: 'molar',
@@ -150,7 +150,7 @@ export const primaryTeeth: ToothData[] = [
   },
   {
     id: 'primary-maxillary-second-molar-left',
-    name: 'Second Molar',
+    nameKey: 'secondMolar',
     notation: { universal: 'J', palmer: 'E', fdi: '65' },
     type: 'primary',
     category: 'molar',
@@ -164,7 +164,7 @@ export const primaryTeeth: ToothData[] = [
   // Mandibular Primary Teeth
   {
     id: 'primary-mandibular-central-incisor-right',
-    name: 'Central Incisor',
+    nameKey: 'centralIncisor',
     notation: { universal: 'P', palmer: 'A', fdi: '81' },
     type: 'primary',
     category: 'incisor',
@@ -177,7 +177,7 @@ export const primaryTeeth: ToothData[] = [
   },
   {
     id: 'primary-mandibular-central-incisor-left',
-    name: 'Central Incisor',
+    nameKey: 'centralIncisor',
     notation: { universal: 'O', palmer: 'A', fdi: '71' },
     type: 'primary',
     category: 'incisor',
@@ -190,7 +190,7 @@ export const primaryTeeth: ToothData[] = [
   },
   {
     id: 'primary-mandibular-lateral-incisor-right',
-    name: 'Lateral Incisor',
+    nameKey: 'lateralIncisor',
     notation: { universal: 'Q', palmer: 'B', fdi: '82' },
     type: 'primary',
     category: 'incisor',
@@ -203,7 +203,7 @@ export const primaryTeeth: ToothData[] = [
   },
   {
     id: 'primary-mandibular-lateral-incisor-left',
-    name: 'Lateral Incisor',
+    nameKey: 'lateralIncisor',
     notation: { universal: 'N', palmer: 'B', fdi: '72' },
     type: 'primary',
     category: 'incisor',
@@ -216,7 +216,7 @@ export const primaryTeeth: ToothData[] = [
   },
   {
     id: 'primary-mandibular-canine-right',
-    name: 'Canine',
+    nameKey: 'canine',
     notation: { universal: 'R', palmer: 'C', fdi: '83' },
     type: 'primary',
     category: 'canine',
@@ -229,7 +229,7 @@ export const primaryTeeth: ToothData[] = [
   },
   {
     id: 'primary-mandibular-canine-left',
-    name: 'Canine',
+    nameKey: 'canine',
     notation: { universal: 'M', palmer: 'C', fdi: '73' },
     type: 'primary',
     category: 'canine',
@@ -242,7 +242,7 @@ export const primaryTeeth: ToothData[] = [
   },
   {
     id: 'primary-mandibular-first-molar-right',
-    name: 'First Molar',
+    nameKey: 'firstMolar',
     notation: { universal: 'S', palmer: 'D', fdi: '84' },
     type: 'primary',
     category: 'molar',
@@ -255,7 +255,7 @@ export const primaryTeeth: ToothData[] = [
   },
   {
     id: 'primary-mandibular-first-molar-left',
-    name: 'First Molar',
+    nameKey: 'firstMolar',
     notation: { universal: 'L', palmer: 'D', fdi: '74' },
     type: 'primary',
     category: 'molar',
@@ -268,7 +268,7 @@ export const primaryTeeth: ToothData[] = [
   },
   {
     id: 'primary-mandibular-second-molar-right',
-    name: 'Second Molar',
+    nameKey: 'secondMolar',
     notation: { universal: 'T', palmer: 'E', fdi: '85' },
     type: 'primary',
     category: 'molar',
@@ -281,7 +281,7 @@ export const primaryTeeth: ToothData[] = [
   },
   {
     id: 'primary-mandibular-second-molar-left',
-    name: 'Second Molar',
+    nameKey: 'secondMolar',
     notation: { universal: 'K', palmer: 'E', fdi: '75' },
     type: 'primary',
     category: 'molar',
@@ -298,7 +298,7 @@ export const permanentTeeth: ToothData[] = [
   // Maxillary Permanent Teeth
   {
     id: 'permanent-maxillary-central-incisor-right',
-    name: 'Central Incisor',
+    nameKey: 'centralIncisor',
     notation: { universal: '8', palmer: '1', fdi: '11' },
     type: 'permanent',
     category: 'incisor',
@@ -310,7 +310,7 @@ export const permanentTeeth: ToothData[] = [
   },
   {
     id: 'permanent-maxillary-central-incisor-left',
-    name: 'Central Incisor',
+    nameKey: 'centralIncisor',
     notation: { universal: '9', palmer: '1', fdi: '21' },
     type: 'permanent',
     category: 'incisor',
@@ -322,7 +322,7 @@ export const permanentTeeth: ToothData[] = [
   },
   {
     id: 'permanent-maxillary-lateral-incisor-right',
-    name: 'Lateral Incisor',
+    nameKey: 'lateralIncisor',
     notation: { universal: '7', palmer: '2', fdi: '12' },
     type: 'permanent',
     category: 'incisor',
@@ -334,7 +334,7 @@ export const permanentTeeth: ToothData[] = [
   },
   {
     id: 'permanent-maxillary-lateral-incisor-left',
-    name: 'Lateral Incisor',
+    nameKey: 'lateralIncisor',
     notation: { universal: '10', palmer: '2', fdi: '22' },
     type: 'permanent',
     category: 'incisor',
@@ -346,7 +346,7 @@ export const permanentTeeth: ToothData[] = [
   },
   {
     id: 'permanent-maxillary-canine-right',
-    name: 'Canine',
+    nameKey: 'canine',
     notation: { universal: '6', palmer: '3', fdi: '13' },
     type: 'permanent',
     category: 'canine',
@@ -358,7 +358,7 @@ export const permanentTeeth: ToothData[] = [
   },
   {
     id: 'permanent-maxillary-canine-left',
-    name: 'Canine',
+    nameKey: 'canine',
     notation: { universal: '11', palmer: '3', fdi: '23' },
     type: 'permanent',
     category: 'canine',
@@ -370,7 +370,7 @@ export const permanentTeeth: ToothData[] = [
   },
   {
     id: 'permanent-maxillary-first-premolar-right',
-    name: 'First Premolar',
+    nameKey: 'firstPremolar',
     notation: { universal: '5', palmer: '4', fdi: '14' },
     type: 'permanent',
     category: 'premolar',
@@ -382,7 +382,7 @@ export const permanentTeeth: ToothData[] = [
   },
   {
     id: 'permanent-maxillary-first-premolar-left',
-    name: 'First Premolar',
+    nameKey: 'firstPremolar',
     notation: { universal: '12', palmer: '4', fdi: '24' },
     type: 'permanent',
     category: 'premolar',
@@ -394,7 +394,7 @@ export const permanentTeeth: ToothData[] = [
   },
   {
     id: 'permanent-maxillary-second-premolar-right',
-    name: 'Second Premolar',
+    nameKey: 'secondPremolar',
     notation: { universal: '4', palmer: '5', fdi: '15' },
     type: 'permanent',
     category: 'premolar',
@@ -406,7 +406,7 @@ export const permanentTeeth: ToothData[] = [
   },
   {
     id: 'permanent-maxillary-second-premolar-left',
-    name: 'Second Premolar',
+    nameKey: 'secondPremolar',
     notation: { universal: '13', palmer: '5', fdi: '25' },
     type: 'permanent',
     category: 'premolar',
@@ -418,7 +418,7 @@ export const permanentTeeth: ToothData[] = [
   },
   {
     id: 'permanent-maxillary-first-molar-right',
-    name: 'First Molar',
+    nameKey: 'firstMolar',
     notation: { universal: '3', palmer: '6', fdi: '16' },
     type: 'permanent',
     category: 'molar',
@@ -430,7 +430,7 @@ export const permanentTeeth: ToothData[] = [
   },
   {
     id: 'permanent-maxillary-first-molar-left',
-    name: 'First Molar',
+    nameKey: 'firstMolar',
     notation: { universal: '14', palmer: '6', fdi: '26' },
     type: 'permanent',
     category: 'molar',
@@ -442,7 +442,7 @@ export const permanentTeeth: ToothData[] = [
   },
   {
     id: 'permanent-maxillary-second-molar-right',
-    name: 'Second Molar',
+    nameKey: 'secondMolar',
     notation: { universal: '2', palmer: '7', fdi: '17' },
     type: 'permanent',
     category: 'molar',
@@ -454,7 +454,7 @@ export const permanentTeeth: ToothData[] = [
   },
   {
     id: 'permanent-maxillary-second-molar-left',
-    name: 'Second Molar',
+    nameKey: 'secondMolar',
     notation: { universal: '15', palmer: '7', fdi: '27' },
     type: 'permanent',
     category: 'molar',
@@ -466,7 +466,7 @@ export const permanentTeeth: ToothData[] = [
   },
   {
     id: 'permanent-maxillary-third-molar-right',
-    name: 'Third Molar (Wisdom)',
+    nameKey: 'thirdMolar',
     notation: { universal: '1', palmer: '8', fdi: '18' },
     type: 'permanent',
     category: 'molar',
@@ -478,7 +478,7 @@ export const permanentTeeth: ToothData[] = [
   },
   {
     id: 'permanent-maxillary-third-molar-left',
-    name: 'Third Molar (Wisdom)',
+    nameKey: 'thirdMolar',
     notation: { universal: '16', palmer: '8', fdi: '28' },
     type: 'permanent',
     category: 'molar',
@@ -491,7 +491,7 @@ export const permanentTeeth: ToothData[] = [
   // Mandibular Permanent Teeth
   {
     id: 'permanent-mandibular-central-incisor-right',
-    name: 'Central Incisor',
+    nameKey: 'centralIncisor',
     notation: { universal: '25', palmer: '1', fdi: '41' },
     type: 'permanent',
     category: 'incisor',
@@ -503,7 +503,7 @@ export const permanentTeeth: ToothData[] = [
   },
   {
     id: 'permanent-mandibular-central-incisor-left',
-    name: 'Central Incisor',
+    nameKey: 'centralIncisor',
     notation: { universal: '24', palmer: '1', fdi: '31' },
     type: 'permanent',
     category: 'incisor',
@@ -515,7 +515,7 @@ export const permanentTeeth: ToothData[] = [
   },
   {
     id: 'permanent-mandibular-lateral-incisor-right',
-    name: 'Lateral Incisor',
+    nameKey: 'lateralIncisor',
     notation: { universal: '26', palmer: '2', fdi: '42' },
     type: 'permanent',
     category: 'incisor',
@@ -527,7 +527,7 @@ export const permanentTeeth: ToothData[] = [
   },
   {
     id: 'permanent-mandibular-lateral-incisor-left',
-    name: 'Lateral Incisor',
+    nameKey: 'lateralIncisor',
     notation: { universal: '23', palmer: '2', fdi: '32' },
     type: 'permanent',
     category: 'incisor',
@@ -539,7 +539,7 @@ export const permanentTeeth: ToothData[] = [
   },
   {
     id: 'permanent-mandibular-canine-right',
-    name: 'Canine',
+    nameKey: 'canine',
     notation: { universal: '27', palmer: '3', fdi: '43' },
     type: 'permanent',
     category: 'canine',
@@ -551,7 +551,7 @@ export const permanentTeeth: ToothData[] = [
   },
   {
     id: 'permanent-mandibular-canine-left',
-    name: 'Canine',
+    nameKey: 'canine',
     notation: { universal: '22', palmer: '3', fdi: '33' },
     type: 'permanent',
     category: 'canine',
@@ -563,7 +563,7 @@ export const permanentTeeth: ToothData[] = [
   },
   {
     id: 'permanent-mandibular-first-premolar-right',
-    name: 'First Premolar',
+    nameKey: 'firstPremolar',
     notation: { universal: '28', palmer: '4', fdi: '44' },
     type: 'permanent',
     category: 'premolar',
@@ -575,7 +575,7 @@ export const permanentTeeth: ToothData[] = [
   },
   {
     id: 'permanent-mandibular-first-premolar-left',
-    name: 'First Premolar',
+    nameKey: 'firstPremolar',
     notation: { universal: '21', palmer: '4', fdi: '34' },
     type: 'permanent',
     category: 'premolar',
@@ -587,7 +587,7 @@ export const permanentTeeth: ToothData[] = [
   },
   {
     id: 'permanent-mandibular-second-premolar-right',
-    name: 'Second Premolar',
+    nameKey: 'secondPremolar',
     notation: { universal: '29', palmer: '5', fdi: '45' },
     type: 'permanent',
     category: 'premolar',
@@ -599,7 +599,7 @@ export const permanentTeeth: ToothData[] = [
   },
   {
     id: 'permanent-mandibular-second-premolar-left',
-    name: 'Second Premolar',
+    nameKey: 'secondPremolar',
     notation: { universal: '20', palmer: '5', fdi: '35' },
     type: 'permanent',
     category: 'premolar',
@@ -611,7 +611,7 @@ export const permanentTeeth: ToothData[] = [
   },
   {
     id: 'permanent-mandibular-first-molar-right',
-    name: 'First Molar',
+    nameKey: 'firstMolar',
     notation: { universal: '30', palmer: '6', fdi: '46' },
     type: 'permanent',
     category: 'molar',
@@ -623,7 +623,7 @@ export const permanentTeeth: ToothData[] = [
   },
   {
     id: 'permanent-mandibular-first-molar-left',
-    name: 'First Molar',
+    nameKey: 'firstMolar',
     notation: { universal: '19', palmer: '6', fdi: '36' },
     type: 'permanent',
     category: 'molar',
@@ -635,7 +635,7 @@ export const permanentTeeth: ToothData[] = [
   },
   {
     id: 'permanent-mandibular-second-molar-right',
-    name: 'Second Molar',
+    nameKey: 'secondMolar',
     notation: { universal: '31', palmer: '7', fdi: '47' },
     type: 'permanent',
     category: 'molar',
@@ -647,7 +647,7 @@ export const permanentTeeth: ToothData[] = [
   },
   {
     id: 'permanent-mandibular-second-molar-left',
-    name: 'Second Molar',
+    nameKey: 'secondMolar',
     notation: { universal: '18', palmer: '7', fdi: '37' },
     type: 'permanent',
     category: 'molar',
@@ -659,7 +659,7 @@ export const permanentTeeth: ToothData[] = [
   },
   {
     id: 'permanent-mandibular-third-molar-right',
-    name: 'Third Molar (Wisdom)',
+    nameKey: 'thirdMolar',
     notation: { universal: '32', palmer: '8', fdi: '48' },
     type: 'permanent',
     category: 'molar',
@@ -671,7 +671,7 @@ export const permanentTeeth: ToothData[] = [
   },
   {
     id: 'permanent-mandibular-third-molar-left',
-    name: 'Third Molar (Wisdom)',
+    nameKey: 'thirdMolar',
     notation: { universal: '17', palmer: '8', fdi: '38' },
     type: 'permanent',
     category: 'molar',

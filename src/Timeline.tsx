@@ -5,6 +5,7 @@ import { Button } from './components/Button';
 import { Card, CardContent } from './components/Card';
 import { Badge } from './components/Badge';
 import { ToothDetails } from './components/ToothDetails';
+import { t, getToothName } from './i18n';
 
 // Timeline event type
 type TimelineEvent = {
@@ -93,7 +94,7 @@ export default function Timeline() {
         tooth,
         ageMonths: tooth.eruption.ageMonths,
         ageDisplay: tooth.eruption.ageRange,
-        description: `${tooth.position} ${tooth.side} ${tooth.name} erupts`
+        description: `${t(`commonTerms.${tooth.position}`)} ${t(`commonTerms.${tooth.side}`)} ${getToothName(tooth.nameKey)} ${t('timeline.eruption')}`
       });
     });
 
@@ -119,7 +120,7 @@ export default function Timeline() {
         tooth,
         ageMonths: tooth.eruption.ageMonths,
         ageDisplay: tooth.eruption.ageRange,
-        description: `${tooth.position} ${tooth.side} ${tooth.name} erupts`
+        description: `${t(`commonTerms.${tooth.position}`)} ${t(`commonTerms.${tooth.side}`)} ${getToothName(tooth.nameKey)} ${t('timeline.eruption')}`
       });
     });
 
@@ -420,8 +421,8 @@ export default function Timeline() {
     <div class="space-y-8">
       {/* Header */}
       <div class="text-center">
-        <h1 class="text-4xl font-bold text-white mb-4">Dental Development Timeline</h1>
-        <p class="text-xl text-gray-300">Step through the chronological development of teeth from birth to adulthood</p>
+        <h1 class="text-4xl font-bold text-white mb-4">{t('timeline.title')}</h1>
+        <p class="text-xl text-gray-300">{t('timeline.subtitle')}</p>
       </div>
 
       {/* Timeline Controls */}
@@ -430,7 +431,7 @@ export default function Timeline() {
           {/* Progress Bar */}
           <div class="space-y-2">
             <div class="flex justify-between text-sm text-gray-300">
-              <span>Progress</span>
+              <span>{t('timeline.progress')}</span>
               <span>{currentStep()} / {timelineSteps().length - 1}</span>
             </div>
             <div class="w-full bg-gray-700 rounded-full h-2">
@@ -470,7 +471,7 @@ export default function Timeline() {
               disabled={currentStep() === 0}
               class="min-w-[120px]"
             >
-              Reset
+              {t('timeline.reset')}
             </Button>
             <Button
               variant="outline"
@@ -479,7 +480,7 @@ export default function Timeline() {
               disabled={currentStep() === 0}
               class="min-w-[120px]"
             >
-              ← Previous
+              ← {t('timeline.previous')}
             </Button>
             <Button
               variant="outline"
@@ -488,7 +489,7 @@ export default function Timeline() {
               disabled={isComplete()}
               class="min-w-[120px]"
             >
-              Next →
+              {t('timeline.next')} →
             </Button>
             <Button
               variant="outline"
@@ -497,7 +498,7 @@ export default function Timeline() {
               disabled={isComplete()}
               class="min-w-[120px]"
             >
-              End
+              {t('timeline.end')}
             </Button>
           </div>
 
@@ -541,9 +542,9 @@ export default function Timeline() {
           {/* Keyboard Shortcuts */}
           <div class="text-center text-sm text-gray-400 ">
             <div class="flex justify-center gap-4 flex-wrap">
-              <span>← → Arrow keys to navigate</span>
+              <span>{t('timeline.arrowKeysNavigate')}</span>
               {/* <span>Space to advance</span> */}
-              <span>Home/End to jump</span>
+              <span>{t('timeline.homeEndJump')}</span>
             </div>
           </div>
         </CardContent>
@@ -555,7 +556,7 @@ export default function Timeline() {
         {/* Tooth Chart */}
         {/* <div class="lg:col-span-2 space-y-4"> */}
         <div class="xl:col-span-2 space-y-4">
-          <h2 class="text-2xl font-bold text-white text-center">Current Dental State</h2>
+          <h2 class="text-2xl font-bold text-white text-center">{t('timeline.currentDentalState')}</h2>
            <ToothChart
              teeth={visibleTeeth()}
              onToothSelect={(tooth) => {
@@ -572,14 +573,14 @@ export default function Timeline() {
 
         {/* Tooth Details */}
         <div class="space-y-4">
-          <h2 class="text-2xl font-bold text-white text-center">Tooth Details</h2>
+          <h2 class="text-2xl font-bold text-white text-center">{t('timeline.toothDetails')}</h2>
           {selectedTooth() ? (
             <ToothDetails tooth={() => selectedTooth()} />
           ) : (
             <Card class="p-6">
               <CardContent class="text-center text-gray-400">
-                <div class="text-lg mb-2">No tooth selected</div>
-                <div class="text-sm">Click on a tooth in the chart to see its details</div>
+                <div class="text-lg mb-2">{t('timeline.noToothSelected')}</div>
+                <div class="text-sm">{t('timeline.clickToothDetails')}</div>
               </CardContent>
             </Card>
           )}
@@ -589,7 +590,7 @@ export default function Timeline() {
       {/* Timeline Steps List */}
       <Card class="p-6">
         <CardContent>
-          <h3 class="text-xl font-bold text-white mb-4">Timeline Steps</h3>
+          <h3 class="text-xl font-bold text-white mb-4">{t('timeline.timelineSteps')}</h3>
           <div class="space-y-2 max-h-96 overflow-y-auto">
             <For each={timelineSteps()}>
               {(step, index) => (
@@ -617,7 +618,7 @@ export default function Timeline() {
                       <span>{step.description}</span>
                     </div>
                     <div class="text-xs text-gray-400">
-                      Step {index()}
+                      {t('timeline.step')} {index()}
                     </div>
                   </div>
                   {step.events.length > 1 && (
@@ -633,7 +634,7 @@ export default function Timeline() {
                             </Badge>
                             <span>{event.description}</span>
                             <span class="text-xs text-gray-400">
-                              ({event.tooth.type === 'primary' ? 'Primary' : 'Permanent'})
+                              ({event.tooth.type === 'primary' ? t('timeline.primary') : t('timeline.permanent')})
                             </span>
                           </div>
                         )}

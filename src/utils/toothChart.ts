@@ -4,52 +4,53 @@ export const getToothsByPosition = (
   teeth: ToothData[],
   position: 'maxillary' | 'mandibular'
 ) => {
-  const positionTeeth = teeth.filter(tooth => tooth.position === position);
+  const positionTeeth = teeth.filter(tooth => tooth && tooth.position === position);
 
   // Anatomical position mapping for proper dental arch placement
   // This ensures teeth are positioned correctly during mixed dentition
   const getAnatomicalPosition = (tooth: ToothData): number => {
-    const { type, category, side } = tooth;
-    
+    if (!tooth || !tooth.nameKey) return 0;
+    const { type, category, side, nameKey } = tooth;
+
     // Base position based on tooth category and side
     let basePosition = 0;
-    
+
     if (position === 'maxillary') {
       // Maxillary (Upper) arch
       if (side === 'right') {
         // Right side: Central Incisor (1) at midline to Third Molar (8) at far right
         switch (category) {
           case 'incisor':
-            if (tooth.name.includes('Central')) basePosition = 1;
-            else if (tooth.name.includes('Lateral')) basePosition = 2;
+            if (nameKey.includes('central')) basePosition = 1;
+            else if (nameKey.includes('lateral')) basePosition = 2;
             break;
           case 'canine': basePosition = 3; break;
           case 'premolar':
-            if (tooth.name.includes('First')) basePosition = 4;
-            else if (tooth.name.includes('Second')) basePosition = 5;
+            if (nameKey.includes('first')) basePosition = 4;
+            else if (nameKey.includes('second')) basePosition = 5;
             break;
           case 'molar':
-            if (tooth.name.includes('First')) basePosition = 6;
-            else if (tooth.name.includes('Second')) basePosition = 7;
-            else if (tooth.name.includes('Third')) basePosition = 8;
+            if (nameKey.includes('first')) basePosition = 6;
+            else if (nameKey.includes('second')) basePosition = 7;
+            else if (nameKey.includes('third')) basePosition = 8;
             break;
         }
       } else {
         // Left side: Central Incisor (9) at midline to Third Molar (16) at far left
         switch (category) {
           case 'incisor':
-            if (tooth.name.includes('Central')) basePosition = 9;
-            else if (tooth.name.includes('Lateral')) basePosition = 10;
+            if (nameKey.includes('central')) basePosition = 9;
+            else if (nameKey.includes('lateral')) basePosition = 10;
             break;
           case 'canine': basePosition = 11; break;
           case 'premolar':
-            if (tooth.name.includes('First')) basePosition = 12;
-            else if (tooth.name.includes('Second')) basePosition = 13;
+            if (nameKey.includes('first')) basePosition = 12;
+            else if (nameKey.includes('second')) basePosition = 13;
             break;
           case 'molar':
-            if (tooth.name.includes('First')) basePosition = 14;
-            else if (tooth.name.includes('Second')) basePosition = 15;
-            else if (tooth.name.includes('Third')) basePosition = 16;
+            if (nameKey.includes('first')) basePosition = 14;
+            else if (nameKey.includes('second')) basePosition = 15;
+            else if (nameKey.includes('third')) basePosition = 16;
             break;
         }
       }
@@ -59,18 +60,18 @@ export const getToothsByPosition = (
         // Right side: Central Incisor (25) at midline to Third Molar (32) at far right
         switch (category) {
           case 'incisor':
-            if (tooth.name.includes('Central')) basePosition = 25;
-            else if (tooth.name.includes('Lateral')) basePosition = 26;
+            if (nameKey.includes('central')) basePosition = 25;
+            else if (nameKey.includes('lateral')) basePosition = 26;
             break;
           case 'canine': basePosition = 27; break;
           case 'premolar':
-            if (tooth.name.includes('First')) basePosition = 28;
-            else if (tooth.name.includes('Second')) basePosition = 29;
+            if (nameKey.includes('first')) basePosition = 28;
+            else if (nameKey.includes('second')) basePosition = 29;
             break;
           case 'molar':
-            if (tooth.name.includes('First')) basePosition = 30;
-            else if (tooth.name.includes('Second')) basePosition = 31;
-            else if (tooth.name.includes('Third')) basePosition = 32;
+            if (nameKey.includes('first')) basePosition = 30;
+            else if (nameKey.includes('second')) basePosition = 31;
+            else if (nameKey.includes('third')) basePosition = 32;
             break;
         }
       } else {
@@ -78,19 +79,19 @@ export const getToothsByPosition = (
         // Use relative positions (1-8) that increase from midline outward
         switch (category) {
           case 'incisor':
-            if (tooth.name.includes('Central')) basePosition = 1; // Corresponds to 24
-            else if (tooth.name.includes('Lateral')) basePosition = 2; // Corresponds to 23
+            if (nameKey.includes('central')) basePosition = 1; // Corresponds to 24
+            else if (nameKey.includes('lateral')) basePosition = 2; // Corresponds to 23
             break;
           case 'canine': basePosition = 3; // Corresponds to 22
             break;
           case 'premolar':
-            if (tooth.name.includes('First')) basePosition = 4; // Corresponds to 21
-            else if (tooth.name.includes('Second')) basePosition = 5; // Corresponds to 20
+            if (nameKey.includes('first')) basePosition = 4; // Corresponds to 21
+            else if (nameKey.includes('second')) basePosition = 5; // Corresponds to 20
             break;
           case 'molar':
-            if (tooth.name.includes('First')) basePosition = 6; // Corresponds to 19
-            else if (tooth.name.includes('Second')) basePosition = 7; // Corresponds to 18
-            else if (tooth.name.includes('Third')) basePosition = 8; // Corresponds to 17
+            if (nameKey.includes('first')) basePosition = 6; // Corresponds to 19
+            else if (nameKey.includes('second')) basePosition = 7; // Corresponds to 18
+            else if (nameKey.includes('third')) basePosition = 8; // Corresponds to 17
             break;
         }
       }

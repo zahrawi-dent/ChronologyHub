@@ -1,4 +1,5 @@
 import { A } from "@solidjs/router";
+import { t } from "../i18n";
 
 export default function Footer() {
   return (
@@ -8,7 +9,7 @@ export default function Footer() {
           {/* Brand */}
           <div class="text-center md:text-left">
             <h3 class="text-xl font-bold text-white mb-2">
-              <span>A project by&nbsp;</span>
+              <span>{t("footer.projectBy")}&nbsp;</span>
               <a href="https://zahrawident.github.io" target="_blank" class="underline">
                 <span>
                   Zahrawi<span class="text-teal-500">Dent</span>
@@ -61,10 +62,10 @@ export default function Footer() {
         <div class="mt-8 pt-6 border-t border-gray-700/30">
           <div class="flex flex-col md:flex-row justify-between items-center gap-4">
             <p class="text-gray-500 text-sm text-center md:text-left">
-              Built in Egypt with ❤️ for the dental community.
+              {t("footer.builtInEgypt")}
             </p>
             <div class="flex items-center gap-4 text-sm text-gray-500">
-              <span>AGPLv3 License</span>
+              <span>{t("footer.license")}</span>
             </div>
           </div>
         </div>

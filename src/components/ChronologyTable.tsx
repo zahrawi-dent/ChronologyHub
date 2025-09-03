@@ -11,6 +11,7 @@ import {
   type FilterFn,
 } from '@tanstack/solid-table';
 import { permanentTeeth, primaryTeeth, type ToothData } from '../data/toothData';
+import { t } from '../i18n';
 
 // Extend the table types to include custom filter functions
 declare module '@tanstack/solid-table' {
@@ -62,7 +63,7 @@ export default function DentalChart() {
   const columns: ColumnDef<ToothData>[] = [
     {
       accessorKey: 'name',
-      header: 'Tooth Name',
+      header: t('referenceTable.toothName'),
       cell: (info) => info.getValue() as string,
     },
     {
@@ -114,8 +115,8 @@ export default function DentalChart() {
           title="Click to switch notation system"
         >
           <span>
-            {notationSystem() === 'fdi' ? 'FDI' :
-              notationSystem() === 'universal' ? 'Universal' : 'Palmer'}
+            {notationSystem() === 'fdi' ? t('studyMode.fdi') :
+              notationSystem() === 'universal' ? t('studyMode.universal') : t('studyMode.palmer')}
           </span>
           <span class="text-xs">🔄</span>
         </button>
@@ -142,12 +143,12 @@ export default function DentalChart() {
     },
     {
       accessorKey: 'eruption.ageRange',
-      header: 'Eruption Age',
+      header: t('referenceTable.eruptionAge'),
       cell: (info) => info.getValue() as string,
     },
     {
       accessorKey: 'shedding.ageRange',
-      header: 'Shedding Age',
+      header: t('referenceTable.sheddingAge'),
       cell: (info) => {
         const value = info.getValue() as string | undefined;
         return value ? value : <span class="text-gray-400">N/A</span>;
@@ -155,7 +156,7 @@ export default function DentalChart() {
     },
     {
       accessorKey: 'rootCompletion.ageRange',
-      header: 'Root Completion',
+      header: t('referenceTable.rootCompletion'),
       cell: (info) => {
         const value = info.getValue() as string | undefined;
         return value ? value : <span class="text-gray-400">N/A</span>;
@@ -234,8 +235,8 @@ export default function DentalChart() {
               class="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
               <option value="all">All Types</option>
-              <option value="primary">Primary</option>
-              <option value="permanent">Permanent</option>
+              <option value="primary">{t('referenceTable.primary')}</option>
+              <option value="permanent">{t('referenceTable.permanent')}</option>
             </select>
           </div>
         </div>

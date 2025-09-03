@@ -3,6 +3,7 @@ import { Badge } from './Badge';
 import { Calendar, Clock, Info } from './icons';
 import { Show } from 'solid-js';
 import type { ToothData } from '../data/toothData';
+import { t, getToothName } from '../i18n';
 
 interface ToothDetailsProps {
   tooth: () => ToothData | null;
@@ -10,11 +11,11 @@ interface ToothDetailsProps {
 
 export const ToothDetails = (props: ToothDetailsProps) => {
   const formatAge = (months: number): string => {
-    if (months < 12) return `${months} months`;
+    if (months < 12) return `${months} ${t('studyMode.months')}`;
     const years = Math.floor(months / 12);
     const remainingMonths = months % 12;
-    if (remainingMonths === 0) return `${years} years`;
-    return `${years}y ${remainingMonths}m`;
+    if (remainingMonths === 0) return `${years} ${t('studyMode.years')}`;
+    return `${years}${t('studyMode.y')} ${remainingMonths}${t('studyMode.m')}`;
   };
 
   return (
@@ -25,7 +26,7 @@ export const ToothDetails = (props: ToothDetailsProps) => {
           <CardContent class="flex items-center justify-center h-full ">
             <div class="text-center">
               <Info class="h-12 w-12 mx-auto mb-4 opacity-50" />
-              <p>Select a tooth to view details</p>
+              <p>{t('timeline.noToothSelected')}</p>
             </div>
           </CardContent>
         }
@@ -39,11 +40,11 @@ export const ToothDetails = (props: ToothDetailsProps) => {
                     tooth().category === 'premolar' ? 'bg-yellow-400' :
                       'bg-purple-400'
                   }`}></div>
-                {tooth().position === 'maxillary' ? 'Upper' : 'Lower'} {tooth().name}
+                {tooth().position === 'maxillary' ? t('studyMode.upper') : t('studyMode.lower')} {getToothName(tooth().nameKey)}
               </CardTitle>
               <div class="flex gap-2 py-2">
                 <Badge variant={tooth().type === 'primary' ? 'secondary' : 'default'}>
-                  {tooth().type === 'primary' ? 'Primary' : 'Permanent'}
+                  {tooth().type === 'primary' ? t('studyMode.primary') : t('studyMode.permanent')}
                 </Badge>
                 <Badge variant="outline">
                   {tooth().side}
@@ -56,21 +57,21 @@ export const ToothDetails = (props: ToothDetailsProps) => {
               <div>
                 <h4 class="font-semibold mb-3 flex items-center gap-2">
                   <Info class="h-4 w-4" />
-                  Notation Systems
+                  {t('studyMode.notationSystems')}
                 </h4>
                 <div class="grid grid-cols-3 gap-4">
-                  <div class="text-center px-3 bg-secondary rounded-lg">
-                    <div class="font-semibold text-lg">{tooth().notation.universal}</div>
-                    <div class="text-xs text-muted-foreground">Universal</div>
-                  </div>
-                  <div class="text-center px-3 bg-secondary rounded-lg">
-                    <div class="font-semibold text-lg">{tooth().notation.palmer}</div>
-                    <div class="text-xs text-muted-foreground">Palmer</div>
-                  </div>
-                  <div class="text-center px-3 bg-secondary rounded-lg">
-                    <div class="font-semibold text-lg">{tooth().notation.fdi}</div>
-                    <div class="text-xs text-muted-foreground">FDI</div>
-                  </div>
+                   <div class="text-center px-3 bg-secondary rounded-lg">
+                     <div class="font-semibold text-lg">{tooth().notation.universal}</div>
+                     <div class="text-xs text-muted-foreground">{t('studyMode.universal')}</div>
+                   </div>
+                   <div class="text-center px-3 bg-secondary rounded-lg">
+                     <div class="font-semibold text-lg">{tooth().notation.palmer}</div>
+                     <div class="text-xs text-muted-foreground">{t('studyMode.palmer')}</div>
+                   </div>
+                   <div class="text-center px-3 bg-secondary rounded-lg">
+                     <div class="font-semibold text-lg">{tooth().notation.fdi}</div>
+                     <div class="text-xs text-muted-foreground">{t('studyMode.fdi')}</div>
+                   </div>
                 </div>
               </div>
 
@@ -78,14 +79,14 @@ export const ToothDetails = (props: ToothDetailsProps) => {
               <div>
                 <h4 class="font-semibold mb-3 flex items-center gap-2">
                   <Calendar class="h-4 w-4" />
-                  Eruption
+                  {t('studyMode.eruptionTimeline')}
                 </h4>
                 <div class="px-4 bg-primary-light rounded-lg">
                   <div class="text-lg font-semibold text-primary">
                     {tooth().eruption.ageRange}
                   </div>
                   <div class="text-sm text-muted-foreground">
-                    Average: {formatAge(tooth().eruption.ageMonths)}
+                    {t('studyMode.average')}: {formatAge(tooth().eruption.ageMonths)}
                   </div>
                 </div>
               </div>
@@ -95,14 +96,14 @@ export const ToothDetails = (props: ToothDetailsProps) => {
                 <div>
                   <h4 class="font-semibold mb-3 flex items-center gap-2">
                     <Clock class="h-4 w-4" />
-                    Crown Completion
+                    {t('referenceTable.crownCompletion')}
                   </h4>
                   <div class="px-4 bg-secondary rounded-lg">
                     <div class="text-lg font-semibold">
                       {tooth().crownCompletion.ageRange}
                     </div>
                     <div class="text-sm text-muted-foreground">
-                      Average: {formatAge(tooth().rootCompletion!.ageMonths)}
+                      {t('studyMode.average')}: {formatAge(tooth().crownCompletion.ageMonths)}
                     </div>
                   </div>
                 </div>
@@ -113,14 +114,14 @@ export const ToothDetails = (props: ToothDetailsProps) => {
                 <div>
                   <h4 class="font-semibold mb-3 flex items-center gap-2">
                     <Calendar class="h-4 w-4" />
-                    Shedding
+                    {t('studyMode.sheddingAge')}
                   </h4>
                   <div class="px-4 bg-accent-light rounded-lg">
                     <div class="text-lg font-semibold text-accent">
                       {tooth().shedding!.ageRange}
                     </div>
                     <div class="text-sm text-muted-foreground">
-                      Average: {formatAge(tooth().shedding!.ageMonths)}
+                      {t('studyMode.average')}: {formatAge(tooth().shedding!.ageMonths)}
                     </div>
                   </div>
                 </div>
@@ -131,14 +132,14 @@ export const ToothDetails = (props: ToothDetailsProps) => {
                 <div>
                   <h4 class="font-semibold mb-3 flex items-center gap-2">
                     <Clock class="h-4 w-4" />
-                    Root Completion
+                    {t('studyMode.rootCompletion')}
                   </h4>
                   <div class="px-4 bg-secondary rounded-lg">
                     <div class="text-lg font-semibold">
                       {tooth().rootCompletion!.ageRange}
                     </div>
                     <div class="text-sm text-muted-foreground">
-                      Average: {formatAge(tooth().rootCompletion!.ageMonths)}
+                      {t('studyMode.average')}: {formatAge(tooth().rootCompletion!.ageMonths)}
                     </div>
                   </div>
                 </div>

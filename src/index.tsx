@@ -9,6 +9,7 @@ import StudyMode from "./StudyMode";
 import Timeline from "./Timeline";
 import NotFound from "./NotFound";
 import { initPosthog } from "./posthog";
+import "./i18n";
 
 // Configuration
 const config = {

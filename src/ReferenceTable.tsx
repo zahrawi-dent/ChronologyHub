@@ -1,6 +1,7 @@
 import { createColumnHelper, createSolidTable, flexRender, getCoreRowModel, getFilteredRowModel, getSortedRowModel, type FilterFn } from '@tanstack/solid-table'
 import { createSignal, For } from 'solid-js';
 import { permanentTeeth, primaryTeeth, type ToothData } from './data/toothData';
+import { getToothName, t } from './i18n';
 
 
 
@@ -38,29 +39,29 @@ const tokenizedGlobalFilter: FilterFn<any> = (row, _, filterValue) => {
 const columnHelper = createColumnHelper<ToothData>();
 
 const defaultColumns = [
-  columnHelper.accessor('name', {
+  columnHelper.accessor('nameKey', {
     id: 'name',
     header: () => {
       return (
         <span class="capitalize font-semibold text-gray-100">
-          Tooth Name
+          {t('referenceTable.toothName')}
         </span>
       )
     },
     cell: ({ cell, row }) => {
-      const name = cell.renderValue();
+      const nameKey = cell.getValue();
       const position = row.original.position;
       const side = row.original.side;
       return (
         <div class="flex flex-col">
           <span class="capitalize font-medium text-gray-100">
-            {position} {side} {name}
+            {t(`commonTerms.${position}`)} {t(`commonTerms.${side}`)} {nameKey ? getToothName(nameKey) : ''}
           </span>
           <span class={`w-fit px-3 py-1 mt-1 rounded-full text-xs font-semibold ${row.original.type === 'primary'
             ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30'
             : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
             }`}>
-            {row.original.type.charAt(0).toUpperCase() + row.original.type.slice(1)}
+            {row.original.type === 'primary' ? t('referenceTable.primary') : t('referenceTable.permanent')}
           </span>
         </div>
       );
@@ -69,7 +70,7 @@ const defaultColumns = [
 
   columnHelper.accessor('crownCompletion.ageRange', {
     id: 'crownCompletion',
-    header: () => <span class="font-semibold text-gray-100">Crown Completion</span>,
+    header: () => <span class="font-semibold text-gray-100">{t('referenceTable.crownCompletion')}</span>,
     cell: ({ cell }) => (
       <span class="text-gray-200 font-medium">
         {cell.getValue()}
@@ -79,7 +80,7 @@ const defaultColumns = [
 
   columnHelper.accessor('eruption.ageRange', {
     id: 'eruption',
-    header: () => <span class="font-semibold text-gray-100">Eruption Age</span>,
+    header: () => <span class="font-semibold text-gray-100">{t('referenceTable.eruptionAge')}</span>,
     cell: ({ cell }) => (
       <span class="text-gray-200 font-medium">
         {cell.getValue()}
@@ -90,26 +91,26 @@ const defaultColumns = [
   columnHelper.accessor((row) => row.shedding?.ageRange,
     {
       id: 'shedding',
-      header: () => <span class="font-semibold text-gray-100">Shedding Age</span>,
+      header: () => <span class="font-semibold text-gray-100">{t('referenceTable.sheddingAge')}</span>,
       cell: ({ cell }) => {
         const value = cell.getValue();
         return value ? (
           <span class="text-gray-200 font-medium">{value}</span>
         ) : (
-          <span class="text-gray-500 italic">N/A</span>
+          <span class="text-gray-500 italic">{t('referenceTable.na')}</span>
         );
       },
     }),
 
   columnHelper.accessor('rootCompletion.ageRange', {
     id: 'rootCompletion',
-    header: () => <span class="font-semibold text-gray-100">Root Completion</span>,
+    header: () => <span class="font-semibold text-gray-100">{t('referenceTable.rootCompletion')}</span>,
     cell: ({ cell }) => {
       const value = cell.getValue();
       return value ? (
         <span class="text-gray-200 font-medium">{value}</span>
       ) : (
-        <span class="text-gray-500 italic">N/A</span>
+        <span class="text-gray-500 italic">{t('referenceTable.na')}</span>
       );
     },
   }),
@@ -154,8 +155,8 @@ export default function ReferenceTable() {
 
       {/* Header */}
       <div class="mb-8">
-        <h1 class="text-3xl font-bold text-white mb-2">Dental Reference Table</h1>
-        <p class="text-gray-400">Comprehensive tooth eruption and development timeline</p>
+        <h1 class="text-3xl font-bold text-white mb-2">{t('referenceTable.title')}</h1>
+        <p class="text-gray-400">{t('referenceTable.subtitle')}</p>
       </div>
 
       {/* Filters */}
@@ -164,7 +165,7 @@ export default function ReferenceTable() {
           {/* Search Input */}
           <div class="mb-6">
             <label class="block text-sm font-semibold text-gray-200 mb-2">
-              Search Teeth
+              {t('referenceTable.searchTeeth')}
             </label>
             <div class="relative">
               <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -174,7 +175,7 @@ export default function ReferenceTable() {
               </div>
               <input
                 type="text"
-                placeholder="Try search: 'max cen', 'pri mol sec', ..."
+                placeholder={t('referenceTable.searchPlaceholder')}
                 value={search()}
                 oninput={(e) => setSearch(e.currentTarget.value)}
                 class="w-full pl-10 pr-4 py-3 bg-gray-700/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all duration-200"
@@ -187,7 +188,7 @@ export default function ReferenceTable() {
             {/* Tooth Type Filter */}
             <div class="flex-1 min-w-48">
               <label class="block text-sm font-semibold text-gray-200 mb-2">
-                Tooth Type
+                {t('referenceTable.toothType')}
               </label>
               <div class="flex bg-gray-700/50 rounded-lg p-1">
                 {['all', 'primary', 'permanent'].map((type) => (
@@ -198,7 +199,7 @@ export default function ReferenceTable() {
                       : 'text-gray-300 hover:text-white hover:bg-gray-600/50'
                       }`}
                   >
-                    {type === 'all' ? 'All Teeth' : type.charAt(0).toUpperCase() + type.slice(1)}
+                    {type === 'all' ? t('referenceTable.allTeeth') : t(`referenceTable.${type}` as any)}
                   </button>
                 ))}
               </div>
@@ -210,11 +211,13 @@ export default function ReferenceTable() {
           <div class="mt-4 pt-4 border-t border-gray-700/50">
             <div class="flex items-center justify-between text-sm">
               <span class="text-gray-300">
-                Showing <span class="font-semibold text-blue-300">{table.getFilteredRowModel().rows.length}</span> of{' '}
-                <span class="font-semibold text-gray-100">{filteredData().length}</span> teeth
+                {t('referenceTable.showingOfTeeth', {
+                  shown: table.getFilteredRowModel().rows.length,
+                  total: filteredData().length
+                })}
                 {toothTypeFilter() !== 'all' && (
                   <span class="ml-2 text-gray-400">
-                    ({toothTypeFilter()} only)
+                    ({t('referenceTable.only')})
                   </span>
                 )}
               </span>
@@ -275,8 +278,8 @@ export default function ReferenceTable() {
             <svg class="mx-auto h-12 w-12 text-gray-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
-            <h3 class="text-lg font-medium text-gray-300 mb-2">No teeth found</h3>
-            <p class="text-gray-500">Try adjusting your search terms or filters</p>
+            <h3 class="text-lg font-medium text-gray-300 mb-2">{t('referenceTable.noTeethFound')}</h3>
+            <p class="text-gray-500">{t('referenceTable.tryAdjustingSearch')}</p>
           </div>
         )}
       </div>

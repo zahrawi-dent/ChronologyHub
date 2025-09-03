@@ -7,9 +7,8 @@ import { FaSolidChevronRight, FaSolidTrophy, FaSolidBookOpen, FaSolidBrain, FaSo
 import { FiTarget, FiSkipForward, FiSettings, FiZap, FiBarChart, FiRotateCcw } from 'solid-icons/fi'
 import { BiRegularTimer } from 'solid-icons/bi'
 import { VsChromeClose } from 'solid-icons/vs'
-
-
 import { Progress } from "./components/Progress";
+import { t, getToothName } from "./i18n";
 
 type StudyModeType = "eruption" | "notation" | "mixed";
 type StudySession = {
@@ -245,12 +244,12 @@ export default function StudyMode() {
     <div class="max-w-4xl mx-auto space-y-6 p-4">
       {/* Header with Stats */}
       <div class="flex flex-col sm:flex-row gap-4 items-center justify-between">
-        <div class="flex items-center gap-4">
-          <div class="flex items-center gap-2">
-            <FaSolidBookOpen class="h-6 w-6 text-primary" />
-            <h1 class="text-2xl font-bold">Study Mode</h1>
+          <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2">
+              <FaSolidBookOpen class="h-6 w-6 text-primary" />
+              <h1 class="text-2xl font-bold">{t('studyMode.title')}</h1>
+            </div>
           </div>
-        </div>
 
         <div class="flex items-center gap-2">
           <Button
@@ -260,7 +259,7 @@ export default function StudyMode() {
             class="flex items-center gap-2"
           >
             <FiBarChart class="h-4 w-4" />
-            Stats
+            {t('studyMode.stats')}
           </Button>
           <Button
             variant="outline"
@@ -269,7 +268,7 @@ export default function StudyMode() {
             class="flex items-center gap-2"
           >
             <FiRotateCcw class="h-4 w-4" />
-            New Session
+            {t('studyMode.newSession')}
           </Button>
         </div>
       </div>
@@ -280,30 +279,30 @@ export default function StudyMode() {
           <CardHeader>
             <CardTitle class="flex items-center gap-2">
               <FiBarChart class="h-5 w-5" />
-              Study Statistics
+              {t('studyMode.studyStatistics')}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div class="text-center">
                 <div class="text-2xl font-bold text-primary">{bestScore().toFixed(1)}%</div>
-                <div class="text-sm text-muted-foreground">Best Score</div>
+                <div class="text-sm text-muted-foreground">{t('studyMode.bestScore')}</div>
               </div>
               <div class="text-center">
                 <div class="text-2xl font-bold text-blue-600">{studyHistory().length}</div>
-                <div class="text-sm text-muted-foreground">Sessions</div>
+                <div class="text-sm text-muted-foreground">{t('studyMode.sessions')}</div>
               </div>
               <div class="text-center">
                 <div class="text-2xl font-bold text-purple-600">
                   {studyHistory().reduce((acc, session) => acc + session.totalQuestions, 0)}
                 </div>
-                <div class="text-sm text-muted-foreground">Questions</div>
+                <div class="text-sm text-muted-foreground">{t('studyMode.questions')}</div>
               </div>
             </div>
 
             <Show when={studyHistory().length > 0}>
               <div class="mt-4 pt-4 border-t">
-                <h4 class="font-semibold mb-2">Recent Sessions</h4>
+                <h4 class="font-semibold mb-2">{t('studyMode.recentSessions')}</h4>
                 <div class="space-y-2 max-h-40 overflow-y-auto">
                   {studyHistory().map(session => (
                     <div class="flex justify-between items-center p-2 bg-muted rounded">
@@ -327,20 +326,20 @@ export default function StudyMode() {
       {/* Study Configuration */}
       <Card>
         <CardHeader>
-          <CardTitle class="flex items-center gap-2">
-            <FiSettings class="h-5 w-5" />
-            Study Configuration
-          </CardTitle>
+            <CardTitle class="flex items-center gap-2">
+              <FiSettings class="h-5 w-5" />
+              {t('studyMode.studyConfiguration')}
+            </CardTitle>
         </CardHeader>
         <CardContent class="space-y-4">
           {/* Study Type Selector */}
           <div>
-            <label class="text-sm font-medium mb-2 block">Study Focus</label>
+            <label class="text-sm font-medium mb-2 block">{t('studyMode.studyFocus')}</label>
             <div class="flex flex-wrap gap-2">
               {[
-                { key: "eruption", label: "Eruption Ages", icon: BiRegularTimer, desc: "Learn when teeth appear and fall out" },
-                { key: "notation", label: "Tooth Notation", icon: FiTarget, desc: "Master numbering systems" },
-                { key: "mixed", label: "Mixed Review", icon: FaSolidBrain, desc: "Comprehensive knowledge test" },
+                { key: "eruption", label: t('studyMode.eruptionAges'), icon: BiRegularTimer, desc: t('studyMode.eruptionAgesDesc') },
+                { key: "notation", label: t('studyMode.toothNotation'), icon: FiTarget, desc: t('studyMode.toothNotationDesc') },
+                { key: "mixed", label: t('studyMode.mixedReview'), icon: FaSolidBrain, desc: t('studyMode.mixedReviewDesc') },
               ].map(({ key, label, icon: Icon }) => (
                  <Button
                    variant={studyType() === key ? "default" : "outline"}
@@ -367,7 +366,7 @@ export default function StudyMode() {
           <CardHeader>
             <CardTitle class="flex items-center gap-2 text-center w-full justify-center">
               <FaSolidTrophy class="h-8 w-8 text-yellow-500" />
-              Study Session Complete!
+              {t('studyMode.studySessionComplete')}
             </CardTitle>
           </CardHeader>
           <CardContent class="text-center space-y-6">
@@ -376,18 +375,18 @@ export default function StudyMode() {
                 {accuracy().toFixed(1)}%
               </div>
               <div class="text-xl text-muted-foreground">
-                You got {correctAnswers()} out of {totalAnswered()} correct
+                {t('studyMode.youGotCorrect', { correct: correctAnswers(), total: totalAnswered() })}
               </div>
             </div>
 
             <div class="flex gap-4 justify-center">
               <Button onClick={startNewSession} variant="default" size="lg" class="flex items-center gap-2">
                 <FiZap class="h-5 w-5" />
-                Start New Session
+                {t('studyMode.startNewSession')}
               </Button>
               <Button onClick={() => setShowStats(true)} variant="outline" size="lg" class="flex items-center gap-2">
                 <FiBarChart class="h-5 w-5" />
-                View Stats
+                {t('studyMode.viewStats')}
               </Button>
             </div>
           </CardContent>
@@ -398,10 +397,10 @@ export default function StudyMode() {
           <div class="flex justify-between text-sm">
             <div class="flex items-center gap-4">
               <span class="font-medium">
-                Card {currentIndex() + 1} of {shuffledTeeth().length}
+                {t('studyMode.cardOf', { current: currentIndex() + 1, total: shuffledTeeth().length })}
               </span>
               <span class="text-muted-foreground">
-                {correctAnswers()}/{totalAnswered()} correct ({accuracy().toFixed(1)}%)
+                {correctAnswers()}/{totalAnswered()} {t('studyMode.correct')} ({accuracy().toFixed(1)}%)
               </span>
             </div>
           </div>
@@ -415,11 +414,11 @@ export default function StudyMode() {
               <div class="space-y-2">
                 <CardTitle class="text-2xl flex items-center gap-2">
                   <span class="text-primary"
-                  > {currentTooth()?.type === "primary" ? "Primary" : "Permanent"} </span>
+                  > {currentTooth()?.type === "primary" ? t('studyMode.primary') : t('studyMode.permanent')} </span>
                   <span>
-                    {currentTooth()?.position === "maxillary" ? "Upper" : "Lower"}
+                    {currentTooth()?.position === "maxillary" ? t('studyMode.upper') : t('studyMode.lower')}
                   </span>
-                  <span>{currentTooth()?.name}</span>
+                   <span>{currentTooth() ? getToothName(currentTooth()!.nameKey) : ''}</span>
                 </CardTitle>
                 <div class="flex gap-2">
                   <Badge variant="outline">
@@ -436,11 +435,11 @@ export default function StudyMode() {
               <Show when={studyType() === "eruption"}>
                 <div>
                   <h3 class="text-xl font-semibold mb-3">
-                    When does this tooth typically erupt?
+                    {t('studyMode.whenDoesToothErupt')}
                   </h3>
                   <Show when={currentTooth()?.type === "primary"}>
                     <p class="text-muted-foreground">
-                      Also, when does it typically shed?
+                      {t('studyMode.alsoWhenDoesShed')}
                     </p>
                   </Show>
                 </div>
@@ -449,10 +448,10 @@ export default function StudyMode() {
               <Show when={studyType() === "notation"}>
                 <div>
                   <h3 class="text-xl font-semibold mb-3">
-                    What are the notation numbers for this tooth?
+                    {t('studyMode.whatAreNotationNumbers')}
                   </h3>
                   <p class="text-muted-foreground">
-                    Universal, Palmer, and FDI systems
+                    {t('studyMode.universalPalmerFdi')}
                   </p>
                 </div>
               </Show>
@@ -460,10 +459,10 @@ export default function StudyMode() {
               <Show when={studyType() === "mixed"}>
                 <div>
                   <h3 class="text-xl font-semibold mb-3">
-                    What do you know about this tooth?
+                    {t('studyMode.whatDoYouKnow')}
                   </h3>
                   <p class="text-muted-foreground">
-                    Eruption age, notation, and characteristics
+                    {t('studyMode.eruptionNotationCharacteristics')}
                   </p>
                 </div>
               </Show>
@@ -476,22 +475,22 @@ export default function StudyMode() {
                   <div class="space-y-3">
                     <h4 class="font-semibold text-lg flex items-center gap-2">
                       <BiRegularTimer class="h-5 w-5 text-primary" />
-                      Eruption Timeline
+                      {t('studyMode.eruptionTimeline')}
                     </h4>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div class="bg-background p-3 rounded-lg">
-                        <div class="font-medium text-sm text-muted-foreground">Eruption Age</div>
+                        <div class="font-medium text-sm text-muted-foreground">{t('studyMode.eruptionAge')}</div>
                         <div class="text-lg font-semibold">
                           {currentTooth()?.eruption.ageRange}
                         </div>
                         <div class="text-sm text-muted-foreground">
-                          Average: {formatAge(currentTooth()?.eruption.ageMonths ?? 0)}
+                          {t('studyMode.average')} {formatAge(currentTooth()?.eruption.ageMonths ?? 0)}
                         </div>
                       </div>
 
                       <Show when={currentTooth()?.shedding}>
                         <div class="bg-background p-3 rounded-lg">
-                          <div class="font-medium text-sm text-muted-foreground">Shedding Age</div>
+                          <div class="font-medium text-sm text-muted-foreground">{t('studyMode.sheddingAge')}</div>
                           <div class="text-lg font-semibold">
                             {currentTooth()?.shedding?.ageRange}
                           </div>
@@ -503,7 +502,7 @@ export default function StudyMode() {
 
                       <Show when={currentTooth()?.rootCompletion}>
                         <div class="bg-background p-3 rounded-lg">
-                          <div class="font-medium text-sm text-muted-foreground">Root Completion</div>
+                          <div class="font-medium text-sm text-muted-foreground">{t('studyMode.rootCompletion')}</div>
                           <div class="text-lg font-semibold">
                             {currentTooth()?.rootCompletion?.ageRange}
                           </div>
@@ -520,26 +519,26 @@ export default function StudyMode() {
                   <div class="space-y-3">
                     <h4 class="font-semibold text-lg flex items-center gap-2">
                       <FiTarget class="h-5 w-5 text-primary" />
-                      Notation Systems
+                      {t('studyMode.notationSystems')}
                     </h4>
                     <div class="grid grid-cols-3 gap-3">
                       <div class="bg-background p-4 rounded-lg text-center border border-border">
                         <div class="text-2xl font-bold text-primary mb-1">
                           {currentTooth()?.notation.universal}
                         </div>
-                        <div class="text-xs text-muted-foreground uppercase tracking-wide">Universal</div>
+                        <div class="text-xs text-muted-foreground uppercase tracking-wide">{t('studyMode.universal')}</div>
                       </div>
                       <div class="bg-background p-4 rounded-lg text-center border border-border">
                         <div class="text-2xl font-bold text-primary mb-1">
                           {currentTooth()?.notation.palmer}
                         </div>
-                        <div class="text-xs text-muted-foreground uppercase tracking-wide">Palmer</div>
+                        <div class="text-xs text-muted-foreground uppercase tracking-wide">{t('studyMode.palmer')}</div>
                       </div>
                       <div class="bg-background p-4 rounded-lg text-center border border-border">
                         <div class="text-2xl font-bold text-primary mb-1">
                           {currentTooth()?.notation.fdi}
                         </div>
-                        <div class="text-xs text-muted-foreground uppercase tracking-wide">FDI</div>
+                        <div class="text-xs text-muted-foreground uppercase tracking-wide">{t('studyMode.fdi')}</div>
                       </div>
                     </div>
                   </div>
@@ -552,10 +551,10 @@ export default function StudyMode() {
               <Show when={!showAnswer()} fallback={
                 <div class="flex gap-3 justify-center">
                   <Button onClick={previousCard} variant="outline" disabled={currentIndex() === 0} class="flex-1">
-                    Previous
+                    {t('studyMode.previous')}
                   </Button>
                   <Button onClick={nextCard} variant="default" class="flex-1 flex items-center gap-2">
-                    Next Card
+                    {t('studyMode.nextCard')}
                     <FaSolidChevronRight class="h-4 w-4" />
                   </Button>
                 </div>
@@ -563,15 +562,15 @@ export default function StudyMode() {
                 <div class="grid grid-cols-3 gap-3">
                   <Button onClick={markIncorrect} variant="outline" class="flex items-center gap-2">
                     <VsChromeClose class="h-4 w-4" />
-                    Don't Know
+                    {t('studyMode.dontKnow')}
                   </Button>
                   <Button onClick={skipCard} variant="outline" class="flex items-center gap-2">
                     <FiSkipForward class="h-4 w-4" />
-                    Skip
+                    {t('studyMode.skip')}
                   </Button>
                   <Button onClick={markCorrect} variant="default" class="flex items-center gap-2">
                     <FaSolidCheck class="h-4 w-4" />
-                    I Know This!
+                    {t('studyMode.iKnowThis')}
                   </Button>
                 </div>
               </Show>
